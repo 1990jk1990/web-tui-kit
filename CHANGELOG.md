@@ -4,8 +4,16 @@ All notable user-visible changes are recorded here.
 
 ## Unreleased
 
+## 0.5.0 - 2026-09-11
+
+Framework/template integration release.
+
 - Added copy-ready React, Vue, and server-rendered integration recipes that reuse the canonical browser-native runtime contract.
-- Added framework integration guidance, OpenSpec requirements, ADR-0004, and structural tests that keep framework dependencies/styling out of `src/`.
+- Added framework integration guidance covering immutable release pinning, native form state, `tui:escape`, `data-tui-list`, and styling boundaries.
+- Added OpenSpec framework-integration requirements and ADR-0004, which prefers recipes over maintained framework adapters until a concrete capability gap is demonstrated.
+- Added structural tests that keep framework dependencies and parallel styling out of `src/`.
+- Expanded the deterministic focused release archive to include framework/template integration guidance and recipes.
+- Made release tests version-agnostic so subsequent pre-1.0 release preparation does not require rewriting version-specific test assertions.
 
 ## 0.4.0 - 2026-09-11
 
