@@ -60,12 +60,17 @@ class ReleaseContractTests(unittest.TestCase):
                     "AGENTS.md",
                     "CHANGELOG.md",
                     "SECURITY.md",
+                    "docs/project/framework-integration.md",
                     "src/tokens.css",
                     "src/tui.css",
                     "src/tui.js",
                     "demo/index.html",
                     "demo/dialogs.html",
                     "demo/components.html",
+                    "examples/README.md",
+                    "examples/react/PackageConfiguration.jsx",
+                    "examples/vue/PackageConfiguration.vue",
+                    "examples/server-rendered/package-configuration.html",
                 )
             }
 
@@ -129,6 +134,9 @@ class ReleaseContractTests(unittest.TestCase):
         self.assertIn("sorted(DISTRIBUTION_FILES)", self.builder)
         self.assertIn("sha256", self.builder)
         self.assertIn("display_path", self.builder)
+        self.assertIn('"examples/react/PackageConfiguration.jsx"', self.builder)
+        self.assertIn('"examples/vue/PackageConfiguration.vue"', self.builder)
+        self.assertIn('"examples/server-rendered/package-configuration.html"', self.builder)
         self.assertNotIn("site/", self.builder)
         self.assertNotIn("test-results/", self.builder)
 
