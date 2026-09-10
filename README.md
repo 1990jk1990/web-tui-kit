@@ -20,7 +20,8 @@ Open:
 
 - `http://localhost:8000/demo/` for the canonical package-configuration reference,
 - `http://localhost:8000/demo/dialogs.html` for message, confirmation, input, menu, radiolist, checklist, and gauge patterns,
-- `http://localhost:8000/demo/components.html` for the broader component gallery.
+- `http://localhost:8000/demo/components.html` for the broader component gallery,
+- `http://localhost:8000/examples/server-rendered/package-configuration.html` for the browser-openable template/server-rendered integration recipe.
 
 No application build step and no JavaScript framework are required.
 
@@ -48,6 +49,14 @@ For the closest match to the original Debian/Ubuntu package-configuration look, 
 
 For common dialog compositions, use `demo/dialogs.html` and `DESIGN_SYSTEM.md` rather than inventing per-application variants. Containers marked with `data-tui-list` gain optional ArrowUp/ArrowDown/Home/End focus navigation while normal Tab reachability and native control activation remain intact.
 
+## Framework and template consumers
+
+React, Vue, and server-rendered applications should generate the same semantic markup/classes instead of using a separate adapter runtime. Copy-ready recipes live under `examples/`, with detailed guidance in `docs/project/framework-integration.md`.
+
+The React/Vue examples demonstrate framework-owned state and lifecycle handling while keeping native form controls. The server-rendered recipe demonstrates ordinary form submission. All three reuse the canonical `src/` assets and treat `tui:escape` as an application-owned signal.
+
+Do not copy the design tokens/component CSS into CSS-in-JS, scoped component styles, or a private theme implementation. If a reusable visual change is needed, make it in the canonical design system.
+
 See `RELEASING.md` for the versioning/release procedure and `docs/project/compatibility.md` for current compatibility evidence and its limits.
 
 ## Project memory and canonical sources
@@ -59,7 +68,8 @@ This repository follows **AI-DOC-1 v1.3**. The repository itself is durable proj
 - release procedure: `RELEASING.md`
 - project purpose and scope: `docs/project/overview.md`
 - compatibility evidence: `docs/project/compatibility.md`
-- accepted UI/release behavior: `openspec/specs/`
+- framework integration guidance: `docs/project/framework-integration.md`
+- accepted UI/release/integration behavior: `openspec/specs/`
 - current architecture: `docs/architecture/`
 - durable decision rationale: `docs/decisions/`
 - practical design-system usage guide: `DESIGN_SYSTEM.md`
@@ -68,6 +78,7 @@ This repository follows **AI-DOC-1 v1.3**. The repository itself is durable proj
 - primary executable visual reference: `demo/index.html`
 - core dialog gallery: `demo/dialogs.html`
 - broader component gallery: `demo/components.html`
+- framework/template consumption recipes: `examples/`
 - structural regression evidence: `tests/`
 - reviewed visual baselines: `tests/visual/baselines/`
 
@@ -77,7 +88,7 @@ See `docs/index.md` for the documentation entry point.
 
 For a stable released reference, a consuming project can use:
 
-> Use `https://github.com/1990jk1990/web-tui-kit/tree/v0.4.0` as the canonical UI design system. Read `AGENTS.md`, `VERSION`, the current OpenSpec specifications, `DESIGN_SYSTEM.md`, and `demo/index.html` before implementing UI. Treat `demo/index.html` as the primary visual target, `demo/dialogs.html` as the core dialog catalog, and `demo/components.html` as the broader component catalog. Reuse the existing tokens, CSS classes, and interaction patterns instead of inventing a new visual language. The application must remain usable in Linux desktop browsers and Android browsers.
+> Use `https://github.com/1990jk1990/web-tui-kit/tree/v0.4.0` as the canonical UI design system. Read `AGENTS.md`, `VERSION`, the current OpenSpec specifications, `DESIGN_SYSTEM.md`, and `demo/index.html` before implementing UI. If the target app uses React, Vue, or server-rendered templates, also read `docs/project/framework-integration.md` and the matching example under `examples/`. Treat `demo/index.html` as the primary visual target, `demo/dialogs.html` as the core dialog catalog, and `demo/components.html` as the broader component catalog. Reuse the existing tokens, CSS classes, semantic controls, and interaction patterns instead of inventing a new visual language or framework-specific styling layer. The application must remain usable in Linux desktop browsers and Android browsers.
 
 Using an immutable release tag is preferable to pointing an automated consumer at `main`, because the visual and behavioral reference cannot change underneath that consumer.
 
