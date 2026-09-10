@@ -46,6 +46,18 @@ Each tagged release MUST be able to produce a focused `web-tui-kit-MAJOR.MINOR.P
 - **WHEN** its embedded `VERSION` is inspected
 - **THEN** it MUST also contain `0.4.0`
 
+### Requirement: Focused archive includes consumer integration references
+
+When the repository provides accepted consumer integration recipes/guidance, the focused release archive MUST include those copy-ready references alongside the canonical runtime so downstream consumers and coding agents do not need the full development repository merely to understand framework/template consumption.
+
+The integration references MUST remain examples/guidance and MUST NOT turn framework dependencies into runtime dependencies of the released `src/` assets.
+
+#### Scenario: Framework consumer downloads focused archive
+
+- **GIVEN** a tagged release includes the accepted React, Vue, and server-rendered recipes
+- **WHEN** a consumer downloads the focused release ZIP
+- **THEN** the archive MUST contain the framework-integration guide and those recipes in addition to the canonical runtime assets
+
 ### Requirement: Verified tag-triggered publication
 
 A matching version tag MUST trigger release automation. Before publishing artifacts, the workflow MUST verify that the tag matches `VERSION`, that the tagged commit is contained in `main`, and that structural tests, AI-DOC-1 validation, documentation build, visual regression, and release-archive validation succeed.
@@ -76,11 +88,11 @@ Pre-1.0 tag automation MUST publish the focused ZIP and checksum as assets of a 
 
 ### Requirement: Registry publishing is optional and currently absent
 
-The `v0.4.0` distribution contract MUST NOT require npm or another package registry. Adding registry publication later requires a concrete consumer need and a deliberate follow-up decision because it creates another supported distribution surface.
+The pre-1.0 distribution contract MUST NOT require npm or another package registry. Adding registry publication later requires a concrete consumer need and a deliberate follow-up decision because it creates another supported distribution surface.
 
-#### Scenario: Consumer uses v0.4.0
+#### Scenario: Consumer uses a pre-1.0 release
 
-- **GIVEN** a consumer wants `v0.4.0`
+- **GIVEN** a consumer wants a tagged pre-1.0 release
 - **WHEN** it follows the documented primary installation path
 - **THEN** no npm account, Node.js installation, package-manager lockfile, or registry credential MUST be required
 
