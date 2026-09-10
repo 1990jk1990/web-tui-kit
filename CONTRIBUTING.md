@@ -16,7 +16,7 @@ When adding a reusable component, prefer existing tokens and patterns, update th
 
 ## Verification
 
-Before requesting review, run:
+Before requesting review, run the fast repository/documentation checks:
 
 ```bash
 python -m unittest discover -s tests -v
@@ -25,6 +25,16 @@ pip install -r requirements-docs.txt
 python scripts/sync_openspec_docs.py
 mkdocs build --strict
 ```
+
+For UI or visual changes, also run the pinned browser screenshot suite:
+
+```bash
+pip install -r requirements-visual.txt
+python -m playwright install --with-deps chromium
+python scripts/visual_regression.py
+```
+
+If an intended visual change makes the suite fail, do not weaken the threshold or allow CI to overwrite the baseline. Regenerate deliberately with `python scripts/visual_regression.py --update`, review the resulting PNG changes, then rerun the normal comparison. The Linux GitHub Actions environment is the canonical rendering environment; see `docs/project/testing.md` for details.
 
 Document pre-existing failures separately from failures introduced by a change.
 

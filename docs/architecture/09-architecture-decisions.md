@@ -5,6 +5,7 @@ Durable architectural rationale is recorded as ADRs under `docs/decisions/`. Thi
 ## Current decisions
 
 - [ADR-0001: Framework-independent browser-native baseline](../decisions/0001-framework-independent-browser-baseline.md) — Accepted.
+- [ADR-0002: Playwright-based visual regression verification](../decisions/0002-playwright-visual-regression.md) — Accepted.
 
 ## Template
 

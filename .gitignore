@@ -2,3 +2,4 @@ site/
 docs/generated/
 __pycache__/
 *.py[cod]
+test-results/
