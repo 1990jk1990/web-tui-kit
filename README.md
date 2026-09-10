@@ -55,7 +55,8 @@ This repository follows **AI-DOC-1 v1.3**. The repository itself is durable proj
 - primary executable visual reference: `demo/index.html`
 - core dialog gallery: `demo/dialogs.html`
 - broader component gallery: `demo/components.html`
-- executable regression evidence: `tests/`
+- structural regression evidence: `tests/test_repository.py`
+- reviewed visual baselines: `tests/visual/baselines/`
 
 See `docs/index.md` for the documentation entry point.
 
@@ -67,7 +68,7 @@ A consuming project can use the following instruction:
 
 ## Verification
 
-Run the project checks with:
+Run the fast repository/documentation checks with:
 
 ```bash
 python -m unittest discover -s tests -v
@@ -76,5 +77,15 @@ pip install -r requirements-docs.txt
 python scripts/sync_openspec_docs.py
 mkdocs build --strict
 ```
+
+Run the browser-driven screenshot regression suite with:
+
+```bash
+pip install -r requirements-visual.txt
+python -m playwright install --with-deps chromium
+python scripts/visual_regression.py
+```
+
+The visual suite compares the canonical package and dialog demos against reviewed desktop/mobile PNG baselines. See `docs/project/testing.md` for the intentional baseline-update procedure and canonical CI environment.
 
 Contribution and documentation workflow details are in `CONTRIBUTING.md`.
