@@ -6,7 +6,7 @@ They are **not** a second implementation of the design system and they are not p
 
 ## Stable consumption
 
-For reproducible downstream use, vendor files from an immutable release tag such as `v0.4.0` rather than the moving `main` branch. A consuming project normally copies:
+For reproducible downstream use, vendor files from an immutable release tag such as `v0.5.0` rather than the moving `main` branch. A consuming project normally copies:
 
 ```text
 src/tokens.css
