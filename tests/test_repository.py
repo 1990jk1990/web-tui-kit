@@ -26,6 +26,9 @@ class RepositoryContractTests(unittest.TestCase):
         self.tokens = (ROOT / "src/tokens.css").read_text(encoding="utf-8")
         self.css = (ROOT / "src/tui.css").read_text(encoding="utf-8")
         self.javascript = (ROOT / "src/tui.js").read_text(encoding="utf-8")
+        self.visual_runner = (ROOT / "scripts/visual_regression.py").read_text(encoding="utf-8")
+        self.visual_workflow = (ROOT / ".github/workflows/visual-regression.yml").read_text(encoding="utf-8")
+        self.visual_requirements = (ROOT / "requirements-visual.txt").read_text(encoding="utf-8")
 
     def assert_local_assets_exist(self, html, base_dir):
         parser = AssetParser()
@@ -181,6 +184,44 @@ class RepositoryContractTests(unittest.TestCase):
             "animation:",
         ):
             self.assertNotIn(fragment, css)
+
+    def test_visual_regression_baselines_cover_desktop_and_mobile(self):
+        baseline_dir = ROOT / "tests/visual/baselines"
+        for filename in (
+            "package-desktop.png",
+            "package-mobile.png",
+            "dialogs-desktop.png",
+            "dialogs-mobile.png",
+        ):
+            baseline = baseline_dir / filename
+            self.assertTrue(baseline.is_file(), f"missing visual baseline: {filename}")
+            self.assertGreater(baseline.stat().st_size, 1000, f"empty visual baseline: {filename}")
+
+    def test_visual_runner_uses_pinned_playwright_and_deterministic_cases(self):
+        self.assertIn("playwright==1.62.0", self.visual_requirements)
+        self.assertIn("Pillow==11.3.0", self.visual_requirements)
+        for case_name in (
+            "package-desktop",
+            "package-mobile",
+            "dialogs-desktop",
+            "dialogs-mobile",
+        ):
+            self.assertIn(case_name, self.visual_runner)
+        self.assertIn('"/demo/index.html"', self.visual_runner)
+        self.assertIn('"/demo/dialogs.html"', self.visual_runner)
+        self.assertIn("device_scale_factor=1", self.visual_runner)
+        self.assertIn('timezone_id="UTC"', self.visual_runner)
+        self.assertIn('reduced_motion="reduce"', self.visual_runner)
+        self.assertIn("--font-render-hinting=none", self.visual_runner)
+        self.assertIn("compare_images", self.visual_runner)
+        self.assertIn("--update", self.visual_runner)
+
+    def test_visual_workflow_verifies_baselines_read_only(self):
+        self.assertIn("permissions:\n  contents: read", self.visual_workflow)
+        self.assertIn("python scripts/visual_regression.py", self.visual_workflow)
+        self.assertNotIn("visual_regression.py --update", self.visual_workflow)
+        self.assertIn("if: failure()", self.visual_workflow)
+        self.assertIn("visual-regression-failures", self.visual_workflow)
 
 
 if __name__ == "__main__":
