@@ -14,7 +14,7 @@ Its primary use case is to let independent browser applications share one UI lan
 
 ## Scope
 
-The repository provides design tokens, CSS component styles, small progressive-enhancement JavaScript, executable visual references, requirements, architecture documentation, development guidance, structural regression tests, browser-driven visual regression baselines for canonical demos, deterministic tagged release artifacts for direct vendoring, and framework/template integration recipes that reuse the canonical browser-native contract.
+The repository provides design tokens, CSS component styles, small progressive-enhancement JavaScript, executable visual references, requirements, architecture documentation, development guidance, structural regression tests, browser-driven Chromium visual regression baselines for canonical demos, cross-browser interaction verification in Chromium/Firefox, representative narrow touch-browser evidence, deterministic tagged release artifacts for direct vendoring, and framework/template integration recipes that reuse the canonical browser-native contract.
 
 The canonical visual reference is `demo/index.html`: a centered package-style dialog with a blue desktop background, grey beveled surface, red title accent, recessed scrollable checklist, blue focused row, text-style checkbox markers, contextual help accents, and angle-bracket actions.
 
@@ -30,6 +30,8 @@ The accepted behavioral, verification, release/distribution, and framework-integ
 
 The project does not maintain React/Vue adapter runtimes or require framework dependencies in `src/`. A future adapter requires a demonstrated integration gap and a deliberate architecture/specification change. Tagged direct vendoring remains the baseline distribution model.
 
+Automated touch-capable Chromium evidence is not physical Android/Android WebView certification. Physical device evidence is recorded separately only after an actual device run.
+
 ## Maturity
 
-The project is pre-1.0. Version `0.5.0` packages the established visual foundation, core dialog patterns, accessibility/keyboard refinement, visual regression gates, release/distribution workflow, and copy-ready React/Vue/server-rendered integration recipes without changing the browser-native runtime baseline. Canonical package/dialog rendering is guarded by reviewed desktop and touch-capable mobile screenshot baselines in CI. Public component contracts may still evolve through minor releases before 1.0.
+The project is pre-1.0. Version `0.5.0` is the current published prerelease and packages the established visual foundation, core dialog patterns, accessibility/keyboard refinement, visual regression gates, release/distribution workflow, and copy-ready React/Vue/server-rendered integration recipes without changing the browser-native runtime baseline. The active v0.6 milestone strengthens runtime evidence with browser-driven Chromium/Firefox interaction checks and representative narrow touch behavior while keeping Chromium/Linux as the canonical screenshot environment. Public component contracts may still evolve through minor releases before 1.0.

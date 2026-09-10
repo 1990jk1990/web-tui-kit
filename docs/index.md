@@ -11,6 +11,7 @@ This is the human-readable documentation entry point for `web-tui-kit`.
 - [Technology stack](project/technology-stack.md)
 - [Testing](project/testing.md)
 - [Compatibility evidence](project/compatibility.md)
+- [Physical Android device check](project/android-device-check.md)
 - [Configuration](project/configuration.md)
 - [Architecture introduction and goals](architecture/01-introduction-and-goals.md)
 - [Solution strategy](architecture/04-solution-strategy.md)
@@ -28,6 +29,10 @@ OpenSpec under `openspec/` is canonical for accepted behavior and non-trivial be
 `DESIGN_SYSTEM.md` is the practical consumption guide. Exact CSS values are owned by `src/tokens.css`, while reusable implementation is owned by `src/`.
 
 Framework/template consumers should also read `project/framework-integration.md` and the matching source recipe under `examples/`. Those recipes consume the canonical runtime; they are not framework-specific replacements for it.
+
+## Compatibility evidence
+
+`project/compatibility.md` records what automated/manual environments have actually been exercised. `project/android-device-check.md` defines the physical Android procedure and must not be marked verified without a real device result.
 
 ## Release identity
 

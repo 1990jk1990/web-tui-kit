@@ -8,6 +8,8 @@ Read `AGENTS.md` first. For UI changes, also read the relevant current specifica
 
 For framework/template integration changes, also read `docs/project/framework-integration.md`, `examples/README.md`, the relevant recipe under `examples/`, ADR-0001, and ADR-0004.
 
+For browser verification or compatibility-evidence changes, also read `openspec/specs/browser-verification/spec.md`, `docs/project/testing.md`, `docs/project/compatibility.md`, ADR-0002, and ADR-0005.
+
 For release/version/distribution changes, also read `VERSION`, `RELEASING.md`, the release/distribution OpenSpec, and the relevant ADRs.
 
 ## Workflow
@@ -19,6 +21,8 @@ Behavioral changes must update the relevant OpenSpec artifacts. Architectural ch
 When adding a reusable component, prefer existing tokens and patterns, update the demo, and add regression evidence in `tests/`.
 
 When adding or changing a framework/template recipe, keep framework dependencies out of `src/`, retain native semantic controls, reuse canonical `tui-*` classes/events, and add structural tests that prevent parallel CSS/runtime drift.
+
+When changing keyboard/custom-event/list-navigation behavior, add or update browser-driven interaction evidence. Keep interaction fixtures on canonical `src/` assets and do not turn Playwright/Chromium/Firefox into runtime dependencies.
 
 Do not change `VERSION` casually. Version changes belong to release preparation and must follow `RELEASING.md`. Published release tags are immutable; fix a bad release forward with a new Semantic Version rather than moving an existing tag.
 
@@ -34,7 +38,7 @@ python scripts/sync_openspec_docs.py
 mkdocs build --strict
 ```
 
-For UI or visual changes, also run the pinned browser screenshot suite:
+For UI or visual changes, also run the pinned Chromium screenshot suite:
 
 ```bash
 pip install -r requirements-visual.txt
@@ -42,7 +46,15 @@ python -m playwright install --with-deps chromium
 python scripts/visual_regression.py
 ```
 
-If an intended visual change makes the suite fail, do not weaken the threshold or allow CI to overwrite the baseline. Regenerate deliberately with `python scripts/visual_regression.py --update`, review the resulting PNG changes, then rerun the normal comparison. The Linux GitHub Actions environment is the canonical rendering environment; see `docs/project/testing.md` for details.
+For JavaScript interaction, keyboard, compatibility-evidence, or release-gate changes, run the browser interaction suite:
+
+```bash
+pip install -r requirements-visual.txt
+python -m playwright install --with-deps chromium firefox
+python scripts/interaction_regression.py
+```
+
+If an intended visual change makes the suite fail, do not weaken the threshold or allow CI to overwrite the baseline. Regenerate deliberately with `python scripts/visual_regression.py --update`, review the resulting PNG changes, then rerun the normal comparison. The Linux GitHub Actions Chromium environment is the canonical rendering environment; Firefox interaction evidence is not a second pixel-baseline authority. See `docs/project/testing.md` for details.
 
 For release-preparation changes, also build the deterministic distribution artifact:
 
@@ -50,7 +62,7 @@ For release-preparation changes, also build the deterministic distribution artif
 python scripts/build_release.py --version "v$(cat VERSION)" --check
 ```
 
-Document pre-existing failures separately from failures introduced by a change.
+Document pre-existing failures separately from failures introduced by a change. Do not claim a physical Android result from Playwright mobile/touch emulation; use `docs/project/android-device-check.md` for actual device evidence.
 
 ## Distribution
 

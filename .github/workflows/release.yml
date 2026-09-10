@@ -42,14 +42,17 @@ jobs:
       - name: Build documentation
         run: mkdocs build --strict
 
-      - name: Install visual-test dependencies
+      - name: Install browser-test dependencies
         run: pip install -r requirements-visual.txt
 
-      - name: Install pinned Chromium
-        run: python -m playwright install --with-deps chromium
+      - name: Install pinned browsers
+        run: python -m playwright install --with-deps chromium firefox
 
       - name: Verify visual baselines
         run: python scripts/visual_regression.py
+
+      - name: Verify browser interactions
+        run: python scripts/interaction_regression.py
 
       - name: Build deterministic release artifacts
         run: python scripts/build_release.py --version "${GITHUB_REF_NAME}" --check

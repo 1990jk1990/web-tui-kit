@@ -1,0 +1,36 @@
+name: Browser interaction regression
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  interactions:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, firefox]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser-test dependencies
+        run: pip install -r requirements-visual.txt
+      - name: Install pinned browser
+        run: python -m playwright install --with-deps "${{ matrix.engine }}"
+      - name: Verify browser interactions
+        run: python scripts/interaction_regression.py --engine "${{ matrix.engine }}"
+      - name: Upload interaction failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: interaction-regression-${{ matrix.engine }}-failures
+          path: test-results/interaction/
+          if-no-files-found: warn
+          retention-days: 14
