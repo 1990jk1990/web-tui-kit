@@ -34,6 +34,7 @@ Provide broader executable examples. `components.html` covers general-purpose co
 - `openspec/` owns accepted behavior and active behavioral changes.
 - `docs/` owns project information, current architecture, and durable rationale.
 - `tests/test_repository.py` owns inexpensive structural/runtime-contract regression evidence.
+- `tests/test_release.py` owns release/version/archive/workflow regression evidence.
 - `scripts/validate_ai_doc_1.py` and `scripts/sync_openspec_docs.py` own repository/documentation validation support.
 - `.github/workflows/ai-doc-1.yml` runs the structural, AI-DOC-1, and documentation checks in CI.
 
@@ -41,9 +42,18 @@ Provide broader executable examples. `components.html` covers general-purpose co
 
 - `requirements-visual.txt` pins the Playwright and Pillow development dependencies used for screenshots and image comparison.
 - `scripts/visual_regression.py` starts a local static server, launches pinned Chromium through Playwright, captures deterministic canonical cases, and compares them with accepted baselines.
-- `tests/visual/baselines/` stores the reviewed PNG baseline images for desktop and narrow/mobile cases.
+- `tests/visual/baselines/` stores the reviewed PNG baseline images for desktop and touch-capable narrow/mobile cases.
 - `test-results/visual/` is generated failure output and is not committed.
 - `.github/workflows/visual-regression.yml` installs the pinned browser, performs read-only comparison on pull requests and `main`, and uploads failure artifacts when necessary.
+
+### Release and distribution
+
+- `VERSION` is the canonical plain Semantic Version for the repository state intended for tagging.
+- `RELEASING.md` defines the maintainer release procedure and fix-forward policy.
+- `scripts/build_release.py` creates and validates a deterministic focused distribution ZIP plus SHA-256 checksum from an explicit file allowlist.
+- `dist/` is generated release output and is not committed.
+- `.github/workflows/release.yml` validates a `vMAJOR.MINOR.PATCH` tag on `main`, runs the full repository release gates, builds the focused artifacts, and publishes a GitHub prerelease only after successful verification.
+- `docs/project/compatibility.md` records exercised compatibility evidence separately from target claims.
 
 ## Dependency direction
 
@@ -59,9 +69,14 @@ visual test runner ----> demo + src runtime assets
         +--> pinned Playwright/Chromium
         +--> reviewed PNG baselines
 
-requirements ---> implementation ---> tests/demo/visual evidence
+VERSION + tagged main commit
+        |
+        +--> release builder ----> focused ZIP + SHA-256
+        +--> release workflow ---> verification gates ---> GitHub prerelease
+
+requirements ---> implementation ---> tests/demo/visual/release evidence
 architecture -----------------------> describes current structure
 ADRs -------------------------------> explain durable rationale
 ```
 
-No runtime block depends on MkDocs, Python, Playwright, Pillow, Chromium, GitHub Actions, or AI-DOC-1 tooling. Those dependencies exist only in repository development/verification paths.
+No runtime block depends on MkDocs, Python, Playwright, Pillow, Chromium, GitHub Actions, the GitHub CLI, or AI-DOC-1 tooling. Those dependencies exist only in repository development, verification, and release paths.

@@ -24,10 +24,18 @@ Exact values belong to the token file rather than architecture prose.
 
 ## Verification strategy
 
-Fast Python unit tests enforce repository contracts such as required tokens, selectors, canonical demo structure, and small JavaScript behavior invariants. AI-DOC-1 validation and a strict MkDocs build verify repository/documentation structure.
+Fast Python unit tests enforce repository contracts such as required tokens, selectors, canonical demo structure, small JavaScript behavior invariants, version/release archive rules, and release-workflow safeguards. AI-DOC-1 validation and a strict MkDocs build verify repository/documentation structure.
 
-Visual output is verified separately with a pinned Python Playwright release and its matching Chromium build. `scripts/visual_regression.py` serves the repository locally, renders fixed desktop and narrow/mobile cases for `demo/index.html` and `demo/dialogs.html`, and compares those renders with reviewed PNG baselines under `tests/visual/baselines/`. The Linux GitHub Actions environment is the canonical screenshot environment. Failed comparisons retain actual/diff images as workflow artifacts.
+Visual output is verified separately with a pinned Python Playwright release and its matching Chromium build. `scripts/visual_regression.py` serves the repository locally, renders fixed desktop and touch-capable narrow/mobile cases for `demo/index.html` and `demo/dialogs.html`, and compares those renders with reviewed PNG baselines under `tests/visual/baselines/`. The Linux GitHub Actions environment is the canonical screenshot environment. Failed comparisons retain actual/diff images as workflow artifacts.
 
 Visual verification dependencies remain development/CI-only and do not enter the browser runtime contract. Intentional visual changes update baselines explicitly; normal CI never rewrites them automatically. ADR-0002 records the durable tooling rationale.
 
 The visual suite complements rather than replaces structural tests, accessibility review, browser-driven interaction testing, assistive-technology testing, and manual device checks.
+
+## Release and distribution strategy
+
+`VERSION` owns the plain Semantic Version. Immutable `vMAJOR.MINOR.PATCH` Git tags and GitHub Releases identify published versions. Before 1.0, tagged direct vendoring is the primary consumer path: downstream projects pin a tag and copy the browser assets they need from `src/`.
+
+`scripts/build_release.py` creates a focused deterministic ZIP and SHA-256 checksum from an explicit allowlist of runtime/reference files. `.github/workflows/release.yml` runs only for matching version tags; it verifies tag/version identity, requires the tag commit to be contained in `main`, runs structural/documentation/visual checks, builds the deterministic archive, and only then publishes a GitHub prerelease.
+
+No npm/package-registry publishing is part of v0.4.0. That keeps release infrastructure aligned with the package-manager-free runtime baseline. ADR-0003 records the rationale; `RELEASING.md` defines the maintainer procedure and `docs/project/compatibility.md` records compatibility evidence separately from compatibility targets.

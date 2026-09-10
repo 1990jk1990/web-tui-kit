@@ -8,7 +8,9 @@ Run the fast repository regression checks with:
 python -m unittest discover -s tests -v
 ```
 
-The test suite checks repository-level contracts such as demo asset references, required design tokens and component selectors, Escape-event behavior for opted-in windows and dialogs, optional `data-tui-list` keyboard-navigation behavior, preservation of native radio/text-entry keyboard semantics, disabled-choice handling, forced-colors token overrides, the canonical package-configuration dialog/checklist primitives, core dialog-gallery coverage, general component-gallery coverage, mobile viewport metadata, visual-regression infrastructure, and absence of selected forbidden modern visual effects or required motion effects.
+The test suite checks repository-level contracts such as demo asset references, required design tokens and component selectors, Escape-event behavior for opted-in windows and dialogs, optional `data-tui-list` keyboard-navigation behavior, preservation of native radio/text-entry keyboard semantics, disabled-choice handling, forced-colors token overrides, the canonical package-configuration dialog/checklist primitives, core dialog-gallery coverage, general component-gallery coverage, mobile viewport metadata, visual-regression infrastructure, release version/archive/workflow safeguards, and absence of selected forbidden modern visual effects or required motion effects.
+
+`tests/test_release.py` executes the standard-library release builder in a temporary directory, verifies its exact archive member set, fixed timestamps, embedded version, SHA-256 checksum, tag/version mismatch rejection, and release-workflow verification ordering.
 
 ## Visual regression
 
@@ -46,6 +48,18 @@ python scripts/visual_regression.py
 
 Review the resulting PNG changes together with the CSS/markup change. For the canonical project baselines, prefer generating/updating them in the same pinned Linux/Playwright environment used by CI. A Playwright upgrade also changes the Chromium build and therefore requires deliberate baseline regeneration/review.
 
+## Release artifact verification
+
+Build the focused distribution with the version expected by the current repository state:
+
+```bash
+python scripts/build_release.py --version "v$(cat VERSION)" --check
+```
+
+This command uses only the Python standard library. It validates the explicit distribution allowlist, embedded version, fixed ZIP member timestamps, deterministic repeated builds, and SHA-256 checksum output. Generated artifacts live under `dist/` and are ignored by Git.
+
+The tag-triggered release workflow repeats structural tests, AI-DOC-1 validation, documentation build, visual regression, and deterministic archive validation before it calls GitHub Release publication. It also rejects a tag that does not exactly match `VERSION` or whose commit is not contained in `main`.
+
 ## AI-DOC-1 structure
 
 ```bash
@@ -60,8 +74,10 @@ python scripts/sync_openspec_docs.py
 mkdocs build --strict
 ```
 
-## Current coverage limits
+## Compatibility evidence and current limits
 
-Visual rendering is now automated for the canonical package-configuration and core-dialog demos at representative desktop and touch-capable narrow/mobile sizes. This does not yet provide automated browser-driven interaction tests, automated accessibility-tree/assistive-technology audits, broad browser-engine coverage, or a physical device matrix.
+Visual rendering is automated for the canonical package-configuration and core-dialog demos at representative Linux desktop and touch-capable narrow/mobile Chromium sizes. See `compatibility.md` for the evidence matrix and the distinction between mobile Chromium emulation and physical Android verification.
 
-`demo/index.html` remains the primary executable visual reference, `demo/components.html` provides broader component coverage, and `demo/dialogs.html` provides executable core-dialog coverage. Manual browser/device review is still useful evidence for behavior outside the screenshot matrix.
+The repository does not yet provide automated Firefox rendering, browser-driven interaction flows beyond the small JavaScript contract tests, accessibility-tree/assistive-technology testing, or a physical-device matrix.
+
+`demo/index.html` remains the primary executable visual reference, `demo/components.html` provides broader component coverage, and `demo/dialogs.html` provides executable core-dialog coverage. Manual browser/device review is still useful evidence for behavior outside the automated matrix.

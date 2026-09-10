@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  verify-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify tag matches VERSION
+        run: test "${GITHUB_REF_NAME}" = "v$(cat VERSION)"
+
+      - name: Require release tag commit on main
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor "${GITHUB_SHA}" origin/main
+
+      - name: Run project tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Validate AI-DOC-1 structure
+        run: python scripts/validate_ai_doc_1.py
+
+      - name: Install documentation dependencies
+        run: pip install -r requirements-docs.txt
+
+      - name: Mirror OpenSpec for documentation
+        run: python scripts/sync_openspec_docs.py
+
+      - name: Build documentation
+        run: mkdocs build --strict
+
+      - name: Install visual-test dependencies
+        run: pip install -r requirements-visual.txt
+
+      - name: Install pinned Chromium
+        run: python -m playwright install --with-deps chromium
+
+      - name: Verify visual baselines
+        run: python scripts/visual_regression.py
+
+      - name: Build deterministic release artifacts
+        run: python scripts/build_release.py --version "${GITHUB_REF_NAME}" --check
+
+      - name: Publish GitHub prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            dist/web-tui-kit-*.zip \
+            dist/web-tui-kit-*.zip.sha256 \
+            --verify-tag \
+            --title "${GITHUB_REF_NAME}" \
+            --generate-notes \
+            --prerelease
