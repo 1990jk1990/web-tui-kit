@@ -20,12 +20,13 @@ The canonical integration contract remains semantic browser markup plus `src/tok
 
 - Python standard library for structural tests, validation scripts, and deterministic release ZIP/checksum generation,
 - MkDocs for human-readable documentation builds,
-- Python Playwright plus its pinned Chromium build for visual regression,
+- Python Playwright plus its pinned Chromium build for canonical visual regression,
+- the same pinned Playwright release with Chromium and Firefox browser builds for browser-driven interaction/compatibility verification,
 - Pillow for screenshot comparison/diff generation,
-- GitHub Actions for CI and tag-triggered release verification/publication,
+- GitHub Actions for structural/docs, visual, browser-interaction, and tag-triggered release verification/publication,
 - GitHub CLI in the tag workflow for creating the GitHub prerelease after all gates pass.
 
-Exact structural/documentation CI configuration is canonical in `.github/workflows/ai-doc-1.yml`. Visual CI is canonical in `.github/workflows/visual-regression.yml`; tag publication is canonical in `.github/workflows/release.yml`. Dependency constraints are canonical in `requirements-docs.txt` and `requirements-visual.txt`.
+Exact structural/documentation CI configuration is canonical in `.github/workflows/ai-doc-1.yml`. Visual CI is canonical in `.github/workflows/visual-regression.yml`; browser interaction CI is canonical in `.github/workflows/interaction-regression.yml`; tag publication is canonical in `.github/workflows/release.yml`. Dependency constraints are canonical in `requirements-docs.txt` and `requirements-visual.txt`.
 
 None of the repository tooling above is required by applications consuming `src/`.
 
