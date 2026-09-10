@@ -32,6 +32,8 @@ The default theme MUST NOT introduce rounded or pill-shaped controls, gradients,
 
 The design system MUST provide a `.tui-dialog` pattern that can reproduce the characteristic package-configuration composition used by classic Debian/Ubuntu text interfaces: a grey beveled dialog on the blue desktop, a red title visually interrupting the top border, compact explanatory copy, a recessed selection area, and centered angle-bracket actions.
 
+The `.tui-dialog` class defines presentation only. A consuming application that needs true modal behavior MUST provide appropriate native `<dialog>` or equivalent application-level semantics and lifecycle behavior rather than assuming the CSS class creates a modal.
+
 #### Scenario: Reference dialog rendering
 
 - **GIVEN** a page uses `.tui-screen`, `.tui-dialog`, `.tui-dialog-title`, and `.tui-actions`
@@ -78,29 +80,65 @@ Checklist rows MAY expose short contextual help text using `.tui-help`.
 
 The design system MUST provide a scrollable radio-selection pattern using `.tui-radiolist` and `.tui-radio-row`. A selected native radio MUST render the classic `(*)` marker and an unselected radio MUST render `( )` while focus remains visually distinct from selection state.
 
+The design system MUST preserve the browser's native radio-group keyboard behavior rather than intercepting arrow keys through `data-tui-list`.
+
 #### Scenario: Radio option selection
 
 - **GIVEN** a `.tui-radio-row` contains a native radio input
 - **WHEN** the input is selected
 - **THEN** the visible marker MUST change to the selected radio form without replacing the native input semantics
 
+#### Scenario: Native radio arrow behavior
+
+- **GIVEN** focus is on a native radio input in a radio group
+- **WHEN** the user presses an arrow key supported by the browser for radio-group navigation
+- **THEN** `web-tui-kit` MUST NOT prevent the browser's native radio selection/navigation behavior
+
 ### Requirement: Optional list keyboard navigation
 
-A list container that opts in with `data-tui-list` MUST support ArrowUp, ArrowDown, Home, and End as progressive focus-navigation keys among enabled interactive descendants.
+A list container that opts in with `data-tui-list` MUST support ArrowUp, ArrowDown, Home, and End as progressive focus-navigation keys among supported enabled choice controls.
 
-ArrowUp and ArrowDown MUST wrap at the ends. Home MUST focus the first enabled item and End MUST focus the last enabled item. This enhancement MUST NOT remove ordinary Tab reachability and MUST NOT synthesize activation or selection; Space/Enter behavior remains owned by the focused native control.
+Supported controls are enabled native checkboxes, enabled native buttons, enabled links, and explicitly opted-in custom focusable elements marked with `data-tui-list-item` and a non-negative `tabindex`. Native radio inputs and text-entry controls MUST NOT be intercepted by this enhancement.
+
+ArrowUp and ArrowDown MUST wrap at the ends. Home MUST focus the first enabled supported item and End MUST focus the last enabled supported item. Disabled, inert, hidden, or `aria-hidden` items MUST be skipped. This enhancement MUST NOT remove ordinary Tab reachability and MUST NOT synthesize activation or selection; Space/Enter behavior remains owned by the focused native control.
 
 #### Scenario: Arrow navigation in a checklist
 
 - **GIVEN** focus is on an enabled checkbox inside a `data-tui-list` checklist
 - **WHEN** the user presses ArrowDown
-- **THEN** focus MUST move to the next enabled interactive item without toggling the current checkbox
+- **THEN** focus MUST move to the next enabled supported item without toggling the current checkbox
 
-#### Scenario: End navigation in an action menu
+#### Scenario: Disabled choice is skipped
 
-- **GIVEN** focus is on a native menu-row button inside a `data-tui-list`
-- **WHEN** the user presses End
-- **THEN** focus MUST move to the last enabled interactive item in that list
+- **GIVEN** a disabled choice appears between two enabled supported controls in a `data-tui-list`
+- **WHEN** the user navigates from the first enabled control toward the next item
+- **THEN** focus MUST skip the disabled choice and reach the next enabled supported control
+
+#### Scenario: Text-entry arrow behavior
+
+- **GIVEN** a text input is inside a container that also has `data-tui-list`
+- **WHEN** the user presses an arrow key while editing text
+- **THEN** `web-tui-kit` MUST NOT intercept that key
+
+### Requirement: Accessibility adaptation
+
+Core components MUST expose visible keyboard focus where they are interactive. Disabled choice rows MUST have a visually distinct disabled state.
+
+When the browser reports `forced-colors: active`, the default theme MUST map its core palette to CSS system colors so text, focus, selection, disabled state, and help accents remain distinguishable under user-controlled high-contrast colors.
+
+The core stylesheet MUST NOT require decorative animation, transitions, or smooth scrolling for interaction, so users who prefer reduced motion are not forced through motion effects by the design system.
+
+#### Scenario: Forced colors
+
+- **GIVEN** the browser activates forced-colors mode
+- **WHEN** the default design tokens are resolved
+- **THEN** core surfaces and interaction states MUST use system colors such as Canvas, CanvasText, Highlight, HighlightText, GrayText, or LinkText rather than depending solely on the normal palette
+
+#### Scenario: Disabled row
+
+- **GIVEN** a checklist, radiolist, or menu choice is disabled
+- **WHEN** it is rendered
+- **THEN** the choice MUST present a disabled visual state and optional list navigation MUST not focus it
 
 ### Requirement: Central design tokens
 
