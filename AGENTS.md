@@ -15,7 +15,7 @@ You must:
 - determine and maintain the correct canonical artifact automatically,
 - inspect repository evidence before asking questions,
 - ask only for material user-owned information that cannot be safely inferred,
-- reconcile affected requirements, architecture, decisions, developer docs, tests, and implementation before completion,
+- reconcile affected requirements, architecture, decisions, developer docs, tests, implementation, and release identity before completion,
 - never preserve project knowledge only in chat history.
 
 Do not ask the human whether to use OpenSpec, arc42, an ADR, or another documentation mechanism.
@@ -29,7 +29,8 @@ Before non-trivial changes:
 3. Read the relevant current specification under `openspec/specs/`.
 4. Read relevant architecture and ADRs under `docs/`.
 5. For UI work, read `DESIGN_SYSTEM.md`, `src/tokens.css`, `src/tui.css`, and `demo/index.html`.
-6. Inspect relevant tests, visual baselines when UI output may change, and GitHub work state.
+6. For release/version/distribution work, read `VERSION`, `RELEASING.md`, the release/distribution specification, and relevant release ADRs.
+7. Inspect relevant tests, visual baselines when UI output may change, and GitHub work state.
 
 ## Canonical sources
 
@@ -40,11 +41,15 @@ Before non-trivial changes:
 - Exact design-token values → `src/tokens.css`.
 - Implementation → `src/`.
 - Executable structural behavior evidence → `tests/test_repository.py`.
+- Release/version/archive evidence → `tests/test_release.py`.
 - Reviewed visual regression baselines → `tests/visual/baselines/`.
 - Primary visual reference → `demo/index.html`.
 - Broader component examples → `demo/components.html` and `demo/dialogs.html`.
 - Open work → GitHub Issues/Projects.
-- Release identity → Git tags/GitHub Releases.
+- Plain release version → `VERSION`.
+- Published release identity → immutable Git tags/GitHub Releases.
+- Maintainer release procedure → `RELEASING.md`.
+- Compatibility evidence → `docs/project/compatibility.md`.
 - Secrets → external secret store; never this repository.
 
 `DESIGN_SYSTEM.md` is a practical consumption guide. It may summarize canonical behavior but must point to OpenSpec and implementation rather than becoming a conflicting source of truth.
@@ -80,6 +85,16 @@ For non-trivial component behavior changes:
 
 Normal CI visual verification is read-only. Do not make CI automatically accept new screenshots. For an intentional visual change, use the documented `python scripts/visual_regression.py --update` workflow and review the PNG changes together with the implementation. The Linux GitHub Actions environment is the canonical baseline-rendering environment.
 
+## Release and distribution rules
+
+- Use the Semantic Version in `VERSION`; release tags are the same value with a `v` prefix.
+- Treat published tags as immutable. Fix forward with a new version rather than moving an existing release tag.
+- Keep direct vendoring from an immutable tag as the primary pre-1.0 distribution path unless an accepted follow-up decision changes that model.
+- Do not introduce npm/package-registry publication without a concrete consumer need and deliberate architecture/specification update.
+- Run `python scripts/build_release.py --version "v$(cat VERSION)" --check` for release preparation.
+- Tag-triggered publication must verify tag/version identity, main-branch ancestry, structural/documentation checks, visual regression, and deterministic release artifacts before creating a GitHub Release.
+- Compatibility statements must reflect actual evidence. Mobile Chromium emulation is not physical Android device certification.
+
 ## Change classes
 
 - Class 0 — trivial/internal: usually implementation/tests only.
@@ -96,3 +111,5 @@ Never commit secrets or real production data. Explain destructive/high-impact ac
 ## Completion check
 
 A UI change is complete only when affected canonical documentation is reconciled, structural tests pass, applicable visual baselines pass or are deliberately reviewed/updated, the result is visually consistent, keyboard and touch use remain viable, narrow-screen behavior remains intentional, and reusable patterns are represented in the appropriate demo pages.
+
+A release-preparation change is complete only when version identity, changelog, release specification/architecture, compatibility evidence, deterministic artifact checks, and tag workflow safeguards are reconciled and PR CI is green. Publication is complete only after the immutable tag and matching GitHub Release artifacts have been verified.
