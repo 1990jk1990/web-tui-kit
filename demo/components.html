@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>web-tui-kit component gallery</title>
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/tui.css">
+  <script src="../src/tui.js" defer></script>
+</head>
+<body class="tui-desktop">
+  <main class="tui-window" aria-labelledby="gallery-title">
+    <h1 class="tui-title" id="gallery-title">web-tui-kit / components</h1>
+    <p><a href="./index.html">Open the canonical package-configuration reference</a></p>
+
+    <div class="tui-grid">
+      <section class="tui-panel tui-stack" aria-labelledby="options-title">
+        <h2 class="tui-heading" id="options-title">Options</h2>
+        <label class="tui-check"><input type="checkbox" checked><span>Enable web service</span></label>
+        <label class="tui-check"><input type="checkbox"><span>Start automatically</span></label>
+        <label class="tui-radio"><input type="radio" name="mode" checked><span>Safe mode</span></label>
+        <label class="tui-radio"><input type="radio" name="mode"><span>Performance mode</span></label>
+      </section>
+
+      <section class="tui-panel tui-stack" aria-labelledby="form-title">
+        <h2 class="tui-heading" id="form-title">Connection</h2>
+        <label class="tui-field"><span>Hostname</span><input class="tui-input" value="homeserver.local"></label>
+        <label class="tui-field"><span>Environment</span><select class="tui-select"><option>Production</option><option>Staging</option><option>Development</option></select></label>
+      </section>
+    </div>
+
+    <section class="tui-panel tui-section" aria-labelledby="services-title">
+      <h2 class="tui-heading" id="services-title">Services</h2>
+      <ul class="tui-menu">
+        <li><a class="tui-menu-item is-selected" href="#nginx">nginx.service        running</a></li>
+        <li><a class="tui-menu-item" href="#ssh">ssh.service          running</a></li>
+        <li><a class="tui-menu-item" href="#backup">backup.service       stopped</a></li>
+      </ul>
+    </section>
+
+    <section class="tui-section" aria-labelledby="table-title">
+      <h2 class="tui-heading" id="table-title">System status</h2>
+      <div class="tui-table-wrap">
+        <table class="tui-table">
+          <thead><tr><th>Host</th><th>Status</th><th>CPU</th><th>Memory</th><th>Uptime</th></tr></thead>
+          <tbody>
+            <tr class="is-selected"><td>homeserver</td><td>online</td><td>14%</td><td>3.2 / 16 GB</td><td>12d 04h</td></tr>
+            <tr><td>backup</td><td>online</td><td>3%</td><td>1.1 / 8 GB</td><td>31d 19h</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="tui-actions">
+      <button class="tui-button" type="button"><span class="tui-hotkey">O</span>K</button>
+      <button class="tui-button" type="button">Cancel</button>
+    </div>
+    <footer class="tui-statusbar"><span>Ready</span><span><span class="tui-kbd">Tab</span>: next · <span class="tui-kbd">Enter</span>: activate</span></footer>
+  </main>
+</body>
+</html>
