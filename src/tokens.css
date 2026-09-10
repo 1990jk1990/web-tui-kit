@@ -43,3 +43,24 @@
     --tui-list-row-min-height: 2.75rem;
   }
 }
+
+@media (forced-colors: active) {
+  :root {
+    --tui-desktop-bg: Canvas;
+    --tui-surface: Canvas;
+    --tui-surface-light: Canvas;
+    --tui-text: CanvasText;
+    --tui-muted: GrayText;
+    --tui-title: CanvasText;
+    --tui-selection-bg: Highlight;
+    --tui-selection-text: HighlightText;
+    --tui-help: LinkText;
+    --tui-border-light: CanvasText;
+    --tui-border-mid: CanvasText;
+    --tui-border-dark: CanvasText;
+    --tui-shadow: CanvasText;
+    --tui-focus: CanvasText;
+    --tui-danger: CanvasText;
+    --tui-success: CanvasText;
+  }
+}
