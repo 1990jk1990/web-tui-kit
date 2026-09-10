@@ -4,6 +4,10 @@ All notable user-visible changes are recorded here.
 
 ## Unreleased
 
+## 0.6.0 - 2026-09-11
+
+Browser interaction and compatibility-verification release.
+
 - Added browser-driven interaction regression coverage for `tui:escape`, optional list navigation/disabled-item skipping, native radio behavior, and text-entry arrow-key preservation.
 - Added pinned Chromium and Firefox desktop interaction evidence plus a narrow touch-capable Chromium interaction case without changing the canonical Chromium screenshot baseline.
 - Added a dedicated interaction CI matrix and made future tag-triggered releases fail before publication when browser interaction verification fails.
