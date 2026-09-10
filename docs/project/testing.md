@@ -25,9 +25,11 @@ python scripts/visual_regression.py
 The runner serves the repository locally and checks four reviewed cases:
 
 - `demo/index.html` at 1280×800 desktop,
-- `demo/index.html` at 390×844 narrow/mobile,
+- `demo/index.html` at 390×844 touch-capable mobile,
 - `demo/dialogs.html` at 1280×1000 desktop,
-- `demo/dialogs.html` at 390×844 narrow/mobile.
+- `demo/dialogs.html` at 390×844 touch-capable mobile.
+
+The mobile cases enable Playwright's mobile/touch context flags in addition to using a narrow viewport. This is intentional: it exercises `@media (pointer: coarse)` sizing and padding rather than treating a phone-sized screenshot as a narrow mouse-driven desktop browser.
 
 Accepted PNG baselines live in `tests/visual/baselines/`. The Linux GitHub Actions environment is the canonical rendering environment. Local output on another operating system can differ because browser/font rasterization depends on the platform.
 
@@ -60,6 +62,6 @@ mkdocs build --strict
 
 ## Current coverage limits
 
-Visual rendering is now automated for the canonical package-configuration and core-dialog demos at representative desktop and narrow/mobile sizes. This does not yet provide automated browser-driven interaction tests, automated accessibility-tree/assistive-technology audits, broad browser-engine coverage, or a physical device matrix.
+Visual rendering is now automated for the canonical package-configuration and core-dialog demos at representative desktop and touch-capable narrow/mobile sizes. This does not yet provide automated browser-driven interaction tests, automated accessibility-tree/assistive-technology audits, broad browser-engine coverage, or a physical device matrix.
 
 `demo/index.html` remains the primary executable visual reference, `demo/components.html` provides broader component coverage, and `demo/dialogs.html` provides executable core-dialog coverage. Manual browser/device review is still useful evidence for behavior outside the screenshot matrix.
