@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Server-rendered web-tui-kit recipe</title>
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/tui.css">
+  <script src="../../src/tui.js" defer></script>
+</head>
+<body class="tui-desktop">
+  <main class="tui-screen">
+    <form class="tui-dialog" data-tui-escape-close aria-labelledby="package-title" method="post">
+      <h1 class="tui-dialog-title" id="package-title">Package configuration</h1>
+
+      <p class="tui-dialog-copy">Daemons using outdated libraries</p>
+      <p class="tui-dialog-copy">Which services should be restarted?</p>
+
+      <!-- A server-side template loop can emit the same label/input structure. -->
+      <div class="tui-checklist" data-tui-list role="group" aria-label="Services to restart">
+        <label class="tui-check-row">
+          <input type="checkbox" name="services" value="accounts-daemon.service" checked autofocus>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>accounts-daemon.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+        <label class="tui-check-row">
+          <input type="checkbox" name="services" value="apache2.service">
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>apache2.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+        <label class="tui-check-row">
+          <input type="checkbox" name="services" value="cron.service" checked>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>cron.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+        <label class="tui-check-row">
+          <input type="checkbox" name="services" value="ssh.service" checked>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>ssh.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+      </div>
+
+      <p class="tui-statusbar" id="recipe-status" aria-live="polite">
+        Selection is submitted with ordinary form semantics.
+      </p>
+
+      <div class="tui-actions">
+        <button class="tui-button" type="submit" accesskey="o"><span class="tui-hotkey">O</span>k</button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    const dialog = document.querySelector("[data-tui-escape-close]");
+    const status = document.querySelector("#recipe-status");
+
+    dialog.addEventListener("tui:escape", () => {
+      status.textContent = "Application received tui:escape; decide whether to navigate or close here.";
+    });
+  </script>
+</body>
+</html>
