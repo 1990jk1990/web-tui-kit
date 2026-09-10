@@ -166,10 +166,11 @@ def verify_touch_context(page: Page) -> None:
     require(environment["coarse"] is True, f"coarse pointer media query inactive: {environment!r}")
     require(environment["touchPoints"] > 0, f"touch capability missing: {environment!r}")
 
+    touch_row = page.locator("#touch-row")
     checkbox = page.locator("#touch-checkbox")
     require(not checkbox.is_checked(), "fixture precondition failed: touch checkbox starts checked")
-    checkbox.tap()
-    require(checkbox.is_checked(), "tap did not activate native checkbox")
+    touch_row.tap()
+    require(checkbox.is_checked(), "tapping the visible checkbox row did not toggle its native checkbox")
 
 
 def verify_desktop_contracts(page: Page) -> None:
