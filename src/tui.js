@@ -2,12 +2,21 @@
   "use strict";
 
   const listNavigationKeys = new Set(["ArrowUp", "ArrowDown", "Home", "End"]);
+  const listItemSelector = [
+    'input[type="checkbox"]:not(:disabled)',
+    'button:not(:disabled)',
+    'a[href]:not([aria-disabled="true"])',
+    '[data-tui-list-item][tabindex]:not([tabindex="-1"]):not([aria-disabled="true"]):not([disabled])'
+  ].join(", ");
 
   const getEnabledListItems = (list) => Array.from(
-    list.querySelectorAll(
-      'input:not(:disabled), button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])'
-    )
-  ).filter((element) => !element.hidden && element.getAttribute("aria-hidden") !== "true");
+    list.querySelectorAll(listItemSelector)
+  ).filter((element) => (
+    !element.hidden
+    && !element.closest("[inert]")
+    && element.getAttribute("aria-hidden") !== "true"
+    && element.getClientRects().length > 0
+  ));
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
@@ -34,6 +43,9 @@
 
     const items = getEnabledListItems(list);
     const currentIndex = items.indexOf(activeElement);
+
+    // Radio groups and text-entry controls intentionally fall through to
+    // their native browser keyboard behavior because they are not list items.
     if (currentIndex < 0 || items.length < 2) return;
 
     let nextIndex = currentIndex;
