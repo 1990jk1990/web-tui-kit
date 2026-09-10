@@ -4,6 +4,12 @@ All notable user-visible changes are recorded here.
 
 ## Unreleased
 
+- Added browser-driven interaction regression coverage for `tui:escape`, optional list navigation/disabled-item skipping, native radio behavior, and text-entry arrow-key preservation.
+- Added pinned Chromium and Firefox desktop interaction evidence plus a narrow touch-capable Chromium interaction case without changing the canonical Chromium screenshot baseline.
+- Added a dedicated interaction CI matrix and made future tag-triggered releases fail before publication when browser interaction verification fails.
+- Added explicit compatibility-evidence boundaries and a manual physical-Android Chrome check procedure; mobile/touch emulation remains representative evidence rather than device certification.
+- Added ADR-0005 and a canonical browser-verification OpenSpec contract while keeping all browser automation development/CI-only.
+
 ## 0.5.0 - 2026-09-11
 
 Framework/template integration release.
