@@ -245,6 +245,12 @@ textarea {
   outline-offset: 2px;
 }
 
+.tui-check:has(input:disabled),
+.tui-radio:has(input:disabled) {
+  color: var(--tui-muted);
+  cursor: not-allowed;
+}
+
 .tui-choice-list,
 .tui-checklist,
 .tui-radiolist {
@@ -329,6 +335,15 @@ textarea {
   outline-offset: -2px;
 }
 
+.tui-check-row:has(input:disabled),
+.tui-radio-row:has(input:disabled),
+.tui-check-row:has(input:disabled):hover,
+.tui-radio-row:has(input:disabled):hover {
+  background: transparent;
+  color: var(--tui-muted);
+  cursor: not-allowed;
+}
+
 .tui-check-row .tui-help,
 .tui-radio-row .tui-help {
   justify-self: end;
@@ -351,7 +366,7 @@ textarea {
   cursor: pointer;
 }
 
-.tui-menu-row:hover,
+.tui-menu-row:not(:disabled):hover,
 .tui-menu-row:focus-visible,
 .tui-menu-row.is-selected {
   outline: 0;
@@ -362,6 +377,13 @@ textarea {
 .tui-menu-row:focus-visible {
   outline: 1px dotted var(--tui-focus);
   outline-offset: -2px;
+}
+
+.tui-menu-row:disabled,
+.tui-menu-row:disabled.is-selected {
+  background: transparent;
+  color: var(--tui-muted);
+  cursor: not-allowed;
 }
 
 .tui-menu-row .tui-help {
