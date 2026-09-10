@@ -57,7 +57,7 @@ The React/Vue examples demonstrate framework-owned state and lifecycle handling 
 
 Do not copy the design tokens/component CSS into CSS-in-JS, scoped component styles, or a private theme implementation. If a reusable visual change is needed, make it in the canonical design system.
 
-See `RELEASING.md` for the versioning/release procedure and `docs/project/compatibility.md` for current compatibility evidence and its limits.
+See `RELEASING.md` for the versioning/release procedure and `docs/project/compatibility.md` for current compatibility evidence and its limits. Physical Android evidence is tracked separately through `docs/project/android-device-check.md`; touch-capable Chromium emulation is not treated as physical-device certification.
 
 ## Project memory and canonical sources
 
@@ -68,8 +68,9 @@ This repository follows **AI-DOC-1 v1.3**. The repository itself is durable proj
 - release procedure: `RELEASING.md`
 - project purpose and scope: `docs/project/overview.md`
 - compatibility evidence: `docs/project/compatibility.md`
+- physical Android evidence procedure: `docs/project/android-device-check.md`
 - framework integration guidance: `docs/project/framework-integration.md`
-- accepted UI/release/integration behavior: `openspec/specs/`
+- accepted UI/release/integration/browser-verification behavior: `openspec/specs/`
 - current architecture: `docs/architecture/`
 - durable decision rationale: `docs/decisions/`
 - practical design-system usage guide: `DESIGN_SYSTEM.md`
@@ -81,6 +82,7 @@ This repository follows **AI-DOC-1 v1.3**. The repository itself is durable proj
 - framework/template consumption recipes: `examples/`
 - structural regression evidence: `tests/`
 - reviewed visual baselines: `tests/visual/baselines/`
+- browser interaction fixture: `tests/browser/interaction.html`
 
 See `docs/index.md` for the documentation entry point.
 
@@ -104,12 +106,20 @@ python scripts/sync_openspec_docs.py
 mkdocs build --strict
 ```
 
-Run the browser-driven screenshot regression suite with:
+Run the canonical Chromium screenshot regression suite with:
 
 ```bash
 pip install -r requirements-visual.txt
 python -m playwright install --with-deps chromium
 python scripts/visual_regression.py
+```
+
+Run the browser interaction suite in pinned Chromium and Firefox with:
+
+```bash
+pip install -r requirements-visual.txt
+python -m playwright install --with-deps chromium firefox
+python scripts/interaction_regression.py
 ```
 
 Build and verify the focused release archive with:
@@ -118,6 +128,6 @@ Build and verify the focused release archive with:
 python scripts/build_release.py --version "v$(cat VERSION)" --check
 ```
 
-The visual suite compares the canonical package and dialog demos against reviewed desktop/touch-mobile PNG baselines. See `docs/project/testing.md` for the visual baseline procedure and canonical CI environment.
+The visual suite compares the canonical package and dialog demos against reviewed desktop/touch-mobile Chromium PNG baselines. The interaction suite verifies the runtime keyboard/custom-event contracts in desktop Chromium and Firefox plus native tap behavior in a narrow touch-capable Chromium context. See `docs/project/testing.md` and `docs/project/compatibility.md` for the verification/evidence boundaries.
 
 Contribution details are in `CONTRIBUTING.md`; release-maintainer steps are in `RELEASING.md`.
