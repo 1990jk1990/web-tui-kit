@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>web-tui-kit browser interaction fixture</title>
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/tui.css">
+  <script src="../../src/tui.js" defer></script>
+</head>
+<body class="tui-desktop">
+  <main class="tui-stack">
+    <section
+      id="escape-surface"
+      class="tui-dialog tui-dialog--compact"
+      data-tui-escape-close
+      aria-labelledby="escape-title"
+    >
+      <h1 class="tui-dialog-title" id="escape-title">Escape fixture</h1>
+      <p class="tui-dialog-copy">Escape should dispatch an application-owned custom event.</p>
+      <div class="tui-actions">
+        <button class="tui-button" id="escape-focus" type="button">Focus target</button>
+      </div>
+    </section>
+
+    <section class="tui-dialog" aria-labelledby="list-title">
+      <h2 class="tui-dialog-title" id="list-title">List navigation fixture</h2>
+      <div id="navigation-list" class="tui-choice-list" data-tui-list role="group" aria-label="Navigation test list">
+        <label class="tui-check-row">
+          <input id="nav-check-first" type="checkbox" checked>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>First checkbox</span>
+        </label>
+        <label class="tui-check-row">
+          <input id="nav-check-disabled" type="checkbox" disabled>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>Disabled checkbox</span>
+        </label>
+        <button class="tui-menu-row" id="nav-button" type="button">Enabled button</button>
+        <div inert>
+          <button class="tui-menu-row" id="nav-inert-button" type="button">Inert button</button>
+        </div>
+        <a id="nav-link" href="#fixture-link">Enabled link</a>
+        <button class="tui-menu-row" id="nav-hidden-button" type="button" hidden>Hidden button</button>
+        <button class="tui-menu-row" id="nav-aria-disabled" type="button" aria-disabled="true">ARIA-disabled button</button>
+        <div id="nav-custom" data-tui-list-item tabindex="0">Custom focus item</div>
+      </div>
+    </section>
+
+    <section class="tui-dialog" aria-labelledby="radio-title">
+      <h2 class="tui-dialog-title" id="radio-title">Native radio fixture</h2>
+      <div id="radio-host" data-tui-list>
+        <div class="tui-radiolist" role="radiogroup" aria-label="Radio behavior">
+          <label class="tui-radio-row">
+            <input id="radio-first" type="radio" name="browser-radio" checked>
+            <span class="tui-mark" aria-hidden="true"></span>
+            <span>First mode</span>
+          </label>
+          <label class="tui-radio-row">
+            <input id="radio-second" type="radio" name="browser-radio">
+            <span class="tui-mark" aria-hidden="true"></span>
+            <span>Second mode</span>
+          </label>
+          <label class="tui-radio-row">
+            <input id="radio-disabled" type="radio" name="browser-radio" disabled>
+            <span class="tui-mark" aria-hidden="true"></span>
+            <span>Disabled mode</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="tui-dialog tui-dialog--compact" aria-labelledby="text-title">
+      <h2 class="tui-dialog-title" id="text-title">Text-entry fixture</h2>
+      <div id="text-host" data-tui-list>
+        <label class="tui-field" for="text-input">
+          <span>Editable text</span>
+          <input class="tui-input" id="text-input" value="abcd">
+        </label>
+        <label class="tui-check-row">
+          <input id="text-host-checkbox" type="checkbox">
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>Sibling list item</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="tui-dialog tui-dialog--compact" aria-labelledby="touch-title">
+      <h2 class="tui-dialog-title" id="touch-title">Touch fixture</h2>
+      <label class="tui-check-row">
+        <input id="touch-checkbox" type="checkbox">
+        <span class="tui-mark" aria-hidden="true"></span>
+        <span>Tap target</span>
+      </label>
+    </section>
+  </main>
+</body>
+</html>
