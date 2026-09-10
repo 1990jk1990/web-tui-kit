@@ -32,4 +32,4 @@ The project does not maintain React/Vue adapter runtimes or require framework de
 
 ## Maturity
 
-The project is pre-1.0. Version `0.4.0` establishes the first tagged release baseline after the visual foundation, core dialog patterns, accessibility/keyboard refinement, and visual regression milestones. The current v0.5 development work adds framework/template consumption recipes without changing the browser-native runtime baseline. Canonical package/dialog rendering is guarded by reviewed desktop and touch-capable mobile screenshot baselines in CI. Public component contracts may still evolve through minor releases before 1.0.
+The project is pre-1.0. Version `0.5.0` packages the established visual foundation, core dialog patterns, accessibility/keyboard refinement, visual regression gates, release/distribution workflow, and copy-ready React/Vue/server-rendered integration recipes without changing the browser-native runtime baseline. Canonical package/dialog rendering is guarded by reviewed desktop and touch-capable mobile screenshot baselines in CI. Public component contracts may still evolve through minor releases before 1.0.
