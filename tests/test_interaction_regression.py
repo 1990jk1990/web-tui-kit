@@ -34,6 +34,7 @@ class InteractionRegressionContractTests(unittest.TestCase):
             'id="radio-first"',
             'id="radio-second"',
             'id="text-input"',
+            'id="touch-row"',
             'id="touch-checkbox"',
         ):
             self.assertIn(fragment, self.fixture)
@@ -46,7 +47,8 @@ class InteractionRegressionContractTests(unittest.TestCase):
         self.assertIn("is_mobile=case.mobile", self.runner)
         self.assertIn("has_touch=case.mobile", self.runner)
         self.assertIn('window.matchMedia("(pointer: coarse)").matches', self.runner)
-        self.assertIn("checkbox.tap()", self.runner)
+        self.assertIn('touch_row = page.locator("#touch-row")', self.runner)
+        self.assertIn("touch_row.tap()", self.runner)
 
     def test_runner_asserts_keyboard_contracts(self):
         for fragment in (
