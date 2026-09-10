@@ -25,8 +25,16 @@ textarea {
   font: inherit;
 }
 
+.tui-screen {
+  min-height: calc(100vh - clamp(1.5rem, 6vw, 5rem));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .tui-window,
-.tui-panel {
+.tui-panel,
+.tui-dialog {
   background: var(--tui-surface);
   color: var(--tui-text);
   border-style: solid;
@@ -41,8 +49,41 @@ textarea {
   box-shadow: var(--tui-shadow-offset) var(--tui-shadow-offset) 0 var(--tui-shadow);
 }
 
+.tui-dialog {
+  position: relative;
+  width: min(100%, var(--tui-dialog-max));
+  padding: clamp(1.5rem, 4vw, 2.4rem) clamp(1rem, 4vw, 2.6rem) clamp(1rem, 3vw, 1.5rem);
+  box-shadow: var(--tui-shadow-offset) var(--tui-shadow-offset) 0 var(--tui-shadow);
+}
+
+.tui-dialog-title {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  max-width: calc(100% - 2rem);
+  margin: 0;
+  padding: 0 0.8ch;
+  transform: translate(-50%, -55%);
+  overflow: hidden;
+  background: var(--tui-surface);
+  color: var(--tui-title);
+  font-size: 1em;
+  font-weight: 700;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tui-dialog-copy {
+  margin: 0 0 var(--tui-space-4);
+}
+
 .tui-panel {
   padding: var(--tui-space-4);
+}
+
+.tui-section {
+  margin-top: var(--tui-space-4);
 }
 
 .tui-title {
@@ -130,6 +171,16 @@ textarea {
   cursor: not-allowed;
 }
 
+.tui-hotkey,
+.tui-help {
+  color: var(--tui-title);
+}
+
+.tui-hotkey {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 .tui-actions {
   display: flex;
   flex-wrap: wrap;
@@ -149,7 +200,8 @@ textarea {
 }
 
 .tui-check input,
-.tui-radio input {
+.tui-radio input,
+.tui-check-row input {
   position: absolute;
   inline-size: 1px;
   block-size: 1px;
@@ -185,6 +237,70 @@ textarea {
 .tui-radio input:focus-visible + span {
   outline: 2px dotted var(--tui-focus);
   outline-offset: 2px;
+}
+
+.tui-checklist {
+  max-height: min(50vh, 24rem);
+  overflow-y: auto;
+  padding: var(--tui-space-1) 0;
+  border-style: solid;
+  border-width: var(--tui-border-width);
+  border-color: var(--tui-border-dark) var(--tui-border-light) var(--tui-border-light) var(--tui-border-dark);
+  background: var(--tui-surface-light);
+  scrollbar-color: var(--tui-border-dark) var(--tui-surface);
+  scrollbar-width: auto;
+}
+
+.tui-checklist::-webkit-scrollbar {
+  width: var(--tui-scrollbar-size);
+}
+
+.tui-checklist::-webkit-scrollbar-track {
+  background: var(--tui-surface);
+  border-left: 1px solid var(--tui-border-mid);
+}
+
+.tui-checklist::-webkit-scrollbar-thumb {
+  background: var(--tui-border-mid);
+  border: 2px solid var(--tui-surface);
+}
+
+.tui-check-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3ch minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: var(--tui-list-row-min-height);
+  gap: var(--tui-space-2);
+  padding: 0.15rem var(--tui-space-2);
+  color: var(--tui-text);
+  cursor: pointer;
+}
+
+.tui-check-row .tui-mark::before {
+  content: "[ ]";
+  font-weight: 700;
+}
+
+.tui-check-row input:checked + .tui-mark::before {
+  content: "[x]";
+}
+
+.tui-check-row:hover,
+.tui-check-row.is-selected,
+.tui-check-row:has(input:focus-visible) {
+  background: var(--tui-selection-bg);
+  color: var(--tui-selection-text);
+}
+
+.tui-check-row:has(input:focus-visible) {
+  outline: 1px dotted var(--tui-focus);
+  outline-offset: -2px;
+}
+
+.tui-check-row .tui-help {
+  justify-self: end;
+  white-space: nowrap;
 }
 
 .tui-menu {
@@ -286,9 +402,30 @@ textarea {
     padding: var(--tui-space-3);
   }
 
+  .tui-screen {
+    min-height: calc(100vh - 1.5rem);
+  }
+
+  .tui-window,
+  .tui-dialog {
+    box-shadow: var(--tui-space-1) var(--tui-space-1) 0 var(--tui-shadow);
+  }
+
   .tui-window {
     padding: var(--tui-space-4);
-    box-shadow: var(--tui-space-1) var(--tui-space-1) 0 var(--tui-shadow);
+  }
+
+  .tui-dialog {
+    padding-inline: var(--tui-space-4);
+  }
+
+  .tui-check-row {
+    grid-template-columns: 3ch minmax(0, 1fr);
+  }
+
+  .tui-check-row .tui-help {
+    grid-column: 2;
+    justify-self: start;
   }
 
   .tui-actions {
@@ -304,7 +441,8 @@ textarea {
   .tui-button,
   .tui-menu-item,
   .tui-check,
-  .tui-radio {
+  .tui-radio,
+  .tui-check-row {
     padding-block: var(--tui-space-2);
   }
 }
