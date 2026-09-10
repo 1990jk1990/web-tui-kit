@@ -38,6 +38,24 @@ The design system MUST provide a `.tui-dialog` pattern that can reproduce the ch
 - **WHEN** it is rendered with the default theme
 - **THEN** the result MUST preserve the canonical hard-edged dialog composition on desktop and narrow viewports
 
+### Requirement: Core dialog patterns
+
+The design system MUST provide reusable patterns for message boxes, yes/no confirmations, input dialogs, action menus, radio-selection lists, checklists, and progress/gauge presentation without requiring application-specific visual recreation.
+
+Simple dialogs MAY use `.tui-dialog--compact`. Action menus MUST be representable with `.tui-choice-list` and native `.tui-menu-row` buttons. Radio-selection lists MUST be representable with `.tui-radiolist` and `.tui-radio-row`. Progress presentation MUST use a native `<progress>` element styled by `.tui-progress`, normally inside `.tui-gauge`.
+
+#### Scenario: Consumer builds a confirmation dialog
+
+- **GIVEN** a consuming application needs a yes/no confirmation
+- **WHEN** it composes `.tui-dialog`, `.tui-dialog-title`, `.tui-dialog-copy`, `.tui-actions`, and native `.tui-button` controls
+- **THEN** the result MUST receive the canonical dialog visual language without custom application-specific styling
+
+#### Scenario: Consumer builds a gauge
+
+- **GIVEN** a consuming application has a bounded progress value
+- **WHEN** it renders a native `<progress>` element with `.tui-progress`
+- **THEN** the progress indicator MUST use the design-system recessed frame and canonical selection color while retaining native progress semantics
+
 ### Requirement: Checklist selection pattern
 
 The design system MUST provide a scrollable checklist pattern using `.tui-checklist` and `.tui-check-row`. Checkbox state and keyboard focus/row selection MUST remain distinct: checking an item changes its `[ ]` marker, while focusing or selecting a row uses the canonical blue selection treatment.
@@ -56,9 +74,37 @@ Checklist rows MAY expose short contextual help text using `.tui-help`.
 - **WHEN** the checklist is rendered
 - **THEN** the selection area MUST scroll rather than expanding the dialog without bound
 
+### Requirement: Radio-selection pattern
+
+The design system MUST provide a scrollable radio-selection pattern using `.tui-radiolist` and `.tui-radio-row`. A selected native radio MUST render the classic `(*)` marker and an unselected radio MUST render `( )` while focus remains visually distinct from selection state.
+
+#### Scenario: Radio option selection
+
+- **GIVEN** a `.tui-radio-row` contains a native radio input
+- **WHEN** the input is selected
+- **THEN** the visible marker MUST change to the selected radio form without replacing the native input semantics
+
+### Requirement: Optional list keyboard navigation
+
+A list container that opts in with `data-tui-list` MUST support ArrowUp, ArrowDown, Home, and End as progressive focus-navigation keys among enabled interactive descendants.
+
+ArrowUp and ArrowDown MUST wrap at the ends. Home MUST focus the first enabled item and End MUST focus the last enabled item. This enhancement MUST NOT remove ordinary Tab reachability and MUST NOT synthesize activation or selection; Space/Enter behavior remains owned by the focused native control.
+
+#### Scenario: Arrow navigation in a checklist
+
+- **GIVEN** focus is on an enabled checkbox inside a `data-tui-list` checklist
+- **WHEN** the user presses ArrowDown
+- **THEN** focus MUST move to the next enabled interactive item without toggling the current checkbox
+
+#### Scenario: End navigation in an action menu
+
+- **GIVEN** focus is on a native menu-row button inside a `data-tui-list`
+- **WHEN** the user presses End
+- **THEN** focus MUST move to the last enabled interactive item in that list
+
 ### Requirement: Central design tokens
 
-Reusable palette, typography, spacing, border, shadow, scrollbar, and control-sizing values MUST be centralized as CSS custom properties in `src/tokens.css` rather than independently redefined per component.
+Reusable palette, typography, spacing, border, shadow, scrollbar, progress, and control-sizing values MUST be centralized as CSS custom properties in `src/tokens.css` rather than independently redefined per component.
 
 #### Scenario: Component style reuse
 
@@ -68,7 +114,7 @@ Reusable palette, typography, spacing, border, shadow, scrollbar, and control-si
 
 ### Requirement: Core component patterns
 
-The design system MUST provide reusable patterns for windows/panels, package-style dialogs, buttons, checkbox and radio rows, scrollable checklists, text/select/textarea inputs, menus/selections, tables, action rows, and status information.
+The design system MUST provide reusable patterns for windows/panels, package-style dialogs, buttons, checkbox and radio rows, scrollable checklist/radiolist/choice lists, text/select/textarea inputs, menus/selections, progress/gauges, tables, action rows, and status information.
 
 #### Scenario: Consumer uses a documented component
 
@@ -128,10 +174,16 @@ The implementation MUST prioritize standards-based behavior suitable for current
 
 ### Requirement: Executable visual references
 
-The repository MUST provide a browser-openable canonical package-configuration reference at `demo/index.html` and MAY provide additional component-gallery pages. Demo pages MUST reference the canonical runtime assets instead of duplicating their implementation.
+The repository MUST provide a browser-openable canonical package-configuration reference at `demo/index.html` and additional component/dialog examples MAY live alongside it. Demo pages MUST reference the canonical runtime assets instead of duplicating their implementation.
 
 #### Scenario: Maintainer reviews the canonical style
 
 - **GIVEN** the repository is served as static files
 - **WHEN** a maintainer opens `demo/index.html`
 - **THEN** the page MUST load the canonical runtime assets from `src/` and present the package-configuration dialog as the primary visual reference
+
+#### Scenario: Maintainer reviews core dialog coverage
+
+- **GIVEN** the repository is served as static files
+- **WHEN** a maintainer opens `demo/dialogs.html`
+- **THEN** the page MUST show representative message, confirmation, input, menu, radiolist, checklist, and gauge patterns using canonical runtime assets

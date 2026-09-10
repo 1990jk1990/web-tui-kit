@@ -10,7 +10,7 @@ The design language is inspired by classic Debian/Ubuntu package configuration s
 
 This is a browser UI, not a terminal emulator. Applications may use normal HTML forms, tables, APIs, routing, and JavaScript while presenting them with a classic text-interface visual language.
 
-The primary executable reference is `demo/index.html`. `demo/components.html` is a broader component gallery.
+The canonical package-configuration reference is `demo/index.html`. Broader component and dialog examples live in `demo/components.html` and `demo/dialogs.html`.
 
 ## 2. Core principles
 
@@ -24,7 +24,7 @@ The primary executable reference is `demo/index.html`. `demo/components.html` is
 
 **Dense but usable.** Desktop layouts may be compact. On touch devices the same visual language gets larger hit areas rather than a different design.
 
-**Semantic HTML first.** Prefer native buttons, inputs, labels, fieldsets, tables, and links.
+**Semantic HTML first.** Prefer native buttons, inputs, labels, fieldsets, tables, progress elements, and links.
 
 ## 3. Canonical tokens
 
@@ -45,8 +45,9 @@ The exact machine-readable values live in `src/tokens.css`.
 | `--tui-border-dark` | raised bottom/right edge |
 | `--tui-focus` | keyboard focus indicator |
 | `--tui-dialog-max` | package-style dialog maximum width |
-| `--tui-list-row-min-height` | checklist row sizing |
-| `--tui-scrollbar-size` | classic checklist scrollbar sizing |
+| `--tui-list-row-min-height` | dialog-list row sizing |
+| `--tui-scrollbar-size` | classic list scrollbar sizing |
+| `--tui-progress-height` | canonical gauge/progress height |
 
 Spacing and sizing values are also centralized in `src/tokens.css`.
 
@@ -60,23 +61,25 @@ font-family: var(--tui-font);
 
 The default stack prefers commonly available Linux/Android monospace fonts and falls back to the generic `monospace` family. Avoid mixing proportional UI fonts into the core application chrome.
 
-## 5. Windows and package-style dialogs
+## 5. Windows and dialogs
 
-Use `.tui-window` for general application panels and `.tui-dialog` for the classic package-configuration composition.
+Use `.tui-window` for a general application surface. Use `.tui-dialog` for the classic package-configuration composition with `.tui-dialog-title` positioned over the top bevel. `.tui-dialog--compact` constrains simple message, confirmation, input, and gauge dialogs.
 
-A package-style dialog normally has this structure:
+A full-screen centered dialog may be wrapped in `.tui-screen`.
+
+Typical message box:
 
 ```html
-<main class="tui-screen">
-  <section class="tui-dialog" aria-labelledby="dialog-title">
-    <h1 class="tui-dialog-title" id="dialog-title">Package configuration</h1>
-    <p class="tui-dialog-copy">Choose an option.</p>
-    ...
-  </section>
-</main>
+<section class="tui-dialog tui-dialog--compact" aria-labelledby="message-title">
+  <h1 class="tui-dialog-title" id="message-title">Message</h1>
+  <p class="tui-dialog-copy">Operation completed.</p>
+  <div class="tui-actions">
+    <button class="tui-button" type="button">Ok</button>
+  </div>
+</section>
 ```
 
-`.tui-dialog-title` is intentionally positioned over the top edge so the title visually interrupts the bevel, matching the classic dialog/whiptail composition. `.tui-screen` centers the dialog without making the design system a terminal emulator.
+A yes/no dialog uses the same structure with two `.tui-button` actions. An input dialog adds a native input styled with `.tui-input` inside `.tui-field`.
 
 Nested content groups may use `.tui-panel`. General page sections may use `.tui-section` for canonical vertical spacing.
 
@@ -98,54 +101,82 @@ Action rows use `.tui-actions`.
 
 For ordinary form rows, use `.tui-check` and `.tui-radio`. The native input remains present for semantics and keyboard behavior while the visible marker uses `[ ]`, `[x]`, `( )`, and `(*)`.
 
-For package-style scrollable multi-selection, use `.tui-checklist` with `.tui-check-row`:
+For dialog-style scrolling lists, use `.tui-checklist` with `.tui-check-row` or `.tui-radiolist` with `.tui-radio-row`. Each row contains the native input, `.tui-mark`, label text, and optionally `.tui-help`.
+
+Example:
 
 ```html
-<div class="tui-checklist" role="group" aria-label="Services">
-  <label class="tui-check-row">
-    <input type="checkbox" checked>
+<div class="tui-radiolist" data-tui-list role="radiogroup" aria-label="Mode">
+  <label class="tui-radio-row">
+    <input type="radio" name="mode" checked>
     <span class="tui-mark" aria-hidden="true"></span>
-    <span>ssh.service</span>
-    <span class="tui-help">&lt;Help&gt;</span>
+    <span>Safe mode</span>
+    <span class="tui-help">&lt;Recommended&gt;</span>
   </label>
 </div>
 ```
 
-Checkbox state and row focus are deliberately separate. Checking changes the marker; keyboard focus or `.is-selected` applies the blue selection treatment to the row. Long checklists scroll vertically.
+Checkbox/radio state and row focus are deliberately separate. Checking or selecting changes the marker; keyboard focus or `.is-selected` applies the blue selection treatment to the row.
 
 `.tui-help` is intended for short contextual text such as `<Help>`, not long explanations.
 
-## 8. Text inputs and selects
+## 8. Input controls
 
 Use `.tui-input`, `.tui-select`, and `.tui-textarea`. These controls are recessed rather than raised and retain normal HTML form behavior.
 
-## 9. Lists, menus, and selection
+## 9. Menu and choice lists
 
-Use `.tui-menu` and `.tui-menu-item` for selectable navigation or action lists. `.is-selected` marks the current item. Selection colors come from the canonical selection tokens.
+`.tui-choice-list` is the generic recessed container for dialog-style choices. `.tui-menu-row` is a full-width native button for action/menu lists.
 
-## 10. Tables
+Use the optional `data-tui-list` attribute on a list container to enable progressive keyboard navigation:
+
+- `ArrowUp` and `ArrowDown` move focus and wrap at the ends,
+- `Home` focuses the first enabled item,
+- `End` focuses the last enabled item,
+- normal `Tab` reachability is preserved,
+- activation and selection remain native: Space/Enter operate the focused button, checkbox, or radio control.
+
+The enhancement does not create a custom ARIA widget or replace native semantics.
+
+The older `.tui-menu` / `.tui-menu-item` pattern remains available for navigation-link menus.
+
+## 10. Gauge and progress
+
+Use native `<progress>` with `.tui-progress`, normally inside `.tui-gauge`. A visible numeric value may use `.tui-gauge-value`.
+
+```html
+<div class="tui-gauge">
+  <label for="progress">Installing packages</label>
+  <progress class="tui-progress" id="progress" value="65" max="100">65%</progress>
+  <div class="tui-gauge-value" aria-hidden="true">65%</div>
+</div>
+```
+
+The progress element owns the semantic value; the visible percentage is decorative when it repeats the same value.
+
+## 11. Tables
 
 Use `.tui-table-wrap` around `.tui-table`. On narrow screens the wrapper scrolls horizontally. Do not hide important columns merely to fit a phone viewport.
 
-## 11. Status information
+## 12. Status information
 
 Use `.tui-statusbar` for short application-level state or keyboard hints. It should visually belong to the same system, not resemble a modern toast or floating card.
 
-## 12. Keyboard behavior
+## 13. Escape behavior
 
 Native browser keyboard behavior is preferred. `src/tui.js` adds only small progressive enhancements.
 
-For `.tui-window[data-tui-escape-close]` or `.tui-dialog[data-tui-escape-close]`, pressing `Escape` dispatches a `tui:escape` event. The consuming application decides whether to hide, navigate, or otherwise close the surface.
+For `.tui-window[data-tui-escape-close]` or `.tui-dialog[data-tui-escape-close]`, pressing `Escape` dispatches a bubbling `tui:escape` event. The consuming application decides whether to hide, navigate, or otherwise close the surface.
 
 Do not trap focus unless a consuming application implements a true modal dialog.
 
-## 13. Touch and responsive behavior
+## 14. Touch and responsive behavior
 
 For coarse pointers, interactive elements receive larger minimum heights and padding while borders, colors, typography, and component structure remain in the same visual language.
 
-At small widths, outer page padding is reduced, windows/dialogs can use the full available width, action rows may wrap, checklist help text may move below the label, tables scroll, and no component may require hover to operate.
+At small widths, outer page padding is reduced, windows/dialogs can use the full available width, action rows may wrap, list help text may move below the main label, tables scroll, and no component may require hover to operate.
 
-## 14. Things that do not belong in the default theme
+## 15. Things that do not belong in the default theme
 
 - rounded corners or pill controls
 - gradients
@@ -155,6 +186,6 @@ At small widths, outer page padding is reduced, windows/dialogs can use the full
 - icon-only controls without accessible text
 - arbitrary per-page color palettes
 
-## 15. Compatibility target
+## 16. Compatibility target
 
 The current compatibility requirement is defined in `openspec/specs/web-tui-kit/spec.md`. The implementation is designed around standards-based browser features for current Chromium-based browsers on Linux and Android and should remain usable in current Firefox.

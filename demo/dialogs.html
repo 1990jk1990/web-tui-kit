@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>web-tui-kit dialog patterns</title>
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/tui.css">
+  <script src="../src/tui.js" defer></script>
+</head>
+<body class="tui-desktop">
+  <main class="tui-stack" aria-labelledby="page-title">
+    <section class="tui-dialog tui-dialog--compact" aria-labelledby="page-title">
+      <h1 class="tui-dialog-title" id="page-title">Message box</h1>
+      <p class="tui-dialog-copy">The package configuration has been updated successfully.</p>
+      <div class="tui-actions">
+        <button class="tui-button" type="button"><span class="tui-hotkey">O</span>k</button>
+      </div>
+    </section>
+
+    <section class="tui-dialog tui-dialog--compact" aria-labelledby="confirm-title">
+      <h2 class="tui-dialog-title" id="confirm-title">Confirmation</h2>
+      <p class="tui-dialog-copy">Restart the selected services now?</p>
+      <div class="tui-actions">
+        <button class="tui-button" type="button"><span class="tui-hotkey">Y</span>es</button>
+        <button class="tui-button" type="button"><span class="tui-hotkey">N</span>o</button>
+      </div>
+    </section>
+
+    <section class="tui-dialog tui-dialog--compact" aria-labelledby="input-title">
+      <h2 class="tui-dialog-title" id="input-title">Input box</h2>
+      <p class="tui-dialog-copy">Enter the hostname for this system.</p>
+      <label class="tui-field" for="hostname">
+        <span>Hostname</span>
+        <input class="tui-input" id="hostname" value="homeserver.local">
+      </label>
+      <div class="tui-actions">
+        <button class="tui-button" type="button"><span class="tui-hotkey">O</span>k</button>
+        <button class="tui-button" type="button"><span class="tui-hotkey">C</span>ancel</button>
+      </div>
+    </section>
+
+    <section class="tui-dialog" aria-labelledby="menu-title">
+      <h2 class="tui-dialog-title" id="menu-title">Menu</h2>
+      <p class="tui-dialog-copy">Choose an action. Arrow keys, Home, and End move between entries.</p>
+      <div class="tui-choice-list" data-tui-list role="group" aria-label="Available actions">
+        <button class="tui-menu-row" type="button">
+          <span>View service status</span>
+          <span class="tui-help">&lt;Status&gt;</span>
+        </button>
+        <button class="tui-menu-row" type="button">
+          <span>Restart selected services</span>
+          <span class="tui-help">&lt;Restart&gt;</span>
+        </button>
+        <button class="tui-menu-row" type="button">
+          <span>Open configuration</span>
+          <span class="tui-help">&lt;Config&gt;</span>
+        </button>
+      </div>
+      <div class="tui-actions">
+        <button class="tui-button" type="button"><span class="tui-hotkey">C</span>ancel</button>
+      </div>
+    </section>
+
+    <section class="tui-dialog" aria-labelledby="radio-title">
+      <h2 class="tui-dialog-title" id="radio-title">Radiolist</h2>
+      <p class="tui-dialog-copy">Choose one startup mode.</p>
+      <div class="tui-radiolist" data-tui-list role="radiogroup" aria-label="Startup mode">
+        <label class="tui-radio-row">
+          <input type="radio" name="startup-mode" checked>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>Safe mode</span>
+          <span class="tui-help">&lt;Recommended&gt;</span>
+        </label>
+        <label class="tui-radio-row">
+          <input type="radio" name="startup-mode">
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>Normal mode</span>
+          <span class="tui-help">&lt;Default&gt;</span>
+        </label>
+        <label class="tui-radio-row">
+          <input type="radio" name="startup-mode">
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>Performance mode</span>
+          <span class="tui-help">&lt;Advanced&gt;</span>
+        </label>
+      </div>
+      <div class="tui-actions">
+        <button class="tui-button" type="button"><span class="tui-hotkey">O</span>k</button>
+        <button class="tui-button" type="button"><span class="tui-hotkey">C</span>ancel</button>
+      </div>
+    </section>
+
+    <section class="tui-dialog" aria-labelledby="check-title">
+      <h2 class="tui-dialog-title" id="check-title">Checklist</h2>
+      <p class="tui-dialog-copy">Select the services to restart.</p>
+      <div class="tui-checklist" data-tui-list role="group" aria-label="Services to restart">
+        <label class="tui-check-row">
+          <input type="checkbox" checked>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>nginx.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+        <label class="tui-check-row">
+          <input type="checkbox">
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>ssh.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+        <label class="tui-check-row">
+          <input type="checkbox" checked>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>cron.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+      </div>
+      <div class="tui-actions">
+        <button class="tui-button" type="button"><span class="tui-hotkey">O</span>k</button>
+        <button class="tui-button" type="button"><span class="tui-hotkey">C</span>ancel</button>
+      </div>
+    </section>
+
+    <section class="tui-dialog tui-dialog--compact" aria-labelledby="gauge-title">
+      <h2 class="tui-dialog-title" id="gauge-title">Gauge</h2>
+      <div class="tui-gauge">
+        <label for="install-progress">Installing packages</label>
+        <progress class="tui-progress" id="install-progress" value="65" max="100">65%</progress>
+        <div class="tui-gauge-value" aria-hidden="true">65%</div>
+      </div>
+    </section>
+
+    <p class="tui-panel">
+      <a href="./index.html">Canonical package-configuration reference</a>
+      ·
+      <a href="./components.html">General component gallery</a>
+    </p>
+  </main>
+</body>
+</html>
