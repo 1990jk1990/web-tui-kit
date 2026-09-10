@@ -6,6 +6,7 @@ This is the human-readable documentation entry point for `web-tui-kit`.
 
 - [Project overview](project/overview.md)
 - [Getting started](project/getting-started.md)
+- [Framework integration](project/framework-integration.md)
 - [Development](project/development.md)
 - [Technology stack](project/technology-stack.md)
 - [Testing](project/testing.md)
@@ -25,6 +26,8 @@ OpenSpec under `openspec/` is canonical for accepted behavior and non-trivial be
 ## Design-system reference
 
 `DESIGN_SYSTEM.md` is the practical consumption guide. Exact CSS values are owned by `src/tokens.css`, while reusable implementation is owned by `src/`.
+
+Framework/template consumers should also read `project/framework-integration.md` and the matching source recipe under `examples/`. Those recipes consume the canonical runtime; they are not framework-specific replacements for it.
 
 ## Release identity
 
