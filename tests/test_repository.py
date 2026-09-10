@@ -22,6 +22,7 @@ class RepositoryContractTests(unittest.TestCase):
     def setUp(self):
         self.demo = (ROOT / "demo/index.html").read_text(encoding="utf-8")
         self.gallery = (ROOT / "demo/components.html").read_text(encoding="utf-8")
+        self.dialogs = (ROOT / "demo/dialogs.html").read_text(encoding="utf-8")
         self.tokens = (ROOT / "src/tokens.css").read_text(encoding="utf-8")
         self.css = (ROOT / "src/tui.css").read_text(encoding="utf-8")
         self.javascript = (ROOT / "src/tui.js").read_text(encoding="utf-8")
@@ -37,8 +38,8 @@ class RepositoryContractTests(unittest.TestCase):
             self.assertTrue(path.exists(), f"demo asset does not exist: {asset}")
 
     def test_demo_local_assets_exist(self):
-        self.assert_local_assets_exist(self.demo, ROOT / "demo")
-        self.assert_local_assets_exist(self.gallery, ROOT / "demo")
+        for html in (self.demo, self.gallery, self.dialogs):
+            self.assert_local_assets_exist(html, ROOT / "demo")
 
     def test_core_design_tokens_are_declared(self):
         for token in (
@@ -56,6 +57,7 @@ class RepositoryContractTests(unittest.TestCase):
             "--tui-dialog-max",
             "--tui-list-row-min-height",
             "--tui-scrollbar-size",
+            "--tui-progress-height",
         ):
             self.assertIn(token, self.tokens)
 
@@ -65,27 +67,41 @@ class RepositoryContractTests(unittest.TestCase):
             ".tui-window",
             ".tui-panel",
             ".tui-dialog",
+            ".tui-dialog--compact",
             ".tui-dialog-title",
             ".tui-button",
             ".tui-hotkey",
             ".tui-check",
             ".tui-radio",
+            ".tui-choice-list",
             ".tui-checklist",
+            ".tui-radiolist",
             ".tui-check-row",
+            ".tui-radio-row",
+            ".tui-menu-row",
             ".tui-help",
             ".tui-input",
             ".tui-select",
             ".tui-menu",
+            ".tui-gauge",
+            ".tui-progress",
             ".tui-table",
             ".tui-statusbar",
         ):
             self.assertIn(selector, self.css)
 
     def test_escape_event_contract_is_present_for_windows_and_dialogs(self):
-        self.assertIn('event.key !== "Escape"', self.javascript)
+        self.assertIn('event.key === "Escape"', self.javascript)
         self.assertIn('.tui-window[data-tui-escape-close]', self.javascript)
         self.assertIn('.tui-dialog[data-tui-escape-close]', self.javascript)
         self.assertIn('new CustomEvent("tui:escape"', self.javascript)
+
+    def test_optional_list_navigation_contract_is_present(self):
+        self.assertIn('[data-tui-list]', self.javascript)
+        for key in ("ArrowUp", "ArrowDown", "Home", "End"):
+            self.assertIn(f'"{key}"', self.javascript)
+        self.assertIn("event.preventDefault()", self.javascript)
+        self.assertIn("items[nextIndex].focus()", self.javascript)
 
     def test_canonical_demo_is_package_configuration_reference(self):
         self.assertIn('name="viewport"', self.demo)
@@ -93,7 +109,7 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertIn('class="tui-dialog"', self.demo)
         self.assertIn('class="tui-dialog-title"', self.demo)
         self.assertIn('Package configuration', self.demo)
-        self.assertIn('class="tui-checklist"', self.demo)
+        self.assertIn('class="tui-checklist" data-tui-list', self.demo)
         self.assertIn('class="tui-check-row"', self.demo)
         self.assertIn('class="tui-help"', self.demo)
         self.assertIn('type="checkbox"', self.demo)
@@ -107,6 +123,30 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertIn('class="tui-select"', self.gallery)
         self.assertIn('class="tui-menu"', self.gallery)
         self.assertIn('class="tui-table"', self.gallery)
+        self.assertIn('./dialogs.html', self.gallery)
+
+    def test_dialog_gallery_covers_core_dialog_patterns(self):
+        for title in (
+            "Message box",
+            "Confirmation",
+            "Input box",
+            "Menu",
+            "Radiolist",
+            "Checklist",
+            "Gauge",
+        ):
+            self.assertIn(title, self.dialogs)
+
+        for fragment in (
+            'class="tui-dialog tui-dialog--compact"',
+            'class="tui-choice-list" data-tui-list',
+            'class="tui-radiolist" data-tui-list',
+            'class="tui-radio-row"',
+            'class="tui-checklist" data-tui-list',
+            'class="tui-menu-row"',
+            '<progress class="tui-progress"',
+        ):
+            self.assertIn(fragment, self.dialogs)
 
     def test_default_css_avoids_forbidden_visual_effects(self):
         css = self.css.lower()
