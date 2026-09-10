@@ -61,6 +61,11 @@ class RepositoryContractTests(unittest.TestCase):
         ):
             self.assertIn(token, self.tokens)
 
+    def test_forced_colors_override_core_tokens_with_system_colors(self):
+        self.assertIn("@media (forced-colors: active)", self.tokens)
+        for system_color in ("Canvas", "CanvasText", "GrayText", "Highlight", "HighlightText", "LinkText"):
+            self.assertIn(system_color, self.tokens)
+
     def test_core_component_selectors_are_implemented(self):
         for selector in (
             ".tui-screen",
@@ -98,10 +103,16 @@ class RepositoryContractTests(unittest.TestCase):
 
     def test_optional_list_navigation_contract_is_present(self):
         self.assertIn('[data-tui-list]', self.javascript)
+        self.assertIn('input[type="checkbox"]:not(:disabled)', self.javascript)
+        self.assertIn('button:not(:disabled)', self.javascript)
+        self.assertIn('[data-tui-list-item][tabindex]', self.javascript)
+        self.assertNotIn('input:not(:disabled)', self.javascript)
+        self.assertNotIn('input[type="radio"]', self.javascript)
         for key in ("ArrowUp", "ArrowDown", "Home", "End"):
             self.assertIn(f'"{key}"', self.javascript)
         self.assertIn("event.preventDefault()", self.javascript)
         self.assertIn("items[nextIndex].focus()", self.javascript)
+        self.assertIn('element.closest("[inert]")', self.javascript)
 
     def test_canonical_demo_is_package_configuration_reference(self):
         self.assertIn('name="viewport"', self.demo)
@@ -140,7 +151,7 @@ class RepositoryContractTests(unittest.TestCase):
         for fragment in (
             'class="tui-dialog tui-dialog--compact"',
             'class="tui-choice-list" data-tui-list',
-            'class="tui-radiolist" data-tui-list',
+            'class="tui-radiolist" role="radiogroup"',
             'class="tui-radio-row"',
             'class="tui-checklist" data-tui-list',
             'class="tui-menu-row"',
@@ -148,13 +159,26 @@ class RepositoryContractTests(unittest.TestCase):
         ):
             self.assertIn(fragment, self.dialogs)
 
-    def test_default_css_avoids_forbidden_visual_effects(self):
+        self.assertNotIn('class="tui-radiolist" data-tui-list', self.dialogs)
+        self.assertGreaterEqual(self.dialogs.count(" disabled"), 2)
+        self.assertIn("Native radio arrow-key behavior is preserved.", self.dialogs)
+
+    def test_disabled_choice_states_are_styled(self):
+        self.assertIn(".tui-check-row:has(input:disabled)", self.css)
+        self.assertIn(".tui-radio-row:has(input:disabled)", self.css)
+        self.assertIn(".tui-menu-row:disabled", self.css)
+        self.assertIn("cursor: not-allowed", self.css)
+
+    def test_core_css_avoids_forbidden_visual_effects_and_motion(self):
         css = self.css.lower()
         for fragment in (
             "linear-gradient(",
             "radial-gradient(",
             "backdrop-filter:",
             "filter: blur(",
+            "scroll-behavior: smooth",
+            "transition:",
+            "animation:",
         ):
             self.assertNotIn(fragment, css)
 
