@@ -98,7 +98,7 @@ class ReleaseContractTests(unittest.TestCase):
 
     def test_release_workflow_verifies_before_publication(self):
         for fragment in (
-            '"v[0-9]+.[0-9]+.[0-9]+"',
+            '"v*.*.*"',
             "permissions:\n  contents: write",
             'test "${GITHUB_REF_NAME}" = "v$(cat VERSION)"',
             'git merge-base --is-ancestor "${GITHUB_SHA}" origin/main',
@@ -128,6 +128,7 @@ class ReleaseContractTests(unittest.TestCase):
         self.assertIn("FIXED_ZIP_TIME = (1980, 1, 1, 0, 0, 0)", self.builder)
         self.assertIn("sorted(DISTRIBUTION_FILES)", self.builder)
         self.assertIn("sha256", self.builder)
+        self.assertIn("display_path", self.builder)
         self.assertNotIn("site/", self.builder)
         self.assertNotIn("test-results/", self.builder)
 
