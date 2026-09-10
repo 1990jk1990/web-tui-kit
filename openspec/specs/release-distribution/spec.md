@@ -60,7 +60,7 @@ The integration references MUST remain examples/guidance and MUST NOT turn frame
 
 ### Requirement: Verified tag-triggered publication
 
-A matching version tag MUST trigger release automation. Before publishing artifacts, the workflow MUST verify that the tag matches `VERSION`, that the tagged commit is contained in `main`, and that structural tests, AI-DOC-1 validation, documentation build, visual regression, and release-archive validation succeed.
+A matching version tag MUST trigger release automation. Before publishing artifacts, the workflow MUST verify that the tag matches `VERSION`, that the tagged commit is contained in `main`, and that structural tests, AI-DOC-1 validation, documentation build, canonical visual regression, cross-browser interaction verification, and release-archive validation succeed.
 
 The release workflow MAY use repository write permission only for release publication after verification.
 
@@ -69,6 +69,12 @@ The release workflow MAY use repository write permission only for release public
 - **GIVEN** a matching-looking release tag points to a commit not contained in `main`
 - **WHEN** release automation runs
 - **THEN** publication MUST fail before creating the GitHub Release
+
+#### Scenario: Browser interaction verification failure
+
+- **GIVEN** a matching release tag on `main`
+- **WHEN** the Chromium/Firefox browser interaction gate fails
+- **THEN** publication MUST fail before release artifacts are created or published
 
 #### Scenario: Verification failure
 
