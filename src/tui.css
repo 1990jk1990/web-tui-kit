@@ -1,0 +1,310 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--tui-desktop-bg);
+}
+
+body.tui-desktop {
+  min-height: 100vh;
+  margin: 0;
+  padding: clamp(0.75rem, 3vw, 2.5rem);
+  background: var(--tui-desktop-bg);
+  color: var(--tui-text);
+  font-family: var(--tui-font);
+  font-size: var(--tui-font-size);
+  line-height: var(--tui-line-height);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.tui-window,
+.tui-panel {
+  background: var(--tui-surface);
+  color: var(--tui-text);
+  border-style: solid;
+  border-width: var(--tui-border-width);
+  border-color: var(--tui-border-light) var(--tui-border-dark) var(--tui-border-dark) var(--tui-border-light);
+}
+
+.tui-window {
+  width: min(100%, var(--tui-window-max));
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem);
+  box-shadow: var(--tui-shadow-offset) var(--tui-shadow-offset) 0 var(--tui-shadow);
+}
+
+.tui-panel {
+  padding: var(--tui-space-4);
+}
+
+.tui-title {
+  margin: 0 0 var(--tui-space-5);
+  color: var(--tui-title);
+  font-size: 1em;
+  font-weight: 700;
+  text-align: center;
+}
+
+.tui-heading {
+  margin: 0 0 var(--tui-space-3);
+  font-size: 1em;
+  font-weight: 700;
+}
+
+.tui-muted {
+  color: var(--tui-muted);
+}
+
+.tui-stack {
+  display: grid;
+  gap: var(--tui-space-3);
+}
+
+.tui-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--tui-space-4);
+}
+
+.tui-field {
+  display: grid;
+  gap: var(--tui-space-1);
+}
+
+.tui-input,
+.tui-select,
+.tui-textarea {
+  width: 100%;
+  min-height: var(--tui-control-min-height);
+  padding: var(--tui-space-1) var(--tui-space-2);
+  border-style: solid;
+  border-width: var(--tui-border-width);
+  border-color: var(--tui-border-dark) var(--tui-border-light) var(--tui-border-light) var(--tui-border-dark);
+  border-radius: 0;
+  outline: 0;
+  background: var(--tui-surface-light);
+  color: var(--tui-text);
+}
+
+.tui-textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.tui-button {
+  min-height: var(--tui-control-min-height);
+  padding: var(--tui-space-1) var(--tui-space-4);
+  border-style: solid;
+  border-width: var(--tui-border-width);
+  border-color: var(--tui-border-light) var(--tui-border-dark) var(--tui-border-dark) var(--tui-border-light);
+  border-radius: 0;
+  background: var(--tui-surface);
+  color: var(--tui-text);
+  cursor: pointer;
+}
+
+.tui-button::before {
+  content: "<";
+}
+
+.tui-button::after {
+  content: ">";
+}
+
+.tui-button:active,
+.tui-button.is-active {
+  border-color: var(--tui-border-dark) var(--tui-border-light) var(--tui-border-light) var(--tui-border-dark);
+  transform: translate(1px, 1px);
+}
+
+.tui-button:disabled {
+  color: var(--tui-muted);
+  cursor: not-allowed;
+}
+
+.tui-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--tui-space-4);
+  margin-top: var(--tui-space-5);
+}
+
+.tui-check,
+.tui-radio {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: var(--tui-control-min-height);
+  gap: var(--tui-space-2);
+  cursor: pointer;
+}
+
+.tui-check input,
+.tui-radio input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tui-check span::before,
+.tui-radio span::before {
+  display: inline-block;
+  width: 3ch;
+  margin-right: var(--tui-space-2);
+  font-weight: 700;
+}
+
+.tui-check span::before {
+  content: "[ ]";
+}
+
+.tui-check input:checked + span::before {
+  content: "[x]";
+}
+
+.tui-radio span::before {
+  content: "( )";
+}
+
+.tui-radio input:checked + span::before {
+  content: "(*)";
+}
+
+.tui-check input:focus-visible + span,
+.tui-radio input:focus-visible + span {
+  outline: 2px dotted var(--tui-focus);
+  outline-offset: 2px;
+}
+
+.tui-menu {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-style: solid;
+  border-width: var(--tui-border-width);
+  border-color: var(--tui-border-dark) var(--tui-border-light) var(--tui-border-light) var(--tui-border-dark);
+  background: var(--tui-surface-light);
+}
+
+.tui-menu-item {
+  display: block;
+  min-height: var(--tui-control-min-height);
+  padding: var(--tui-space-1) var(--tui-space-2);
+  color: var(--tui-text);
+  text-decoration: none;
+}
+
+.tui-menu-item:hover,
+.tui-menu-item:focus-visible,
+.tui-menu-item.is-selected {
+  outline: 0;
+  background: var(--tui-selection-bg);
+  color: var(--tui-selection-text);
+}
+
+.tui-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  border-style: solid;
+  border-width: var(--tui-border-width);
+  border-color: var(--tui-border-dark) var(--tui-border-light) var(--tui-border-light) var(--tui-border-dark);
+}
+
+.tui-table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  background: var(--tui-surface-light);
+}
+
+.tui-table th,
+.tui-table td {
+  padding: var(--tui-space-2) var(--tui-space-3);
+  border-right: 1px solid var(--tui-border-mid);
+  border-bottom: 1px solid var(--tui-border-mid);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tui-table th {
+  background: var(--tui-surface);
+}
+
+.tui-table tr.is-selected td {
+  background: var(--tui-selection-bg);
+  color: var(--tui-selection-text);
+}
+
+.tui-statusbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--tui-space-2) var(--tui-space-5);
+  margin-top: var(--tui-space-5);
+  padding: var(--tui-space-1) var(--tui-space-2);
+  border-style: solid;
+  border-width: var(--tui-border-width);
+  border-color: var(--tui-border-dark) var(--tui-border-light) var(--tui-border-light) var(--tui-border-dark);
+  background: var(--tui-surface-light);
+}
+
+.tui-kbd {
+  font: inherit;
+  font-weight: 700;
+}
+
+.tui-success {
+  color: var(--tui-success);
+  font-weight: 700;
+}
+
+.tui-danger {
+  color: var(--tui-danger);
+  font-weight: 700;
+}
+
+:where(.tui-button, .tui-input, .tui-select, .tui-textarea):focus-visible {
+  outline: 2px dotted var(--tui-focus);
+  outline-offset: 2px;
+}
+
+@media (max-width: 36rem) {
+  body.tui-desktop {
+    padding: var(--tui-space-3);
+  }
+
+  .tui-window {
+    padding: var(--tui-space-4);
+    box-shadow: var(--tui-space-1) var(--tui-space-1) 0 var(--tui-shadow);
+  }
+
+  .tui-actions {
+    gap: var(--tui-space-2);
+  }
+
+  .tui-actions .tui-button {
+    flex: 1 1 8rem;
+  }
+}
+
+@media (pointer: coarse) {
+  .tui-button,
+  .tui-menu-item,
+  .tui-check,
+  .tui-radio {
+    padding-block: var(--tui-space-2);
+  }
+}
