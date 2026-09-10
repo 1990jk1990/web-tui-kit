@@ -1,0 +1,28 @@
+name: AI-DOC-1 validation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test-docs-and-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run project tests
+        run: python -m unittest discover -s tests -v
+      - name: Validate AI-DOC-1 structure
+        run: python scripts/validate_ai_doc_1.py
+      - name: Install documentation dependencies
+        run: pip install -r requirements-docs.txt
+      - name: Mirror OpenSpec for documentation
+        run: python scripts/sync_openspec_docs.py
+      - name: Build documentation
+        run: mkdocs build --strict

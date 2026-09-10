@@ -1,0 +1,11 @@
+site_name: web-tui-kit
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: mkdocs
+
+markdown_extensions:
+  - tables
+  - toc:
+      permalink: true

@@ -1,5 +1,9 @@
 # web-tui-kit design system
 
+This document is the practical guide for consuming the design system.
+
+For AI-DOC-1 source-of-truth purposes, **accepted behavior is canonical under `openspec/specs/`**, exact token values are canonical in `src/tokens.css`, and implementation is canonical in `src/`. If this guide disagrees with those sources, correct the stale guide rather than creating a parallel rule.
+
 ## 1. Visual reference
 
 The design language is inspired by classic Debian/Ubuntu package configuration screens built around debconf, `dialog`, and `whiptail`.
@@ -41,35 +45,23 @@ Spacing and sizing tokens are also centralized in `src/tokens.css`.
 
 ## 4. Typography
 
-Use the following family category:
+Use:
 
 ```css
 font-family: var(--tui-font);
 ```
 
-The default stack prefers commonly available Linux/Android monospace fonts and falls back to the generic `monospace` family.
-
-Avoid mixing proportional UI fonts into the core application chrome.
+The default stack prefers commonly available Linux/Android monospace fonts and falls back to the generic `monospace` family. Avoid mixing proportional UI fonts into the core application chrome.
 
 ## 5. Windows and panels
 
-Use `.tui-window` for the primary dialog/panel surface.
-
-A window should:
-
-- sit on the canonical blue desktop background,
-- have a grey surface,
-- use a hard bevel and hard offset shadow,
-- remain readable at narrow widths,
-- use `.tui-title` for its main heading.
+Use `.tui-window` for the primary dialog/panel surface. A window uses the canonical surface and bevel, remains readable at narrow widths, and normally uses `.tui-title` for its main heading.
 
 Nested content groups may use `.tui-panel`.
 
 ## 6. Buttons
 
-Use native `<button>` elements with `.tui-button`.
-
-Buttons are raised by default and appear pressed while active. Focus is indicated independently from hover so keyboard navigation remains obvious.
+Use native `<button>` elements with `.tui-button`. Buttons are raised by default and appear pressed while active. Focus is indicated independently from hover so keyboard navigation remains visible.
 
 Action rows use `.tui-actions`.
 
@@ -79,15 +71,11 @@ Use `.tui-check` for checkbox rows and `.tui-radio` for radio rows. The native i
 
 ## 8. Text inputs and selects
 
-Use `.tui-input`, `.tui-select`, and `.tui-textarea`.
-
-These controls are recessed rather than raised. They must retain normal HTML form behavior.
+Use `.tui-input`, `.tui-select`, and `.tui-textarea`. These controls are recessed rather than raised and retain normal HTML form behavior.
 
 ## 9. Lists, menus, and selection
 
-Use `.tui-menu` and `.tui-menu-item` for selectable navigation or action lists. `.is-selected` marks the current item.
-
-Selection uses `--tui-selection-bg` and `--tui-selection-text`.
+Use `.tui-menu` and `.tui-menu-item` for selectable navigation or action lists. `.is-selected` marks the current item. Selection colors come from the canonical selection tokens.
 
 ## 10. Tables
 
@@ -105,32 +93,22 @@ For `.tui-window[data-tui-escape-close]`, pressing `Escape` dispatches a `tui:es
 
 Do not trap focus unless a consuming application implements a true modal dialog.
 
-## 13. Touch behavior
+## 13. Touch and responsive behavior
 
-For coarse pointers, interactive elements receive larger minimum heights and padding. Visual borders, colors, typography, and component structure remain unchanged.
+For coarse pointers, interactive elements receive larger minimum heights and padding while borders, colors, typography, and component structure remain in the same visual language.
 
-## 14. Responsive behavior
+At small widths, outer page padding is reduced, windows can use the full available width, action rows may wrap, tables scroll, and no component may require hover to operate.
 
-At small widths:
+## 14. Things that do not belong in the default theme
 
-- outer page padding is reduced,
-- windows can use the full available width,
-- action rows may wrap,
-- tables scroll,
-- no component should require hover.
-
-## 15. Things that do not belong in the default theme
-
-- rounded corners
-- pill buttons
+- rounded corners or pill controls
 - gradients
-- blur
-- translucent glass effects
+- blur or translucent glass effects
 - soft box shadows
 - floating material-style cards
 - icon-only controls without accessible text
 - arbitrary per-page color palettes
 
-## 16. Compatibility target
+## 15. Compatibility target
 
-The baseline target is current Chromium-based browsers on Linux and Android, while retaining standards-based behavior that also works in current Firefox.
+The current compatibility requirement is defined in `openspec/specs/web-tui-kit/spec.md`. The implementation is designed around standards-based browser features and the repository's Linux/Android browser use case.

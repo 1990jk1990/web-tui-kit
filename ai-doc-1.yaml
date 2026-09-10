@@ -1,0 +1,26 @@
+standard:
+  name: AI-DOC-1
+  version: "1.3"
+  source: https://github.com/1990jk1990/AI-DOC-1
+
+adoption:
+  mode: greenfield
+  status: active
+
+canonical:
+  agent_rules: AGENTS.md
+  project_overview: docs/project/overview.md
+  requirements: openspec/specs
+  active_changes: openspec/changes
+  architecture: docs/architecture
+  decisions: docs/decisions
+  implementation: src
+  tests: tests
+  backlog: GitHub Issues/Projects
+  releases: Git tags/GitHub Releases
+  changelog: CHANGELOG.md
+  secrets: external secret store
+
+documentation:
+  generator: MkDocs
+  generated_path: docs/generated
