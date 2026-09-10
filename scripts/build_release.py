@@ -18,12 +18,17 @@ DISTRIBUTION_FILES = (
     "AGENTS.md",
     "CHANGELOG.md",
     "SECURITY.md",
+    "docs/project/framework-integration.md",
     "src/tokens.css",
     "src/tui.css",
     "src/tui.js",
     "demo/index.html",
     "demo/dialogs.html",
     "demo/components.html",
+    "examples/README.md",
+    "examples/react/PackageConfiguration.jsx",
+    "examples/vue/PackageConfiguration.vue",
+    "examples/server-rendered/package-configuration.html",
 )
 
 FIXED_ZIP_TIME = (1980, 1, 1, 0, 0, 0)

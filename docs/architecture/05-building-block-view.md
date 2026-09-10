@@ -27,6 +27,22 @@ Consumes the runtime blocks and presents the canonical Debian/Ubuntu package-con
 
 Provide broader executable examples. `components.html` covers general-purpose controls and `dialogs.html` covers message, confirmation, input, action-menu, radiolist, checklist, and gauge compositions, including representative disabled choice states.
 
+## Consumer integration examples
+
+### `examples/react/PackageConfiguration.jsx`
+
+A copy-ready React consumption recipe. It demonstrates framework-owned checkbox state and lifecycle-safe `tui:escape` handling while rendering native inputs and canonical `tui-*` classes. It is not part of the runtime and does not make React a repository dependency.
+
+### `examples/vue/PackageConfiguration.vue`
+
+A Vue Single File Component recipe using the same browser-native contract. It demonstrates Vue-owned state/emits without a Vue adapter layer in `src/`.
+
+### `examples/server-rendered/package-configuration.html`
+
+A browser-openable/template-oriented recipe. It loads the canonical assets directly and demonstrates ordinary form submission plus application-owned handling of the `tui:escape` signal.
+
+`examples/README.md` and `docs/project/framework-integration.md` explain the shared integration rules. ADR-0004 records why recipes are preferred over maintained framework adapter runtimes at the current maturity level.
+
 ## Development-support blocks
 
 ### Structural/documentation verification
@@ -34,6 +50,7 @@ Provide broader executable examples. `components.html` covers general-purpose co
 - `openspec/` owns accepted behavior and active behavioral changes.
 - `docs/` owns project information, current architecture, and durable rationale.
 - `tests/test_repository.py` owns inexpensive structural/runtime-contract regression evidence.
+- `tests/test_framework_recipes.py` owns framework/template recipe reuse and dependency-boundary evidence.
 - `tests/test_release.py` owns release/version/archive/workflow regression evidence.
 - `scripts/validate_ai_doc_1.py` and `scripts/sync_openspec_docs.py` own repository/documentation validation support.
 - `.github/workflows/ai-doc-1.yml` runs the structural, AI-DOC-1, and documentation checks in CI.
@@ -58,11 +75,17 @@ Provide broader executable examples. `components.html` covers general-purpose co
 ## Dependency direction
 
 ```text
-consuming application / demo
+consuming application / demo / integration recipe
         |
         +--> src/tokens.css
         +--> src/tui.css ----> token variables
         +--> src/tui.js  ----> browser DOM events/focus
+
+React/Vue/template application
+        |
+        +--> generates semantic markup + tui-* classes
+        +--> owns application state/lifecycle
+        +--> does not become a dependency of src/
 
 visual test runner ----> demo + src runtime assets
         |
@@ -74,9 +97,9 @@ VERSION + tagged main commit
         +--> release builder ----> focused ZIP + SHA-256
         +--> release workflow ---> verification gates ---> GitHub prerelease
 
-requirements ---> implementation ---> tests/demo/visual/release evidence
-architecture -----------------------> describes current structure
-ADRs -------------------------------> explain durable rationale
+requirements ---> implementation ---> tests/demo/examples/visual/release evidence
+architecture --------------------------------> describes current structure
+ADRs ----------------------------------------> explain durable rationale
 ```
 
-No runtime block depends on MkDocs, Python, Playwright, Pillow, Chromium, GitHub Actions, the GitHub CLI, or AI-DOC-1 tooling. Those dependencies exist only in repository development, verification, and release paths.
+No runtime block depends on React, Vue, a template engine, MkDocs, Python, Playwright, Pillow, Chromium, GitHub Actions, the GitHub CLI, or AI-DOC-1 tooling. Those dependencies exist only in consuming applications or repository development, verification, and release paths.

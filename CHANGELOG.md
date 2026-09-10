@@ -4,6 +4,9 @@ All notable user-visible changes are recorded here.
 
 ## Unreleased
 
+- Added copy-ready React, Vue, and server-rendered integration recipes that reuse the canonical browser-native runtime contract.
+- Added framework integration guidance, OpenSpec requirements, ADR-0004, and structural tests that keep framework dependencies/styling out of `src/`.
+
 ## 0.4.0 - 2026-09-11
 
 First tagged pre-1.0 release.

@@ -19,19 +19,19 @@ A release tag is immutable. Never move an existing published tag to a different 
 The canonical focused distribution is built by:
 
 ```bash
-python scripts/build_release.py --version v0.4.0 --check
+python scripts/build_release.py --version "v$(cat VERSION)" --check
 ```
 
-Replace `v0.4.0` with the intended tag. The command verifies that the tag version matches `VERSION`, builds a deterministic ZIP under `dist/`, validates its exact file list/timestamps, builds the ZIP twice when `--check` is supplied, and writes a matching SHA-256 checksum file.
+The command verifies that the expected tag version matches `VERSION`, builds a deterministic ZIP under `dist/`, validates its exact file list/timestamps, builds the ZIP twice when `--check` is supplied, and writes a matching SHA-256 checksum file.
 
-The focused archive contains the runtime under `src/`, the executable demos, `VERSION`, `README.md`, `DESIGN_SYSTEM.md`, `AGENTS.md`, `CHANGELOG.md`, and `SECURITY.md`. GitHub also provides its normal source archives for the complete repository.
+The focused archive contains the runtime under `src/`, executable demos, copy-ready framework/template recipes under `examples/`, the framework-integration guide, `VERSION`, `README.md`, `DESIGN_SYSTEM.md`, `AGENTS.md`, `CHANGELOG.md`, and `SECURITY.md`. GitHub also provides its normal source archives for the complete repository.
 
 ## Pre-release checklist
 
 1. Start from current `main` and create a focused release-preparation branch.
 2. Decide the next Semantic Version and update `VERSION`.
 3. Move completed user-visible entries in `CHANGELOG.md` from `Unreleased` into the dated release heading.
-4. Reconcile OpenSpec, architecture/ADRs, README, contributor/release docs, and compatibility evidence.
+4. Reconcile OpenSpec, architecture/ADRs, README, contributor/release docs, compatibility evidence, and any consumer integration references included in the focused archive.
 5. Run:
 
 ```bash
@@ -61,11 +61,11 @@ Pushing a matching `vMAJOR.MINOR.PATCH` tag starts `.github/workflows/release.ym
 5. builds and validates the deterministic distribution ZIP/checksum,
 6. creates a GitHub **prerelease** and uploads the focused ZIP and SHA-256 checksum.
 
-The release job uses repository `contents: write` only for GitHub Release publication. Runtime consumers do not depend on GitHub Actions, Python, Playwright, or any other release tooling.
+The release job uses repository `contents: write` only for GitHub Release publication. Runtime consumers do not depend on GitHub Actions, Python, Playwright, or any other release tooling. Framework/template examples in the archive remain optional consumption references and do not make those frameworks runtime dependencies.
 
 ## Verification after tagging
 
-Confirm that the tag workflow completed successfully, the GitHub Release points to the intended tag/commit, the ZIP and `.sha256` files are attached, and the checksum matches the downloaded ZIP. Then verify the README/version references still point consumers at immutable tags rather than the moving `main` branch.
+Confirm that the tag workflow completed successfully, the GitHub Release points to the intended tag/commit, the ZIP and `.sha256` files are attached, and the checksum matches the downloaded ZIP. Confirm the focused archive contains the documented runtime/reference allowlist, including integration recipes when they are part of accepted behavior. Then verify README/version references still point consumers at immutable tags rather than the moving `main` branch.
 
 ## Distribution policy
 

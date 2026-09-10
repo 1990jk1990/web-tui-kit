@@ -8,7 +8,9 @@ Run the fast repository regression checks with:
 python -m unittest discover -s tests -v
 ```
 
-The test suite checks repository-level contracts such as demo asset references, required design tokens and component selectors, Escape-event behavior for opted-in windows and dialogs, optional `data-tui-list` keyboard-navigation behavior, preservation of native radio/text-entry keyboard semantics, disabled-choice handling, forced-colors token overrides, the canonical package-configuration dialog/checklist primitives, core dialog-gallery coverage, general component-gallery coverage, mobile viewport metadata, visual-regression infrastructure, release version/archive/workflow safeguards, and absence of selected forbidden modern visual effects or required motion effects.
+The test suite checks repository-level contracts such as demo asset references, required design tokens and component selectors, Escape-event behavior for opted-in windows and dialogs, optional `data-tui-list` keyboard-navigation behavior, preservation of native radio/text-entry keyboard semantics, disabled-choice handling, forced-colors token overrides, the canonical package-configuration dialog/checklist primitives, core dialog-gallery coverage, general component-gallery coverage, framework/template recipe reuse and dependency boundaries, mobile viewport metadata, visual-regression infrastructure, release version/archive/workflow safeguards, and absence of selected forbidden modern visual effects or required motion effects.
+
+`tests/test_framework_recipes.py` verifies that the React, Vue, and server-rendered recipes exist, reuse canonical `tui-*`/native-control/event contracts, do not embed a parallel visual style implementation, and keep framework names out of the canonical `src/` runtime.
 
 `tests/test_release.py` executes the standard-library release builder in a temporary directory, verifies its exact archive member set, fixed timestamps, embedded version, SHA-256 checksum, tag/version mismatch rejection, and release-workflow verification ordering.
 
@@ -48,6 +50,8 @@ python scripts/visual_regression.py
 
 Review the resulting PNG changes together with the CSS/markup change. For the canonical project baselines, prefer generating/updating them in the same pinned Linux/Playwright environment used by CI. A Playwright upgrade also changes the Chromium build and therefore requires deliberate baseline regeneration/review.
 
+The framework/template recipes themselves do not add a second visual baseline suite because they are consumption examples over the same canonical assets. The browser-openable server-rendered recipe may be manually inspected, while structural tests guard against visual-contract duplication. If a future adapter introduces its own rendering implementation, it would require separate visual evidence.
+
 ## Release artifact verification
 
 Build the focused distribution with the version expected by the current repository state:
@@ -78,6 +82,6 @@ mkdocs build --strict
 
 Visual rendering is automated for the canonical package-configuration and core-dialog demos at representative Linux desktop and touch-capable narrow/mobile Chromium sizes. See `compatibility.md` for the evidence matrix and the distinction between mobile Chromium emulation and physical Android verification.
 
-The repository does not yet provide automated Firefox rendering, browser-driven interaction flows beyond the small JavaScript contract tests, accessibility-tree/assistive-technology testing, or a physical-device matrix.
+The repository does not yet provide automated Firefox rendering, browser-driven interaction flows beyond the small JavaScript contract tests, accessibility-tree/assistive-technology testing, physical-device coverage, or an automated React/Vue version matrix for the source recipes.
 
-`demo/index.html` remains the primary executable visual reference, `demo/components.html` provides broader component coverage, and `demo/dialogs.html` provides executable core-dialog coverage. Manual browser/device review is still useful evidence for behavior outside the automated matrix.
+`demo/index.html` remains the primary executable visual reference, `demo/components.html` provides broader component coverage, and `demo/dialogs.html` provides executable core-dialog coverage. `examples/` demonstrates framework/template consumption. Manual browser/device/framework review is still useful evidence outside the automated matrix.

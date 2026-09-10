@@ -6,6 +6,8 @@
 
 Read `AGENTS.md` first. For UI changes, also read the relevant current specification under `openspec/specs/`, `DESIGN_SYSTEM.md`, the affected files under `src/`, and `demo/index.html`.
 
+For framework/template integration changes, also read `docs/project/framework-integration.md`, `examples/README.md`, the relevant recipe under `examples/`, ADR-0001, and ADR-0004.
+
 For release/version/distribution changes, also read `VERSION`, `RELEASING.md`, the release/distribution OpenSpec, and the relevant ADRs.
 
 ## Workflow
@@ -15,6 +17,8 @@ Use a focused branch and pull request for non-trivial changes. Keep unrelated fu
 Behavioral changes must update the relevant OpenSpec artifacts. Architectural changes must update the relevant files under `docs/architecture/`; create an ADR under `docs/decisions/` only when the rationale is durable and useful later.
 
 When adding a reusable component, prefer existing tokens and patterns, update the demo, and add regression evidence in `tests/`.
+
+When adding or changing a framework/template recipe, keep framework dependencies out of `src/`, retain native semantic controls, reuse canonical `tui-*` classes/events, and add structural tests that prevent parallel CSS/runtime drift.
 
 Do not change `VERSION` casually. Version changes belong to release preparation and must follow `RELEASING.md`. Published release tags are immutable; fix a bad release forward with a new Semantic Version rather than moving an existing tag.
 
@@ -51,6 +55,8 @@ Document pre-existing failures separately from failures introduced by a change.
 ## Distribution
 
 Direct vendoring from an immutable release tag is the primary pre-1.0 distribution model. Do not add npm or another package-registry publication path without a concrete consumer need and a deliberate follow-up architectural decision.
+
+Framework-specific examples under `examples/` are consumption recipes, not separately versioned adapter packages. A maintained adapter runtime requires a concrete integration gap and an accepted follow-up decision.
 
 ## Documentation
 

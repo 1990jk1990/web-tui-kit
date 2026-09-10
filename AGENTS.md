@@ -29,8 +29,9 @@ Before non-trivial changes:
 3. Read the relevant current specification under `openspec/specs/`.
 4. Read relevant architecture and ADRs under `docs/`.
 5. For UI work, read `DESIGN_SYSTEM.md`, `src/tokens.css`, `src/tui.css`, and `demo/index.html`.
-6. For release/version/distribution work, read `VERSION`, `RELEASING.md`, the release/distribution specification, and relevant release ADRs.
-7. Inspect relevant tests, visual baselines when UI output may change, and GitHub work state.
+6. For framework/template integration work, read `docs/project/framework-integration.md`, `examples/README.md`, the relevant recipe under `examples/`, ADR-0001, and ADR-0004.
+7. For release/version/distribution work, read `VERSION`, `RELEASING.md`, the release/distribution specification, and relevant release ADRs.
+8. Inspect relevant tests, visual baselines when UI output may change, and GitHub work state.
 
 ## Canonical sources
 
@@ -41,10 +42,13 @@ Before non-trivial changes:
 - Exact design-token values → `src/tokens.css`.
 - Implementation → `src/`.
 - Executable structural behavior evidence → `tests/test_repository.py`.
+- Framework/template integration evidence → `tests/test_framework_recipes.py`.
 - Release/version/archive evidence → `tests/test_release.py`.
 - Reviewed visual regression baselines → `tests/visual/baselines/`.
 - Primary visual reference → `demo/index.html`.
 - Broader component examples → `demo/components.html` and `demo/dialogs.html`.
+- Framework/template consumption recipes → `examples/`.
+- Framework integration guidance → `docs/project/framework-integration.md`.
 - Open work → GitHub Issues/Projects.
 - Plain release version → `VERSION`.
 - Published release identity → immutable Git tags/GitHub Releases.
@@ -70,6 +74,16 @@ Follow the current OpenSpec specification first. In particular, preserve these e
 - horizontal scrolling for tables that do not fit narrow viewports rather than silently dropping important columns.
 
 Keep the baseline framework-independent. A consuming application may use a framework, but this library must not require one unless a future accepted decision changes that constraint.
+
+## Framework/template integration rules
+
+- Treat React, Vue, server-rendered templates, and other frameworks as consumers of the canonical browser-native contract, not as alternate design-system runtimes.
+- Reuse canonical `tui-*` classes, native semantic controls, CSS custom properties, and `tui:escape`/`data-tui-list` behavior instead of copying CSS into framework-specific style systems.
+- Framework state may control native input values/checked state, but do not replace semantic inputs/buttons with generic clickable containers merely for state management.
+- `tui:escape` remains an application signal; framework code decides whether to close, cancel, navigate, or do nothing.
+- Do not add competing ArrowUp/ArrowDown/Home/End handlers to a `data-tui-list` that already uses canonical `src/tui.js` enhancement unless intentionally replacing the contract.
+- Keep framework dependencies out of `src/` and repository runtime requirements.
+- Prefer copy-ready recipes over maintained adapter packages until a concrete capability gap justifies a new architectural decision.
 
 ## Adding or changing reusable components
 
@@ -111,5 +125,7 @@ Never commit secrets or real production data. Explain destructive/high-impact ac
 ## Completion check
 
 A UI change is complete only when affected canonical documentation is reconciled, structural tests pass, applicable visual baselines pass or are deliberately reviewed/updated, the result is visually consistent, keyboard and touch use remain viable, narrow-screen behavior remains intentional, and reusable patterns are represented in the appropriate demo pages.
+
+A framework/template integration change is complete only when recipes reuse canonical runtime contracts, no parallel styling/runtime dependency is introduced, relevant OpenSpec/architecture/ADR/docs are reconciled, and structural tests prove the integration boundary.
 
 A release-preparation change is complete only when version identity, changelog, release specification/architecture, compatibility evidence, deterministic artifact checks, and tag workflow safeguards are reconciled and PR CI is green. Publication is complete only after the immutable tag and matching GitHub Release artifacts have been verified.

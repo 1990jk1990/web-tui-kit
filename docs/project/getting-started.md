@@ -23,6 +23,8 @@ python3 -m http.server 8000
 
 Open `http://localhost:8000/demo/`.
 
+The server-rendered integration recipe is also directly browser-openable at `http://localhost:8000/examples/server-rendered/package-configuration.html`.
+
 ## Integrate into another application
 
 Vendor or copy the files under `src/`, then load them in this order:
@@ -38,6 +40,12 @@ Vendor or copy the files under `src/`, then load them in this order:
 Tagged GitHub prereleases also include a focused `web-tui-kit-MAJOR.MINOR.PATCH.zip` plus SHA-256 checksum. That archive contains the runtime, executable demos, version/changelog/security information, and practical design-system/AI-agent guidance without requiring the full development repository.
 
 The CSS classes and usage patterns are described in `DESIGN_SYSTEM.md`. Accepted behavior is canonical in `openspec/specs/`.
+
+## React, Vue, and templates
+
+Applications that already use React, Vue, or server-side templates still consume the same browser-native runtime. Start with `docs/project/framework-integration.md` and the matching source under `examples/`.
+
+The framework owns application state/lifecycle; `web-tui-kit` owns the visual classes, native-control patterns, CSS custom properties, and small progressive JavaScript contract. Do not create a parallel framework-specific theme or copy component CSS into scoped/CSS-in-JS styles.
 
 ## No build or package-manager requirement
 
