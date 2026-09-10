@@ -4,11 +4,20 @@
 
 A modern browser is sufficient to use the library. Python 3 is convenient for serving the demo locally and is used by repository validation tooling.
 
+## Choose a version
+
+For a consuming application, pin an immutable release tag rather than depending on the moving `main` branch. For the first pre-1.0 release:
+
+```bash
+git clone --branch v0.4.0 --depth 1 https://github.com/1990jk1990/web-tui-kit.git
+cd web-tui-kit
+```
+
+Maintainers working on the design system itself should clone the normal development branch instead.
+
 ## Run the demo
 
 ```bash
-git clone https://github.com/1990jk1990/web-tui-kit.git
-cd web-tui-kit
 python3 -m http.server 8000
 ```
 
@@ -24,8 +33,12 @@ Vendor or copy the files under `src/`, then load them in this order:
 <script src="/ui/tui.js" defer></script>
 ```
 
+`src/tui.js` is optional if the consuming application does not need the progressive Escape/list-navigation helpers. Record the source release tag next to a vendored copy so future updates are deliberate and traceable.
+
+Tagged GitHub prereleases also include a focused `web-tui-kit-MAJOR.MINOR.PATCH.zip` plus SHA-256 checksum. That archive contains the runtime, executable demos, version/changelog/security information, and practical design-system/AI-agent guidance without requiring the full development repository.
+
 The CSS classes and usage patterns are described in `DESIGN_SYSTEM.md`. Accepted behavior is canonical in `openspec/specs/`.
 
-## No build requirement
+## No build or package-manager requirement
 
-The current baseline is directly consumable by browsers. A consuming application may have its own build system or framework; `web-tui-kit` itself does not require one for runtime use.
+The runtime baseline is directly consumable by browsers. A consuming application may have its own build system or framework; `web-tui-kit` itself does not require Node.js, npm, a bundler, or another package registry for runtime use.
