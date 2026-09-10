@@ -16,7 +16,7 @@ cd web-tui-kit
 python3 -m http.server 8000
 ```
 
-Open `http://localhost:8000/demo/`.
+Open `http://localhost:8000/demo/` for the canonical package-configuration reference. Open `http://localhost:8000/demo/components.html` for the broader component gallery.
 
 No application build step and no JavaScript framework are required.
 
@@ -32,6 +32,8 @@ Copy or vendor the files from `src/` and include them in the consuming applicati
 
 The exact CSS token values are defined in `src/tokens.css`; reusable component implementation lives in `src/tui.css` and `src/tui.js`.
 
+For the closest match to the original Debian/Ubuntu package-configuration look, start from `.tui-screen`, `.tui-dialog`, `.tui-dialog-title`, `.tui-checklist`, `.tui-check-row`, `.tui-actions`, and `.tui-button` as demonstrated in `demo/index.html`.
+
 ## Project memory and canonical sources
 
 This repository follows **AI-DOC-1 v1.3**. The repository itself is durable project memory; chat history is not required to continue development.
@@ -44,7 +46,8 @@ This repository follows **AI-DOC-1 v1.3**. The repository itself is durable proj
 - practical design-system usage guide: `DESIGN_SYSTEM.md`
 - exact design-token values: `src/tokens.css`
 - implementation: `src/`
-- executable visual reference: `demo/index.html`
+- primary executable visual reference: `demo/index.html`
+- broader component gallery: `demo/components.html`
 - executable regression evidence: `tests/`
 
 See `docs/index.md` for the documentation entry point.
@@ -53,7 +56,7 @@ See `docs/index.md` for the documentation entry point.
 
 A consuming project can use the following instruction:
 
-> Use `https://github.com/1990jk1990/web-tui-kit` as the canonical UI design system. Read `AGENTS.md`, `ai-doc-1.yaml`, the current OpenSpec specification, and `DESIGN_SYSTEM.md` before implementing UI. Reuse the existing tokens, CSS classes, and interaction patterns instead of inventing a new visual language. The application must remain usable in Linux desktop browsers and Android browsers.
+> Use `https://github.com/1990jk1990/web-tui-kit` as the canonical UI design system. Read `AGENTS.md`, `ai-doc-1.yaml`, the current OpenSpec specification, `DESIGN_SYSTEM.md`, and `demo/index.html` before implementing UI. Reuse the existing tokens, CSS classes, and interaction patterns instead of inventing a new visual language. The application must remain usable in Linux desktop browsers and Android browsers.
 
 ## Verification
 
