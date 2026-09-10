@@ -4,7 +4,7 @@ This document is the maintainer procedure for tagged pre-1.0 releases.
 
 ## Versioning policy
 
-`web-tui-kit` uses Semantic Versioning (`MAJOR.MINOR.PATCH`). The canonical plain version is stored in `VERSION`; Git tags use the same value with a `v` prefix, for example `VERSION=0.4.0` and tag `v0.4.0`.
+`web-tui-kit` uses Semantic Versioning (`MAJOR.MINOR.PATCH`). The canonical plain version is stored in `VERSION`; Git tags use the same value with a `v` prefix, for example `VERSION=0.5.0` and tag `v0.5.0`.
 
 Before `1.0.0`, compatibility is still evolving:
 
@@ -41,8 +41,9 @@ pip install -r requirements-docs.txt
 python scripts/sync_openspec_docs.py
 mkdocs build --strict
 pip install -r requirements-visual.txt
-python -m playwright install --with-deps chromium
+python -m playwright install --with-deps chromium firefox
 python scripts/visual_regression.py
+python scripts/interaction_regression.py
 python scripts/build_release.py --version "v$(cat VERSION)" --check
 ```
 
@@ -58,10 +59,11 @@ Pushing a matching `vMAJOR.MINOR.PATCH` tag starts `.github/workflows/release.ym
 2. verifies the tagged commit is contained in `main`,
 3. runs project tests, AI-DOC-1 validation, and strict documentation build,
 4. runs the pinned Chromium visual-regression suite,
-5. builds and validates the deterministic distribution ZIP/checksum,
-6. creates a GitHub **prerelease** and uploads the focused ZIP and SHA-256 checksum.
+5. runs the pinned Chromium/Firefox browser-interaction suite, including the narrow touch-capable Chromium case,
+6. builds and validates the deterministic distribution ZIP/checksum,
+7. creates a GitHub **prerelease** and uploads the focused ZIP and SHA-256 checksum.
 
-The release job uses repository `contents: write` only for GitHub Release publication. Runtime consumers do not depend on GitHub Actions, Python, Playwright, or any other release tooling. Framework/template examples in the archive remain optional consumption references and do not make those frameworks runtime dependencies.
+The release job uses repository `contents: write` only for GitHub Release publication. Runtime consumers do not depend on GitHub Actions, Python, Playwright, Chromium, Firefox, or any other release tooling. Framework/template examples in the archive remain optional consumption references and do not make those frameworks runtime dependencies.
 
 ## Verification after tagging
 
