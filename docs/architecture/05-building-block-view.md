@@ -29,11 +29,21 @@ Provide broader executable examples. `components.html` covers general-purpose co
 
 ## Development-support blocks
 
+### Structural/documentation verification
+
 - `openspec/` owns accepted behavior and active behavioral changes.
 - `docs/` owns project information, current architecture, and durable rationale.
-- `tests/` owns executable regression evidence.
-- `scripts/` owns documentation synchronization and repository-structure validation.
-- `.github/workflows/` runs the checks in CI.
+- `tests/test_repository.py` owns inexpensive structural/runtime-contract regression evidence.
+- `scripts/validate_ai_doc_1.py` and `scripts/sync_openspec_docs.py` own repository/documentation validation support.
+- `.github/workflows/ai-doc-1.yml` runs the structural, AI-DOC-1, and documentation checks in CI.
+
+### Visual verification
+
+- `requirements-visual.txt` pins the Playwright and Pillow development dependencies used for screenshots and image comparison.
+- `scripts/visual_regression.py` starts a local static server, launches pinned Chromium through Playwright, captures deterministic canonical cases, and compares them with accepted baselines.
+- `tests/visual/baselines/` stores the reviewed PNG baseline images for desktop and narrow/mobile cases.
+- `test-results/visual/` is generated failure output and is not committed.
+- `.github/workflows/visual-regression.yml` installs the pinned browser, performs read-only comparison on pull requests and `main`, and uploads failure artifacts when necessary.
 
 ## Dependency direction
 
@@ -44,9 +54,14 @@ consuming application / demo
         +--> src/tui.css ----> token variables
         +--> src/tui.js  ----> browser DOM events/focus
 
-requirements ---> implementation ---> tests/demo evidence
+visual test runner ----> demo + src runtime assets
+        |
+        +--> pinned Playwright/Chromium
+        +--> reviewed PNG baselines
+
+requirements ---> implementation ---> tests/demo/visual evidence
 architecture -----------------------> describes current structure
 ADRs -------------------------------> explain durable rationale
 ```
 
-No runtime block depends on MkDocs, Python, GitHub Actions, or AI-DOC-1 tooling.
+No runtime block depends on MkDocs, Python, Playwright, Pillow, Chromium, GitHub Actions, or AI-DOC-1 tooling. Those dependencies exist only in repository development/verification paths.
