@@ -3,138 +3,98 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>web-tui-kit demo</title>
+  <title>web-tui-kit reference</title>
   <link rel="stylesheet" href="../src/tokens.css">
   <link rel="stylesheet" href="../src/tui.css">
   <script src="../src/tui.js" defer></script>
 </head>
 <body class="tui-desktop">
-  <main class="tui-window" data-tui-escape-close aria-labelledby="demo-title">
-    <h1 class="tui-title" id="demo-title">web-tui-kit / configuration</h1>
+  <main class="tui-screen">
+    <section class="tui-dialog" data-tui-escape-close aria-labelledby="package-title">
+      <h1 class="tui-dialog-title" id="package-title">Package configuration</h1>
 
-    <p>This page is the executable visual reference for the design system.</p>
+      <p class="tui-dialog-copy">Daemons using outdated libraries</p>
+      <p class="tui-dialog-copy">Which services should be restarted?</p>
 
-    <div class="tui-grid">
-      <section class="tui-panel tui-stack" aria-labelledby="options-title">
-        <h2 class="tui-heading" id="options-title">Options</h2>
-
-        <label class="tui-check">
-          <input type="checkbox" checked>
-          <span>Enable web service</span>
+      <div class="tui-checklist" role="group" aria-label="Services to restart">
+        <label class="tui-check-row">
+          <input type="checkbox" checked autofocus>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>accounts-daemon.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
         </label>
-
-        <label class="tui-check">
+        <label class="tui-check-row">
           <input type="checkbox">
-          <span>Start automatically</span>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>apache2.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
         </label>
-
-        <label class="tui-radio">
-          <input type="radio" name="mode" checked>
-          <span>Safe mode</span>
+        <label class="tui-check-row">
+          <input type="checkbox" checked>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>cron.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
         </label>
-
-        <label class="tui-radio">
-          <input type="radio" name="mode">
-          <span>Performance mode</span>
+        <label class="tui-check-row">
+          <input type="checkbox">
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>dbus.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
         </label>
-      </section>
-
-      <section class="tui-panel tui-stack" aria-labelledby="form-title">
-        <h2 class="tui-heading" id="form-title">Connection</h2>
-
-        <label class="tui-field">
-          <span>Hostname</span>
-          <input class="tui-input" value="homeserver.local">
+        <label class="tui-check-row">
+          <input type="checkbox" checked>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>nginx.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
         </label>
-
-        <label class="tui-field">
-          <span>Environment</span>
-          <select class="tui-select">
-            <option>Production</option>
-            <option>Staging</option>
-            <option>Development</option>
-          </select>
+        <label class="tui-check-row">
+          <input type="checkbox">
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>NetworkManager.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
         </label>
-      </section>
-    </div>
+        <label class="tui-check-row">
+          <input type="checkbox" checked>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>polkit.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+        <label class="tui-check-row">
+          <input type="checkbox">
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>rsyslog.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+        <label class="tui-check-row">
+          <input type="checkbox" checked>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>ssh.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+        <label class="tui-check-row">
+          <input type="checkbox">
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>systemd-logind.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+        <label class="tui-check-row">
+          <input type="checkbox" checked>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>systemd-resolved.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+        <label class="tui-check-row">
+          <input type="checkbox">
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>udisks2.service</span>
+          <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+      </div>
 
-    <section class="tui-panel" aria-labelledby="services-title" style="margin-top: 1rem;">
-      <h2 class="tui-heading" id="services-title">Services</h2>
-      <ul class="tui-menu">
-        <li><a class="tui-menu-item is-selected" href="#nginx">nginx.service        running</a></li>
-        <li><a class="tui-menu-item" href="#ssh">ssh.service          running</a></li>
-        <li><a class="tui-menu-item" href="#backup">backup.service       stopped</a></li>
-      </ul>
-    </section>
-
-    <section style="margin-top: 1rem;" aria-labelledby="table-title">
-      <h2 class="tui-heading" id="table-title">System status</h2>
-      <div class="tui-table-wrap">
-        <table class="tui-table">
-          <thead>
-            <tr>
-              <th>Host</th>
-              <th>Status</th>
-              <th>CPU</th>
-              <th>Memory</th>
-              <th>Uptime</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="is-selected">
-              <td>homeserver</td>
-              <td>online</td>
-              <td>14%</td>
-              <td>3.2 / 16 GB</td>
-              <td>12d 04h</td>
-            </tr>
-            <tr>
-              <td>backup</td>
-              <td>online</td>
-              <td>3%</td>
-              <td>1.1 / 8 GB</td>
-              <td>31d 19h</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="tui-actions">
+        <button class="tui-button" type="button" accesskey="o"><span class="tui-hotkey">O</span>k</button>
       </div>
     </section>
-
-    <div class="tui-actions">
-      <button class="tui-button" type="button" id="ok-button">OK</button>
-      <button class="tui-button" type="button" id="apply-button">Apply</button>
-      <button class="tui-button" type="button" id="cancel-button">Cancel</button>
-    </div>
-
-    <footer class="tui-statusbar" aria-live="polite">
-      <span id="status">Ready</span>
-      <span><span class="tui-kbd">Tab</span>: next · <span class="tui-kbd">Enter</span>: activate · <span class="tui-kbd">Esc</span>: cancel</span>
-    </footer>
   </main>
-
-  <script>
-    const status = document.querySelector("#status");
-    const windowElement = document.querySelector(".tui-window");
-
-    document.querySelector("#ok-button").addEventListener("click", () => {
-      status.textContent = "Configuration accepted";
-      status.className = "tui-success";
-    });
-
-    document.querySelector("#apply-button").addEventListener("click", () => {
-      status.textContent = "Changes applied";
-      status.className = "tui-success";
-    });
-
-    document.querySelector("#cancel-button").addEventListener("click", () => {
-      status.textContent = "Cancel requested";
-      status.className = "tui-danger";
-    });
-
-    windowElement.addEventListener("tui:escape", () => {
-      status.textContent = "Escape pressed / close requested";
-      status.className = "tui-danger";
-    });
-  </script>
 </body>
 </html>
