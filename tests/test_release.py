@@ -18,9 +18,8 @@ class ReleaseContractTests(unittest.TestCase):
         self.builder = (ROOT / "scripts/build_release.py").read_text(encoding="utf-8")
         self.workflow = (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
 
-    def test_version_is_plain_semver_and_first_release_is_0_4_0(self):
+    def test_version_is_plain_semver(self):
         self.assertRegex(self.version, VERSION_RE)
-        self.assertEqual(self.version, "0.4.0")
 
     def test_release_builder_creates_valid_deterministic_archive(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
@@ -92,7 +91,7 @@ class ReleaseContractTests(unittest.TestCase):
                     "--output-dir",
                     temporary_directory,
                     "--version",
-                    "v0.4.1",
+                    "v999.999.999",
                 ],
                 cwd=ROOT,
                 capture_output=True,
