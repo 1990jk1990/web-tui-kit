@@ -127,9 +127,7 @@ def verify_native_radio_behavior(page: Page) -> None:
 def verify_text_entry_behavior(page: Page) -> None:
     text_input = page.locator("#text-input")
     text_input.focus()
-    page.evaluate(
-        "document.querySelector('#text-input').setSelectionRange(2, 2)"
-    )
+    page.evaluate("document.querySelector('#text-input').setSelectionRange(2, 2)")
 
     page.keyboard.press("ArrowLeft")
     selection = page.evaluate(
@@ -197,6 +195,7 @@ def new_context(browser: Browser, case: InteractionCase):
 
 def run_case(browser: Browser, base_url: str, case: InteractionCase) -> None:
     context = new_context(browser, case)
+    page: Page | None = None
     try:
         page = context.new_page()
         page.goto(f"{base_url}{FIXTURE_PATH}", wait_until="networkidle")
@@ -207,10 +206,11 @@ def run_case(browser: Browser, base_url: str, case: InteractionCase) -> None:
             verify_desktop_contracts(page)
     except Exception:
         RESULT_DIR.mkdir(parents=True, exist_ok=True)
-        try:
-            page.screenshot(path=str(RESULT_DIR / f"{case.name}-failure.png"), full_page=True)
-        except Exception:
-            pass
+        if page is not None:
+            try:
+                page.screenshot(path=str(RESULT_DIR / f"{case.name}-failure.png"), full_page=True)
+            except Exception:
+                pass
         raise
     finally:
         context.close()
