@@ -1,12 +1,13 @@
 :root {
   --tui-desktop-bg: #3f6fa3;
   --tui-surface: #d6d3ce;
-  --tui-surface-light: #efefef;
+  --tui-surface-light: #eeeeec;
   --tui-text: #111111;
   --tui-muted: #4a4a4a;
-  --tui-title: #d40000;
+  --tui-title: #c90000;
   --tui-selection-bg: #2f5f93;
   --tui-selection-text: #ffffff;
+  --tui-help: #c90000;
   --tui-border-light: #ffffff;
   --tui-border-mid: #9a9a9a;
   --tui-border-dark: #4b4b4b;
@@ -29,11 +30,15 @@
   --tui-border-width: 2px;
   --tui-shadow-offset: 0.45rem;
   --tui-window-max: 58rem;
+  --tui-dialog-max: 62rem;
   --tui-control-min-height: 2rem;
+  --tui-list-row-min-height: 1.85rem;
+  --tui-scrollbar-size: 1rem;
 }
 
 @media (pointer: coarse) {
   :root {
     --tui-control-min-height: 2.75rem;
+    --tui-list-row-min-height: 2.75rem;
   }
 }
