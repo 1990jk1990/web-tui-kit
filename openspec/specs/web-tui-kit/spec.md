@@ -28,9 +28,37 @@ The default theme MUST NOT introduce rounded or pill-shaped controls, gradients,
 - **WHEN** it is rendered without a theme override
 - **THEN** the window MUST use the established hard-edged surface and bevel language rather than modern rounded-card styling
 
+### Requirement: Canonical package-configuration dialog
+
+The design system MUST provide a `.tui-dialog` pattern that can reproduce the characteristic package-configuration composition used by classic Debian/Ubuntu text interfaces: a grey beveled dialog on the blue desktop, a red title visually interrupting the top border, compact explanatory copy, a recessed selection area, and centered angle-bracket actions.
+
+#### Scenario: Reference dialog rendering
+
+- **GIVEN** a page uses `.tui-screen`, `.tui-dialog`, `.tui-dialog-title`, and `.tui-actions`
+- **WHEN** it is rendered with the default theme
+- **THEN** the result MUST preserve the canonical hard-edged dialog composition on desktop and narrow viewports
+
+### Requirement: Checklist selection pattern
+
+The design system MUST provide a scrollable checklist pattern using `.tui-checklist` and `.tui-check-row`. Checkbox state and keyboard focus/row selection MUST remain distinct: checking an item changes its `[ ]` marker, while focusing or selecting a row uses the canonical blue selection treatment.
+
+Checklist rows MAY expose short contextual help text using `.tui-help`.
+
+#### Scenario: Keyboard-focused checklist row
+
+- **GIVEN** a checklist row contains a native checkbox
+- **WHEN** that checkbox receives keyboard focus
+- **THEN** the row MUST expose a visible selected/focused state while the checkbox remains operable through normal browser keyboard behavior
+
+#### Scenario: Long checklist
+
+- **GIVEN** a checklist contains more rows than fit its configured maximum height
+- **WHEN** the checklist is rendered
+- **THEN** the selection area MUST scroll rather than expanding the dialog without bound
+
 ### Requirement: Central design tokens
 
-Reusable palette, typography, spacing, border, shadow, and control-sizing values MUST be centralized as CSS custom properties in `src/tokens.css` rather than independently redefined per component.
+Reusable palette, typography, spacing, border, shadow, scrollbar, and control-sizing values MUST be centralized as CSS custom properties in `src/tokens.css` rather than independently redefined per component.
 
 #### Scenario: Component style reuse
 
@@ -40,7 +68,7 @@ Reusable palette, typography, spacing, border, shadow, and control-sizing values
 
 ### Requirement: Core component patterns
 
-The design system MUST provide reusable patterns for windows/panels, buttons, checkbox and radio rows, text/select/textarea inputs, menus/selections, tables, action rows, and status information.
+The design system MUST provide reusable patterns for windows/panels, package-style dialogs, buttons, checkbox and radio rows, scrollable checklists, text/select/textarea inputs, menus/selections, tables, action rows, and status information.
 
 #### Scenario: Consumer uses a documented component
 
@@ -60,7 +88,7 @@ Interactive component patterns SHOULD use native semantic HTML controls wherever
 
 ### Requirement: Touch-compatible responsive behavior
 
-The same visual language MUST remain usable on narrow Android-style touch viewports. Responsive behavior MAY increase hit areas, reduce outer spacing, wrap actions, and permit horizontal table scrolling, but MUST NOT replace the interface with an unrelated modern mobile-card design.
+The same visual language MUST remain usable on narrow Android-style touch viewports. Responsive behavior MAY increase hit areas, reduce outer spacing, wrap actions, move short help text below a row label, and permit horizontal table scrolling, but MUST NOT replace the interface with an unrelated modern mobile-card design.
 
 #### Scenario: Narrow coarse-pointer viewport
 
@@ -80,13 +108,13 @@ Tables that cannot fit the available width SHOULD scroll horizontally rather tha
 
 ### Requirement: Progressive Escape handling
 
-For a `.tui-window` that opts in with `data-tui-escape-close`, pressing the Escape key MUST dispatch a bubbling `tui:escape` custom event. The UI kit MUST NOT unilaterally decide whether the consuming application hides, navigates away from, or otherwise closes the window.
+For a `.tui-window` or `.tui-dialog` that opts in with `data-tui-escape-close`, pressing the Escape key MUST dispatch a bubbling `tui:escape` custom event. The UI kit MUST NOT unilaterally decide whether the consuming application hides, navigates away from, or otherwise closes the surface.
 
-#### Scenario: Opted-in window receives Escape
+#### Scenario: Opted-in surface receives Escape
 
-- **GIVEN** an opted-in TUI window is present
+- **GIVEN** an opted-in TUI window or dialog is present
 - **WHEN** the user presses Escape
-- **THEN** the library MUST dispatch `tui:escape` from the applicable window so the consuming application can decide the resulting action
+- **THEN** the library MUST dispatch `tui:escape` from the applicable surface so the consuming application can decide the resulting action
 
 ### Requirement: Linux and Android browser use
 
@@ -98,12 +126,12 @@ The implementation MUST prioritize standards-based behavior suitable for current
 - **WHEN** it is opened in a current Chromium-based Linux or Android browser
 - **THEN** the design-system baseline MUST render and operate without requiring a platform-specific client application
 
-### Requirement: Executable visual reference
+### Requirement: Executable visual references
 
-The repository MUST provide a browser-openable demo that exercises the established reusable component language and references the canonical runtime assets instead of duplicating them.
+The repository MUST provide a browser-openable canonical package-configuration reference at `demo/index.html` and MAY provide additional component-gallery pages. Demo pages MUST reference the canonical runtime assets instead of duplicating their implementation.
 
-#### Scenario: Maintainer reviews the design system
+#### Scenario: Maintainer reviews the canonical style
 
 - **GIVEN** the repository is served as static files
 - **WHEN** a maintainer opens `demo/index.html`
-- **THEN** the page MUST load the canonical runtime assets from `src/` and show representative component patterns
+- **THEN** the page MUST load the canonical runtime assets from `src/` and present the package-configuration dialog as the primary visual reference
