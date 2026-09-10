@@ -10,17 +10,17 @@ This specification defines the accepted repository-level visual-regression contr
 
 The repository MUST maintain reviewed screenshot baselines for the canonical package-configuration demo and the core dialog gallery at fixed desktop and narrow/mobile viewports.
 
-The baselines MUST be generated with the pinned Playwright/Chromium verification toolchain and stored under `tests/visual/baselines/`.
+The baselines MUST be generated with the pinned Playwright/Chromium verification toolchain and stored under `tests/visual/baselines/`. Narrow/mobile cases MUST emulate a touch-capable mobile context so coarse-pointer CSS is exercised rather than testing only a narrow desktop viewport.
 
 #### Scenario: Canonical visual coverage
 
 - **GIVEN** the repository contains the accepted UI demos
 - **WHEN** the visual-regression runner enumerates its canonical cases
-- **THEN** it MUST cover desktop and narrow/mobile renders of both `demo/index.html` and `demo/dialogs.html`
+- **THEN** it MUST cover desktop and touch-capable narrow/mobile renders of both `demo/index.html` and `demo/dialogs.html`
 
 ### Requirement: Deterministic browser capture
 
-The visual runner MUST serve the repository locally, use fixed viewport dimensions and device scale, use the pinned Chromium build associated with the pinned Playwright version, and suppress optional motion/caret effects that could create avoidable screenshot noise.
+The visual runner MUST serve the repository locally, use fixed viewport and screen dimensions and device scale, use the pinned Chromium build associated with the pinned Playwright version, and suppress optional motion/caret effects that could create avoidable screenshot noise.
 
 The Linux CI environment is the canonical rendering environment for accepted baselines.
 
@@ -29,6 +29,12 @@ The Linux CI environment is the canonical rendering environment for accepted bas
 - **GIVEN** unchanged repository content and the pinned verification dependencies
 - **WHEN** the visual suite runs in the canonical Linux CI environment
 - **THEN** the captured images MUST remain within the configured pixel-difference tolerance of the reviewed baselines
+
+#### Scenario: Mobile touch rendering
+
+- **GIVEN** a canonical narrow/mobile visual case
+- **WHEN** its browser context is created
+- **THEN** mobile and touch emulation MUST be enabled so responsive rules for coarse pointers participate in the screenshot
 
 ### Requirement: Visual drift detection
 
