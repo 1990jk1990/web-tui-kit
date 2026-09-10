@@ -3,8 +3,8 @@
 
   const listNavigationKeys = new Set(["ArrowUp", "ArrowDown", "Home", "End"]);
   const listItemSelector = [
-    'input[type="checkbox"]:not(:disabled)',
-    'button:not(:disabled)',
+    'input[type="checkbox"]:not(:disabled):not([aria-disabled="true"])',
+    'button:not(:disabled):not([aria-disabled="true"])',
     'a[href]:not([aria-disabled="true"])',
     '[data-tui-list-item][tabindex]:not([tabindex="-1"]):not([aria-disabled="true"]):not([disabled])'
   ].join(", ");
