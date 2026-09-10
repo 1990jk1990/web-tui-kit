@@ -34,6 +34,7 @@
   --tui-control-min-height: 2rem;
   --tui-list-row-min-height: 1.85rem;
   --tui-scrollbar-size: 1rem;
+  --tui-progress-height: 1.35rem;
 }
 
 @media (pointer: coarse) {
