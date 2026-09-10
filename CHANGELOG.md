@@ -1,8 +1,12 @@
 # Changelog
 
-All notable user-visible changes will be recorded here once release versioning begins.
+All notable user-visible changes are recorded here.
 
 ## Unreleased
+
+## 0.4.0 - 2026-09-11
+
+First tagged pre-1.0 release.
 
 - Initial framework-independent web TUI design-system scaffold.
 - AI-DOC-1 v1.3 project memory, architecture, requirements, validation, tests, and CI.
@@ -14,4 +18,6 @@ All notable user-visible changes will be recorded here once release versioning b
 - Refined optional list navigation so native radio-group and text-entry arrow behavior is never intercepted; disabled, hidden, inert, and unavailable choices are skipped.
 - Added disabled choice-row presentation and `forced-colors` system-color overrides for high-contrast environments.
 - Established a motion-free core interaction contract: no required decorative animation, transitions, or smooth scrolling.
-- Added pinned Playwright/Chromium visual regression coverage with reviewed desktop/mobile baselines for the canonical package and core-dialog demos plus CI failure artifacts.
+- Added pinned Playwright/Chromium visual regression coverage with reviewed desktop and touch-capable mobile baselines for the canonical package and core-dialog demos plus CI failure artifacts.
+- Added Semantic Versioning, immutable tagged distribution, deterministic focused release ZIP/checksum generation, and verified tag-triggered GitHub prerelease publication.
+- Kept direct tagged vendoring as the primary distribution model; no npm/package-registry dependency is introduced for v0.4.0.
