@@ -56,7 +56,7 @@ See `docs/index.md` for the documentation entry point.
 
 A consuming project can use the following instruction:
 
-> Use `https://github.com/1990jk1990/web-tui-kit` as the canonical UI design system. Read `AGENTS.md`, `ai-doc-1.yaml`, the current OpenSpec specification, `DESIGN_SYSTEM.md`, and `demo/index.html` before implementing UI. Reuse the existing tokens, CSS classes, and interaction patterns instead of inventing a new visual language. The application must remain usable in Linux desktop browsers and Android browsers.
+> Use `https://github.com/1990jk1990/web-tui-kit` as the canonical UI design system. Read `AGENTS.md`, `ai-doc-1.yaml`, the current OpenSpec specification, `DESIGN_SYSTEM.md`, and `demo/index.html` before implementing UI. Treat `demo/index.html` as the primary visual target and `demo/components.html` as the component catalog. Reuse the existing tokens, CSS classes, and interaction patterns instead of inventing a new visual language. The application must remain usable in Linux desktop browsers and Android browsers.
 
 ## Verification
 
