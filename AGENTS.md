@@ -29,7 +29,7 @@ Before non-trivial changes:
 3. Read the relevant current specification under `openspec/specs/`.
 4. Read relevant architecture and ADRs under `docs/`.
 5. For UI work, read `DESIGN_SYSTEM.md`, `src/tokens.css`, `src/tui.css`, and `demo/index.html`.
-6. Inspect relevant tests and GitHub work state.
+6. Inspect relevant tests, visual baselines when UI output may change, and GitHub work state.
 
 ## Canonical sources
 
@@ -39,9 +39,10 @@ Before non-trivial changes:
 - Important rationale → `docs/decisions/`.
 - Exact design-token values → `src/tokens.css`.
 - Implementation → `src/`.
-- Executable behavior evidence → `tests/`.
+- Executable structural behavior evidence → `tests/test_repository.py`.
+- Reviewed visual regression baselines → `tests/visual/baselines/`.
 - Primary visual reference → `demo/index.html`.
-- Broader component examples → `demo/components.html`.
+- Broader component examples → `demo/components.html` and `demo/dialogs.html`.
 - Open work → GitHub Issues/Projects.
 - Release identity → Git tags/GitHub Releases.
 - Secrets → external secret store; never this repository.
@@ -71,10 +72,13 @@ For non-trivial component behavior changes:
 
 1. update or create the relevant OpenSpec change/specification,
 2. implement from existing tokens before adding one-off values,
-3. update `demo/index.html` when the canonical composition changes and `demo/components.html` when broader reusable component coverage changes,
-4. add or update tests,
-5. update architecture or an ADR only when the change affects current structure or durable rationale,
-6. reconcile `DESIGN_SYSTEM.md` if its practical usage guidance is affected.
+3. update `demo/index.html` when the canonical composition changes and the broader demo pages when reusable component coverage changes,
+4. add or update structural tests,
+5. run the visual-regression suite when canonical UI output can change and explicitly review any baseline update,
+6. update architecture or an ADR only when the change affects current structure or durable rationale,
+7. reconcile `DESIGN_SYSTEM.md` if its practical usage guidance is affected.
+
+Normal CI visual verification is read-only. Do not make CI automatically accept new screenshots. For an intentional visual change, use the documented `python scripts/visual_regression.py --update` workflow and review the PNG changes together with the implementation. The Linux GitHub Actions environment is the canonical baseline-rendering environment.
 
 ## Change classes
 
@@ -91,4 +95,4 @@ Never commit secrets or real production data. Explain destructive/high-impact ac
 
 ## Completion check
 
-A UI change is complete only when affected canonical documentation is reconciled, tests pass, the result is visually consistent, keyboard and touch use remain viable, narrow-screen behavior remains intentional, and reusable patterns are represented in the appropriate demo pages.
+A UI change is complete only when affected canonical documentation is reconciled, structural tests pass, applicable visual baselines pass or are deliberately reviewed/updated, the result is visually consistent, keyboard and touch use remain viable, narrow-screen behavior remains intentional, and reusable patterns are represented in the appropriate demo pages.
