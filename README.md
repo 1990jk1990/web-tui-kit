@@ -4,7 +4,7 @@ A reusable, framework-independent browser UI design system inspired by Debian de
 
 The project is the canonical UI reference for browser-based applications that should share the same text-oriented visual language on Linux desktops and Android devices.
 
-**Version:** `0.4.0` (pre-1.0). The canonical version is stored in `VERSION`; released versions use immutable `vMAJOR.MINOR.PATCH` Git tags.
+**Version:** `0.5.0` (pre-1.0). The canonical version is stored in `VERSION`; released versions use immutable `vMAJOR.MINOR.PATCH` Git tags.
 
 ## Quick start
 
@@ -27,10 +27,10 @@ No application build step and no JavaScript framework are required.
 
 ## Distribution and use in another project
 
-For reproducible downstream use, pin an immutable release tag instead of copying from the moving `main` branch. For the first release line:
+For reproducible downstream use, pin an immutable release tag instead of copying from the moving `main` branch. For the current release line:
 
 ```bash
-git clone --branch v0.4.0 --depth 1 https://github.com/1990jk1990/web-tui-kit.git
+git clone --branch v0.5.0 --depth 1 https://github.com/1990jk1990/web-tui-kit.git
 ```
 
 Copy or vendor the files from `src/` and include them in the consuming application:
@@ -43,7 +43,7 @@ Copy or vendor the files from `src/` and include them in the consuming applicati
 
 `src/tui.js` is optional when the consuming application does not need the small progressive keyboard enhancements. The exact CSS token values are defined in `src/tokens.css`; reusable component implementation lives in `src/tui.css` and `src/tui.js`.
 
-Tagged GitHub prereleases also provide a focused `web-tui-kit-MAJOR.MINOR.PATCH.zip` and matching SHA-256 checksum containing the runtime, executable demos, version marker, changelog, security guidance, and practical design-system/AI-agent references. `v0.4.0` does not require or publish an npm package; direct tagged vendoring is the primary distribution model.
+Tagged GitHub prereleases provide a focused `web-tui-kit-MAJOR.MINOR.PATCH.zip` and matching SHA-256 checksum containing the runtime, executable demos, framework/template integration recipes, version marker, changelog, security guidance, and practical design-system/AI-agent references. Pre-1.0 releases do not require or publish an npm package; direct tagged vendoring is the primary distribution model.
 
 For the closest match to the original Debian/Ubuntu package-configuration look, start from `.tui-screen`, `.tui-dialog`, `.tui-dialog-title`, `.tui-checklist`, `.tui-check-row`, `.tui-actions`, and `.tui-button` as demonstrated in `demo/index.html`.
 
@@ -88,7 +88,7 @@ See `docs/index.md` for the documentation entry point.
 
 For a stable released reference, a consuming project can use:
 
-> Use `https://github.com/1990jk1990/web-tui-kit/tree/v0.4.0` as the canonical UI design system. Read `AGENTS.md`, `VERSION`, the current OpenSpec specifications, `DESIGN_SYSTEM.md`, and `demo/index.html` before implementing UI. If the target app uses React, Vue, or server-rendered templates, also read `docs/project/framework-integration.md` and the matching example under `examples/`. Treat `demo/index.html` as the primary visual target, `demo/dialogs.html` as the core dialog catalog, and `demo/components.html` as the broader component catalog. Reuse the existing tokens, CSS classes, semantic controls, and interaction patterns instead of inventing a new visual language or framework-specific styling layer. The application must remain usable in Linux desktop browsers and Android browsers.
+> Use `https://github.com/1990jk1990/web-tui-kit/tree/v0.5.0` as the canonical UI design system. Read `AGENTS.md`, `VERSION`, the current OpenSpec specifications, `DESIGN_SYSTEM.md`, and `demo/index.html` before implementing UI. If the target app uses React, Vue, or server-rendered templates, also read `docs/project/framework-integration.md` and the matching example under `examples/`. Treat `demo/index.html` as the primary visual target, `demo/dialogs.html` as the core dialog catalog, and `demo/components.html` as the broader component catalog. Reuse the existing tokens, CSS classes, semantic controls, and interaction patterns instead of inventing a new visual language or framework-specific styling layer. The application must remain usable in Linux desktop browsers and Android browsers.
 
 Using an immutable release tag is preferable to pointing an automated consumer at `main`, because the visual and behavioral reference cannot change underneath that consumer.
 
