@@ -22,13 +22,14 @@ class VisualCase:
     width: int
     height: int
     full_page: bool
+    mobile: bool = False
 
 
 CASES = (
     VisualCase("package-desktop", "/demo/index.html", 1280, 800, False),
-    VisualCase("package-mobile", "/demo/index.html", 390, 844, True),
+    VisualCase("package-mobile", "/demo/index.html", 390, 844, True, True),
     VisualCase("dialogs-desktop", "/demo/dialogs.html", 1280, 1000, True),
-    VisualCase("dialogs-mobile", "/demo/dialogs.html", 390, 844, True),
+    VisualCase("dialogs-mobile", "/demo/dialogs.html", 390, 844, True, True),
 )
 
 
@@ -66,7 +67,10 @@ def prepare_page(page: Page, base_url: str, case: VisualCase) -> None:
 def capture(browser: Browser, base_url: str, case: VisualCase, destination: Path) -> None:
     context = browser.new_context(
         viewport={"width": case.width, "height": case.height},
+        screen={"width": case.width, "height": case.height},
         device_scale_factor=1,
+        is_mobile=case.mobile,
+        has_touch=case.mobile,
         locale="en-US",
         timezone_id="UTC",
         color_scheme="light",
