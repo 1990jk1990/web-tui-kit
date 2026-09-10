@@ -6,6 +6,12 @@ The design system is delivered as static browser assets. `src/tokens.css` owns e
 
 This keeps the library usable by plain HTML applications and by applications that use React, Vue, server-rendered templates, or other frameworks, provided they preserve the relevant markup and class contracts.
 
+## Framework integration strategy
+
+Frameworks are consumers of the browser-native contract, not alternate design-system runtimes. `examples/react/`, `examples/vue/`, and `examples/server-rendered/` provide copy-ready integration recipes that demonstrate framework-owned state/lifecycle behavior while reusing canonical classes, native controls, CSS assets, and custom events.
+
+No maintained framework adapter layer is introduced while semantic markup, canonical CSS classes/custom properties, and the existing progressive JavaScript contract are sufficient. This avoids duplicated styling/API surfaces and framework-version maintenance in the core repository. A future adapter requires a concrete capability gap and a deliberate follow-up architecture/specification decision. ADR-0004 records the rationale.
+
 ## Progressive enhancement
 
 Native HTML controls provide their normal semantics and keyboard behavior. JavaScript is intentionally small and additive; the current enhancements dispatch a custom Escape event for opted-in windows/dialogs and provide narrowly scoped optional list focus navigation without replacing native activation or selection behavior.
@@ -24,7 +30,7 @@ Exact values belong to the token file rather than architecture prose.
 
 ## Verification strategy
 
-Fast Python unit tests enforce repository contracts such as required tokens, selectors, canonical demo structure, small JavaScript behavior invariants, version/release archive rules, and release-workflow safeguards. AI-DOC-1 validation and a strict MkDocs build verify repository/documentation structure.
+Fast Python unit tests enforce repository contracts such as required tokens, selectors, canonical demo structure, small JavaScript behavior invariants, framework-recipe reuse/boundaries, version/release archive rules, and release-workflow safeguards. AI-DOC-1 validation and a strict MkDocs build verify repository/documentation structure.
 
 Visual output is verified separately with a pinned Python Playwright release and its matching Chromium build. `scripts/visual_regression.py` serves the repository locally, renders fixed desktop and touch-capable narrow/mobile cases for `demo/index.html` and `demo/dialogs.html`, and compares those renders with reviewed PNG baselines under `tests/visual/baselines/`. The Linux GitHub Actions environment is the canonical screenshot environment. Failed comparisons retain actual/diff images as workflow artifacts.
 
