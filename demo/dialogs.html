@@ -42,11 +42,15 @@
 
     <section class="tui-dialog" aria-labelledby="menu-title">
       <h2 class="tui-dialog-title" id="menu-title">Menu</h2>
-      <p class="tui-dialog-copy">Choose an action. Arrow keys, Home, and End move between entries.</p>
+      <p class="tui-dialog-copy">Choose an action. Arrow keys, Home, and End move between enabled entries.</p>
       <div class="tui-choice-list" data-tui-list role="group" aria-label="Available actions">
         <button class="tui-menu-row" type="button">
           <span>View service status</span>
           <span class="tui-help">&lt;Status&gt;</span>
+        </button>
+        <button class="tui-menu-row" type="button" disabled>
+          <span>Install optional plugin</span>
+          <span class="tui-help">&lt;Unavailable&gt;</span>
         </button>
         <button class="tui-menu-row" type="button">
           <span>Restart selected services</span>
@@ -64,8 +68,8 @@
 
     <section class="tui-dialog" aria-labelledby="radio-title">
       <h2 class="tui-dialog-title" id="radio-title">Radiolist</h2>
-      <p class="tui-dialog-copy">Choose one startup mode.</p>
-      <div class="tui-radiolist" data-tui-list role="radiogroup" aria-label="Startup mode">
+      <p class="tui-dialog-copy">Choose one startup mode. Native radio arrow-key behavior is preserved.</p>
+      <div class="tui-radiolist" role="radiogroup" aria-label="Startup mode">
         <label class="tui-radio-row">
           <input type="radio" name="startup-mode" checked>
           <span class="tui-mark" aria-hidden="true"></span>
@@ -79,10 +83,10 @@
           <span class="tui-help">&lt;Default&gt;</span>
         </label>
         <label class="tui-radio-row">
-          <input type="radio" name="startup-mode">
+          <input type="radio" name="startup-mode" disabled>
           <span class="tui-mark" aria-hidden="true"></span>
           <span>Performance mode</span>
-          <span class="tui-help">&lt;Advanced&gt;</span>
+          <span class="tui-help">&lt;Unavailable&gt;</span>
         </label>
       </div>
       <div class="tui-actions">
@@ -100,6 +104,12 @@
           <span class="tui-mark" aria-hidden="true"></span>
           <span>nginx.service</span>
           <span class="tui-help">&lt;Help&gt;</span>
+        </label>
+        <label class="tui-check-row">
+          <input type="checkbox" disabled>
+          <span class="tui-mark" aria-hidden="true"></span>
+          <span>legacy.service</span>
+          <span class="tui-help">&lt;Unavailable&gt;</span>
         </label>
         <label class="tui-check-row">
           <input type="checkbox">
