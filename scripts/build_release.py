@@ -52,6 +52,13 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def display_path(path: Path) -> str:
+    try:
+        return str(path.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
 def write_member(archive: zipfile.ZipFile, source: Path, archive_name: str) -> None:
     info = zipfile.ZipInfo(archive_name, date_time=FIXED_ZIP_TIME)
     info.compress_type = zipfile.ZIP_DEFLATED
@@ -146,9 +153,9 @@ def main() -> int:
         if first_digest != second_digest:
             raise RuntimeError("release archive is not deterministic across consecutive builds")
 
-    print(f"Built {archive_path.relative_to(ROOT)}")
+    print(f"Built {display_path(archive_path)}")
     print(f"SHA256 {sha256(archive_path)}")
-    print(f"Checksum {checksum_path.relative_to(ROOT)}")
+    print(f"Checksum {display_path(checksum_path)}")
     return 0
 
 
