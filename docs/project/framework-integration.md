@@ -16,7 +16,7 @@ React, Vue, server-rendered templates, or another application architecture may g
 
 ## Pin a release first
 
-For reproducible applications and coding-agent work, copy/vendor from an immutable tag such as `v0.4.0` rather than `main`. This prevents later design-system development from silently changing an existing consumer.
+For reproducible applications and coding-agent work, copy/vendor from an immutable tag such as `v0.5.0` rather than `main`. This prevents later design-system development from silently changing an existing consumer.
 
 When upgrading to a newer tag, review `CHANGELOG.md`, accepted OpenSpec, and relevant demos before updating vendored assets.
 
