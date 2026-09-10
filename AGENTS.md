@@ -40,7 +40,8 @@ Before non-trivial changes:
 - Exact design-token values → `src/tokens.css`.
 - Implementation → `src/`.
 - Executable behavior evidence → `tests/`.
-- Visual examples → `demo/index.html`.
+- Primary visual reference → `demo/index.html`.
+- Broader component examples → `demo/components.html`.
 - Open work → GitHub Issues/Projects.
 - Release identity → Git tags/GitHub Releases.
 - Secrets → external secret store; never this repository.
@@ -54,7 +55,8 @@ Follow the current OpenSpec specification first. In particular, preserve these e
 - no rounded corners, gradients, blur, glass effects, soft shadows, or modern card-style visual language,
 - monospace typography for core application chrome,
 - hard light/dark borders for raised and recessed surfaces,
-- canonical blue desktop background, grey surfaces, red title accents, and blue selections,
+- canonical blue desktop background, grey surfaces, red title/help accents, and blue selections,
+- package-style dialogs use the canonical composition shown in `demo/index.html`,
 - native semantic HTML wherever practical,
 - keyboard reachability for interactive controls,
 - touch usability on Android without replacing the visual language with a separate mobile design,
@@ -69,7 +71,7 @@ For non-trivial component behavior changes:
 
 1. update or create the relevant OpenSpec change/specification,
 2. implement from existing tokens before adding one-off values,
-3. update `demo/index.html` when a reusable visual pattern changes or is added,
+3. update `demo/index.html` when the canonical composition changes and `demo/components.html` when broader reusable component coverage changes,
 4. add or update tests,
 5. update architecture or an ADR only when the change affects current structure or durable rationale,
 6. reconcile `DESIGN_SYSTEM.md` if its practical usage guidance is affected.
@@ -89,4 +91,4 @@ Never commit secrets or real production data. Explain destructive/high-impact ac
 
 ## Completion check
 
-A UI change is complete only when affected canonical documentation is reconciled, tests pass, the result is visually consistent, keyboard and touch use remain viable, narrow-screen behavior remains intentional, and reusable patterns are represented in the demo where appropriate.
+A UI change is complete only when affected canonical documentation is reconciled, tests pass, the result is visually consistent, keyboard and touch use remain viable, narrow-screen behavior remains intentional, and reusable patterns are represented in the appropriate demo pages.
