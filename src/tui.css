@@ -52,8 +52,13 @@ textarea {
 .tui-dialog {
   position: relative;
   width: min(100%, var(--tui-dialog-max));
+  margin-inline: auto;
   padding: clamp(1.5rem, 4vw, 2.4rem) clamp(1rem, 4vw, 2.6rem) clamp(1rem, 3vw, 1.5rem);
   box-shadow: var(--tui-shadow-offset) var(--tui-shadow-offset) 0 var(--tui-shadow);
+}
+
+.tui-dialog--compact {
+  max-width: 42rem;
 }
 
 .tui-dialog-title {
@@ -201,7 +206,8 @@ textarea {
 
 .tui-check input,
 .tui-radio input,
-.tui-check-row input {
+.tui-check-row input,
+.tui-radio-row input {
   position: absolute;
   inline-size: 1px;
   block-size: 1px;
@@ -239,7 +245,9 @@ textarea {
   outline-offset: 2px;
 }
 
-.tui-checklist {
+.tui-choice-list,
+.tui-checklist,
+.tui-radiolist {
   max-height: min(50vh, 24rem);
   overflow-y: auto;
   padding: var(--tui-space-1) 0;
@@ -251,21 +259,28 @@ textarea {
   scrollbar-width: auto;
 }
 
-.tui-checklist::-webkit-scrollbar {
+.tui-choice-list::-webkit-scrollbar,
+.tui-checklist::-webkit-scrollbar,
+.tui-radiolist::-webkit-scrollbar {
   width: var(--tui-scrollbar-size);
 }
 
-.tui-checklist::-webkit-scrollbar-track {
+.tui-choice-list::-webkit-scrollbar-track,
+.tui-checklist::-webkit-scrollbar-track,
+.tui-radiolist::-webkit-scrollbar-track {
   background: var(--tui-surface);
   border-left: 1px solid var(--tui-border-mid);
 }
 
-.tui-checklist::-webkit-scrollbar-thumb {
+.tui-choice-list::-webkit-scrollbar-thumb,
+.tui-checklist::-webkit-scrollbar-thumb,
+.tui-radiolist::-webkit-scrollbar-thumb {
   background: var(--tui-border-mid);
   border: 2px solid var(--tui-surface);
 }
 
-.tui-check-row {
+.tui-check-row,
+.tui-radio-row {
   position: relative;
   display: grid;
   grid-template-columns: 3ch minmax(0, 1fr) auto;
@@ -277,29 +292,80 @@ textarea {
   cursor: pointer;
 }
 
+.tui-check-row .tui-mark::before,
+.tui-radio-row .tui-mark::before {
+  font-weight: 700;
+}
+
 .tui-check-row .tui-mark::before {
   content: "[ ]";
-  font-weight: 700;
 }
 
 .tui-check-row input:checked + .tui-mark::before {
   content: "[x]";
 }
 
+.tui-radio-row .tui-mark::before {
+  content: "( )";
+}
+
+.tui-radio-row input:checked + .tui-mark::before {
+  content: "(*)";
+}
+
 .tui-check-row:hover,
 .tui-check-row.is-selected,
-.tui-check-row:has(input:focus-visible) {
+.tui-check-row:has(input:focus-visible),
+.tui-radio-row:hover,
+.tui-radio-row.is-selected,
+.tui-radio-row:has(input:focus-visible) {
   background: var(--tui-selection-bg);
   color: var(--tui-selection-text);
 }
 
-.tui-check-row:has(input:focus-visible) {
+.tui-check-row:has(input:focus-visible),
+.tui-radio-row:has(input:focus-visible) {
   outline: 1px dotted var(--tui-focus);
   outline-offset: -2px;
 }
 
-.tui-check-row .tui-help {
+.tui-check-row .tui-help,
+.tui-radio-row .tui-help {
   justify-self: end;
+  white-space: nowrap;
+}
+
+.tui-menu-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: var(--tui-list-row-min-height);
+  gap: var(--tui-space-3);
+  padding: 0.15rem var(--tui-space-2);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--tui-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.tui-menu-row:hover,
+.tui-menu-row:focus-visible,
+.tui-menu-row.is-selected {
+  outline: 0;
+  background: var(--tui-selection-bg);
+  color: var(--tui-selection-text);
+}
+
+.tui-menu-row:focus-visible {
+  outline: 1px dotted var(--tui-focus);
+  outline-offset: -2px;
+}
+
+.tui-menu-row .tui-help {
+  margin-left: auto;
   white-space: nowrap;
 }
 
@@ -329,6 +395,42 @@ textarea {
   outline: 0;
   background: var(--tui-selection-bg);
   color: var(--tui-selection-text);
+}
+
+.tui-gauge {
+  display: grid;
+  gap: var(--tui-space-2);
+}
+
+.tui-progress {
+  display: block;
+  width: 100%;
+  height: var(--tui-progress-height);
+  appearance: none;
+  border-style: solid;
+  border-width: var(--tui-border-width);
+  border-color: var(--tui-border-dark) var(--tui-border-light) var(--tui-border-light) var(--tui-border-dark);
+  border-radius: 0;
+  background: var(--tui-surface-light);
+  color: var(--tui-selection-bg);
+  accent-color: var(--tui-selection-bg);
+}
+
+.tui-progress::-webkit-progress-bar {
+  background: var(--tui-surface-light);
+}
+
+.tui-progress::-webkit-progress-value {
+  background: var(--tui-selection-bg);
+}
+
+.tui-progress::-moz-progress-bar {
+  background: var(--tui-selection-bg);
+}
+
+.tui-gauge-value {
+  text-align: center;
+  font-weight: 700;
 }
 
 .tui-table-wrap {
@@ -419,13 +521,25 @@ textarea {
     padding-inline: var(--tui-space-4);
   }
 
-  .tui-check-row {
+  .tui-check-row,
+  .tui-radio-row {
     grid-template-columns: 3ch minmax(0, 1fr);
   }
 
-  .tui-check-row .tui-help {
+  .tui-check-row .tui-help,
+  .tui-radio-row .tui-help {
     grid-column: 2;
     justify-self: start;
+  }
+
+  .tui-menu-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .tui-menu-row .tui-help {
+    margin-left: 0;
   }
 
   .tui-actions {
@@ -440,9 +554,11 @@ textarea {
 @media (pointer: coarse) {
   .tui-button,
   .tui-menu-item,
+  .tui-menu-row,
   .tui-check,
   .tui-radio,
-  .tui-check-row {
+  .tui-check-row,
+  .tui-radio-row {
     padding-block: var(--tui-space-2);
   }
 }
