@@ -9,7 +9,7 @@ A modern browser is sufficient to use the library. Python 3 is convenient for se
 For a consuming application, pin an immutable release tag rather than depending on the moving `main` branch. For the current pre-1.0 release:
 
 ```bash
-git clone --branch v0.5.0 --depth 1 https://github.com/1990jk1990/web-tui-kit.git
+git clone --branch v0.6.0 --depth 1 https://github.com/1990jk1990/web-tui-kit.git
 cd web-tui-kit
 ```
 
