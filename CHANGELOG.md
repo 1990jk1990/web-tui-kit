@@ -14,3 +14,4 @@ All notable user-visible changes will be recorded here once release versioning b
 - Refined optional list navigation so native radio-group and text-entry arrow behavior is never intercepted; disabled, hidden, inert, and unavailable choices are skipped.
 - Added disabled choice-row presentation and `forced-colors` system-color overrides for high-contrast environments.
 - Established a motion-free core interaction contract: no required decorative animation, transitions, or smooth scrolling.
+- Added pinned Playwright/Chromium visual regression coverage with reviewed desktop/mobile baselines for the canonical package and core-dialog demos plus CI failure artifacts.
