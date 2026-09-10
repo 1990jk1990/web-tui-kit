@@ -22,6 +22,6 @@ Tagged pre-1.0 releases publish a focused ZIP plus a SHA-256 checksum. Consumers
 
 ## Supported versions
 
-Until `v0.4.0` is published, security fixes target the active `main` development line. After tagged pre-1.0 releases begin, only the latest published pre-1.0 release and the active development line are expected to receive security fixes. Older pre-1.0 tags are retained for auditability but are not maintained as long-term support branches.
+Tagged pre-1.0 releases are now active. Security fixes are expected to target the latest published pre-1.0 release and the active development line. When `v0.5.0` is published, it becomes the maintained pre-1.0 release line and `v0.4.0` remains available for auditability but is not a long-term support branch.
 
-This policy will be revisited when the project reaches `1.0.0` or if a downstream consumer creates a concrete need for longer support windows.
+Older pre-1.0 tags are retained for auditability rather than maintained in parallel. This policy will be revisited when the project reaches `1.0.0` or if a downstream consumer creates a concrete need for longer support windows.
