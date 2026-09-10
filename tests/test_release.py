@@ -109,7 +109,9 @@ class ReleaseContractTests(unittest.TestCase):
             "python -m unittest discover -s tests -v",
             "python scripts/validate_ai_doc_1.py",
             "mkdocs build --strict",
+            "python -m playwright install --with-deps chromium firefox",
             "python scripts/visual_regression.py",
+            "python scripts/interaction_regression.py",
             'python scripts/build_release.py --version "${GITHUB_REF_NAME}" --check',
             'gh release create "${GITHUB_REF_NAME}"',
             "--verify-tag",
@@ -123,6 +125,7 @@ class ReleaseContractTests(unittest.TestCase):
             'git merge-base --is-ancestor "${GITHUB_SHA}" origin/main',
             "python -m unittest discover -s tests -v",
             "python scripts/visual_regression.py",
+            "python scripts/interaction_regression.py",
             "python scripts/build_release.py",
         ):
             self.assertLess(self.workflow.index(verification), publication)
