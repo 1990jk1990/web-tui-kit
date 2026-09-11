@@ -2,11 +2,11 @@
 
 These examples show how consuming applications can assemble the canonical `web-tui-kit` browser contract from common application stacks.
 
-They are **not** a second implementation of the design system and they are not published framework adapter packages. Exact visuals and behavior remain owned by `src/`, OpenSpec, and the canonical demos.
+They are **not** a second implementation of the design system and they are not published framework adapter packages. Exact visuals and behavior remain owned by `src/`, OpenSpec, and the canonical demos. The intentionally supported downstream names and semantic relationships are inventoried in `docs/project/public-contract.md`.
 
 ## Stable consumption
 
-For reproducible downstream use, vendor files from an immutable release tag such as `v0.8.0` rather than the moving `main` branch. A consuming project normally copies:
+For reproducible downstream use, vendor files from immutable release tag `v0.9.0` rather than the moving `main` branch. A consuming project normally copies:
 
 ```text
 src/tokens.css
@@ -30,7 +30,7 @@ The pinned verification versions are evidence anchors, not a support matrix for 
 
 ## Integration rules
 
-Do not copy CSS declarations out of `src/tui.css` into framework components. Reuse the canonical classes. Do not recreate tokens in JavaScript or framework theme objects when CSS custom properties can be consumed directly.
+Do not copy CSS declarations out of `src/tui.css` into framework components. Reuse the canonical public classes. Do not recreate tokens in JavaScript or framework theme objects when the public CSS custom properties can be consumed directly.
 
 Native form controls remain the semantic source of truth. Framework state may control their values, but should not replace them with non-semantic clickable containers.
 
@@ -38,4 +38,4 @@ Native form controls remain the semantic source of truth. Framework state may co
 
 `data-tui-list` is optional progressive focus navigation. Frameworks should not add a second ArrowUp/ArrowDown/Home/End handler on the same list unless they intentionally replace that contract.
 
-See `docs/project/framework-integration.md` for detailed guidance.
+See `docs/project/framework-integration.md` for detailed guidance and `docs/project/public-contract.md` for the supported stability boundary.
