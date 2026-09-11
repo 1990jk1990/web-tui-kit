@@ -4,6 +4,10 @@ All notable user-visible changes are recorded here.
 
 ## Unreleased
 
+## 0.7.0 - 2026-09-11
+
+Accessibility semantics verification release.
+
 - Added browser-driven accessibility-semantic regression coverage over the canonical package and dialog demos in pinned Chromium and Firefox.
 - Added a narrow touch-capable Chromium semantic case while keeping browser semantic automation distinct from physical Android and assistive-technology certification.
 - Kept presentation-only `.tui-dialog` surfaces semantically honest as named regions and excluded purely visual helper hints from native control accessible names.

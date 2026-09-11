@@ -4,7 +4,7 @@ This document is the maintainer procedure for tagged pre-1.0 releases.
 
 ## Versioning policy
 
-`web-tui-kit` uses Semantic Versioning (`MAJOR.MINOR.PATCH`). The canonical plain version is stored in `VERSION`; Git tags use the same value with a `v` prefix, for example `VERSION=0.6.0` and tag `v0.6.0`.
+`web-tui-kit` uses Semantic Versioning (`MAJOR.MINOR.PATCH`). The canonical plain version is stored in `VERSION`; Git tags use the same value with a `v` prefix, for example `VERSION=0.7.0` and tag `v0.7.0`.
 
 Before `1.0.0`, compatibility is still evolving:
 
