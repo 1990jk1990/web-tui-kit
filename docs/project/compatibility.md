@@ -59,15 +59,19 @@ If a Firefox-specific visual or semantic defect is reported, add focused evidenc
 
 ## Public contract and 1.0 interpretation
 
-The v0.9 public-contract audit turns the already exercised browser-native surface into an explicit compatibility inventory. Structural public-contract tests protect declared `--tui-*` token names, `tui-*` classes, scoped state hooks, progressive data attributes/events, and release inclusion from silent drift. Browser visual/interaction/accessibility suites continue to validate behavior rather than replacing that inventory.
+The v0.9 public-contract audit turned the exercised browser-native surface into an explicit compatibility inventory. Structural public-contract tests protect declared `--tui-*` token names, `tui-*` classes, scoped state hooks, progressive data attributes/events, and release inclusion from silent drift. Browser visual/interaction/accessibility suites validate behavior without replacing that inventory.
 
-A future `1.0.0` decision requires the declared public contract/stability rules and all existing release gates to be green. It does **not** require converting current evidence gaps into unsupported certification claims. In particular, no physical Android, real assistive-technology, WCAG certification, registry publication, maintained framework adapter, or exhaustive framework-version matrix is currently a 1.0 prerequisite. Those domains remain documented gaps or future product decisions unless accepted requirements change.
+Published `v0.9.0` then passed every established release gate, including unchanged canonical Chromium pixels, Chromium/Firefox interaction and semantic verification, representative framework-recipe execution, and deterministic archive validation. That evidence, together with completion of the selected pre-1.0 cleanup and the absence of another focused open product/technical gap, supports the deliberate `1.0.0` stability transition.
+
+Starting with 1.0, normal Semantic Versioning applies to the declared public contract. This stability commitment does **not** convert current evidence gaps into unsupported certification claims. In particular, no physical Android, real assistive-technology, WCAG certification, registry publication, maintained framework adapter, or exhaustive framework-version matrix is implied by 1.0. Those domains remain documented gaps or future product decisions unless accepted requirements change.
 
 ## Release interpretation
 
-For future pre-1.0 releases, automated canonical Chromium screenshots plus Chromium/Firefox interaction and accessibility-semantic verification provide the normal browser release gates. Representative touch-capable Chromium evidence supports the Android browser design target but must continue to be described as emulation/browser evidence rather than physical-device certification.
+Stable 1.x releases retain the same automated browser release gates used to establish the 1.0 baseline: canonical Chromium screenshots, Chromium/Firefox interaction and accessibility-semantic verification, representative touch-capable Chromium evidence, representative framework/template recipe verification, structural/public-contract tests, documentation validation, and deterministic archive validation.
 
-Tag-triggered publication runs the interaction, accessibility-semantic, and representative framework/template recipe suites before release artifact creation/publication, so a regression in the exercised contracts blocks a future release. The deterministic focused archive also carries `docs/project/public-contract.md`, allowing downstream users to see the supported stability boundary together with the runtime.
+Tag-triggered publication runs those gates before release artifact creation/publication. `v0.*` tags remain GitHub prereleases, while `v1.0.0` and later stable-line tags publish normal GitHub Releases. The deterministic focused archive carries `docs/project/public-contract.md`, allowing downstream users to see the supported stability boundary together with the runtime.
+
+Representative touch-capable Chromium evidence supports the Android browser design target but must continue to be described as emulation/browser evidence rather than physical-device certification.
 
 ## Known verification gaps
 
