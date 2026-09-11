@@ -19,6 +19,7 @@ DISTRIBUTION_FILES = (
     "CHANGELOG.md",
     "SECURITY.md",
     "docs/project/framework-integration.md",
+    "docs/project/public-contract.md",
     "src/tokens.css",
     "src/tui.css",
     "src/tui.js",

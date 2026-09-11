@@ -12,13 +12,15 @@ src/tui.css
 src/tui.js
 ```
 
+The supported downstream names and semantic relationships are inventoried in `docs/project/public-contract.md` and specified in `openspec/specs/public-contract/spec.md`. Framework code should depend on that declared surface rather than incidental demo IDs, test fixture details, or repository verification implementation.
+
 React, Vue, server-rendered templates, or another application architecture may generate the semantic markup, own application state, and decide navigation/lifecycle behavior around that runtime.
 
 ## Pin a release first
 
 For reproducible applications and coding-agent work, copy/vendor from an immutable tag such as `v0.8.0` rather than `main`. This prevents later design-system development from silently changing an existing consumer.
 
-When upgrading to a newer tag, review `CHANGELOG.md`, accepted OpenSpec, and relevant demos before updating vendored assets.
+When upgrading to a newer tag, review `CHANGELOG.md`, `docs/project/public-contract.md`, accepted OpenSpec, and relevant demos before updating vendored assets. Before 1.0, an intentional public-contract break uses a MINOR version and explicit migration guidance; after 1.0, normal Semantic Versioning rules apply to the declared public surface.
 
 ## Asset loading
 
@@ -30,11 +32,11 @@ Framework build systems may import or copy these files in their normal asset pip
 
 Use native buttons, inputs, selects, textareas, forms, links, and progress elements where the canonical patterns call for them. A framework may control the value/checked state of those elements, but should keep the native element in the rendered output.
 
-Do not replace checkboxes or radio buttons with generic clickable `<div>` elements merely to fit framework state management. The design system deliberately styles native controls and depends on their browser semantics.
+Do not replace checkboxes or radio buttons with generic clickable `<div>` elements merely to fit framework state management. The design system deliberately styles native controls and depends on their browser semantics. Required child/sibling relationships for marker patterns such as `.tui-check-row` + native input + `.tui-mark` are part of the documented public component contract.
 
 ## `tui:escape`
 
-When `src/tui.js` is loaded, a `.tui-window` or `.tui-dialog` marked with `data-tui-escape-close` dispatches a bubbling `tui:escape` custom event when Escape is pressed.
+When `src/tui.js` is loaded, a `.tui-window` or `.tui-dialog` marked with `data-tui-escape-close` dispatches a bubbling `tui:escape` custom event when Escape is pressed. The event carries the originating keyboard event as `detail.sourceEvent`.
 
 The consuming application owns the consequence. React/Vue components should attach/remove an event listener for their mounted surface and invoke the application's cancel/close/navigation action. The library does not hide the DOM node itself.
 
@@ -42,13 +44,15 @@ The consuming application owns the consequence. React/Vue components should atta
 
 A container marked with `data-tui-list` receives the optional ArrowUp/ArrowDown/Home/End focus-navigation enhancement from `src/tui.js`.
 
-Do not add competing framework key handlers to the same list unless the application intentionally replaces the library contract. Native radio groups and text-entry controls remain excluded from the enhancement so their browser behavior is preserved.
+Do not add competing framework key handlers to the same list unless the application intentionally replaces the library contract. Native radio groups and text-entry controls remain excluded from the enhancement so their browser behavior is preserved. Custom focusable items may opt in with public `data-tui-list-item` plus a non-negative `tabindex`.
 
 ## Styling boundaries
 
-Framework components should use canonical classes such as `.tui-dialog`, `.tui-checklist`, `.tui-check-row`, `.tui-button`, and `.tui-actions` rather than copying declarations from `src/tui.css` into CSS-in-JS, scoped component styles, or a framework theme object.
+Framework components should use canonical public classes such as `.tui-dialog`, `.tui-checklist`, `.tui-check-row`, `.tui-button`, and `.tui-actions` rather than copying declarations from `src/tui.css` into CSS-in-JS, scoped component styles, or a framework theme object.
 
 Application-specific layout around the design system is allowed. Changes intended to become reusable visual behavior belong back in `web-tui-kit`, not in a private framework wrapper.
+
+All canonical `--tui-*` custom properties are public theming hooks by name and semantic purpose. Consumers should override tokens rather than reaching into declaration order or private selector implementation.
 
 ## Recipes
 
@@ -57,6 +61,8 @@ Application-specific layout around the design system is allowed. Changes intende
 - `examples/server-rendered/package-configuration.html`
 
 The React and Vue files are source recipes, not standalone runnable applications in this repository. They assume the consuming application already has the respective framework/toolchain. The server-rendered example is directly browser-openable when the repository is served statically.
+
+These recipe files are supported integration guidance, but example component names, local variable names, fixture IDs, generated bundles, and test-harness APIs are not separately versioned public runtime APIs. The stable contract is the browser-native output they demonstrate.
 
 ## Executable recipe verification
 

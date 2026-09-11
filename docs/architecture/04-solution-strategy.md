@@ -6,6 +6,16 @@ The design system is delivered as static browser assets. `src/tokens.css` owns e
 
 This keeps the library usable by plain HTML applications and by applications that use React, Vue, server-rendered templates, or other frameworks, provided they preserve the relevant markup and class contracts.
 
+## Public contract strategy
+
+The browser-native runtime is also the stability boundary. `openspec/specs/public-contract/spec.md` defines compatibility behavior and `docs/project/public-contract.md` inventories the supported consumer surface: canonical `--tui-*` custom-property names and purposes, reusable `tui-*` classes, scoped state hooks, required semantic markup relationships, and the documented `data-tui-*` / `tui:escape` progressive JavaScript contract.
+
+Visible repository details are not automatically APIs. Demo IDs/text/order, test fixtures, verification scripts, generated output, CI implementation, pinned evidence-tool versions, CSS declaration/selector ordering, pseudo-element technique, and JavaScript helper/local names remain non-public unless an accepted requirement explicitly promotes one.
+
+Structural tests compare the implemented token/class surface with the declared inventory so a public name cannot silently disappear and a new `tui-*` token/class cannot accidentally become unclassified public surface. ADR-0008 records this boundary and the pre/post-1.0 compatibility policy.
+
+Before 1.0, an intentional incompatible public-contract change is a MINOR release with explicit migration guidance. Starting with 1.0, normal Semantic Versioning applies to the declared public contract; compatible additions/deprecations may occur in MINOR releases, while incompatible removal/rename/semantic contract breaks require a MAJOR release.
+
 ## Framework integration strategy
 
 Frameworks are consumers of the browser-native contract, not alternate design-system runtimes. `examples/react/`, `examples/vue/`, and `examples/server-rendered/` provide copy-ready integration recipes that demonstrate framework-owned state/lifecycle behavior while reusing canonical classes, native controls, CSS assets, and custom events.
@@ -18,6 +28,8 @@ Representative executable verification strengthens this strategy without changin
 
 Native HTML controls provide their normal semantics and keyboard behavior. JavaScript is intentionally small and additive; the current enhancements dispatch a custom Escape event for opted-in windows/dialogs and provide narrowly scoped optional list focus navigation without replacing native activation or selection behavior.
 
+The public progressive behavior is exposed through `data-tui-escape-close`, `data-tui-list`, `data-tui-list-item`, and the bubbling `tui:escape` event. Implementation-local functions/selectors are deliberately outside the public API.
+
 ## Responsive strategy
 
 The same visual language is retained across desktop and narrow touch screens. Responsive CSS changes spacing, wrapping, control hit areas, checklist help placement, and table overflow rather than replacing the interface with a separate mobile design system.
@@ -28,11 +40,13 @@ The implementation centralizes palette, typography, spacing, borders, scrollbar 
 
 The primary visual composition is the package-style dialog: a centered grey beveled surface over the blue desktop, with an overlapping red title, recessed selection area, blue row focus, text-style checkbox markers, short red help accents, and angle-bracket actions. `demo/index.html` is the canonical executable reference for that composition; `demo/components.html` provides wider component coverage and `demo/dialogs.html` provides the common dialog compositions.
 
-Exact values belong to the token file rather than architecture prose.
+Exact values belong to the token file rather than architecture prose. Public token compatibility protects the custom-property name and semantic purpose, not an immutable literal value. `.tui-help` consumes the dedicated `--tui-help` token so normal and forced-colors implementations agree with that semantic purpose.
 
 ## Verification strategy
 
-Fast Python unit tests enforce repository contracts such as required tokens, selectors, canonical demo structure, small JavaScript behavior invariants, framework-recipe reuse/boundaries, executable framework-verification infrastructure, browser/accessibility-verification infrastructure, version/release archive rules, and release-workflow safeguards. AI-DOC-1 validation and a strict MkDocs build verify repository/documentation structure.
+Fast Python unit tests enforce repository contracts such as required tokens, selectors, canonical demo structure, small JavaScript behavior invariants, the declared public token/class/data-attribute/event inventory, framework-recipe reuse/boundaries, executable framework-verification infrastructure, browser/accessibility-verification infrastructure, version/release archive rules, and release-workflow safeguards. AI-DOC-1 validation and a strict MkDocs build verify repository/documentation structure.
+
+`tests/test_public_contract.py` is the inexpensive executable guard for the stability boundary. It fails if canonical `--tui-*` tokens or `tui-*` component classes drift from the declared inventory, protects scoped state hooks and progressive JavaScript names, checks the help-token mapping, and confirms the public-contract guide remains a focused-release input.
 
 Visual output is verified separately with a pinned Python Playwright release and its matching Chromium build. `scripts/visual_regression.py` serves the repository locally, renders fixed desktop and touch-capable narrow/mobile cases for `demo/index.html` and `demo/dialogs.html`, and compares those renders with reviewed PNG baselines under `tests/visual/baselines/`. The Linux GitHub Actions environment is the canonical screenshot environment. Failed comparisons retain actual/diff images as workflow artifacts.
 
@@ -48,10 +62,16 @@ Visual, interaction, accessibility-semantic, and framework-recipe verification d
 
 The automated suites complement rather than replace accessibility review, WCAG evaluation, screen-reader/assistive-technology testing, physical-device checks, and consumer-specific framework/version verification. Passing a pinned representative framework recipe case means the checked-in recipe interoperates with that exact verification toolchain; it is not a broad framework support declaration.
 
+## 1.0 readiness strategy
+
+Version 1.0 is a deliberate compatibility commitment, not an automatic successor to 0.9. The public contract must be accepted, structurally protected, and free of selected pre-1.0 cleanup debt; all existing release gates must pass on the candidate; release/consumer documentation must consistently state the stability commitment; and the focused archive must carry the public-contract guide.
+
+The current evidence gaps remain accurately described rather than being converted into unsupported certification claims. Physical Android certification, real assistive-technology/screen-reader certification, WCAG certification, npm publication, maintained framework adapters, and a broad framework-version matrix are not current 1.0 prerequisites unless a future accepted requirement makes one mandatory.
+
 ## Release and distribution strategy
 
 `VERSION` owns the plain Semantic Version. Immutable `vMAJOR.MINOR.PATCH` Git tags and GitHub Releases identify published versions. Before 1.0, tagged direct vendoring is the primary consumer path: downstream projects pin a tag and copy the browser assets they need from `src/`.
 
-`scripts/build_release.py` creates a focused deterministic ZIP and SHA-256 checksum from an explicit allowlist of runtime/reference files. `.github/workflows/release.yml` runs only for matching version tags; it verifies tag/version identity, requires the tag commit to be contained in `main`, runs structural/documentation/visual/interaction/accessibility-semantic/framework-recipe checks, builds the deterministic archive, and only then publishes a GitHub prerelease.
+`scripts/build_release.py` creates a focused deterministic ZIP and SHA-256 checksum from an explicit allowlist of runtime/reference files, including `docs/project/public-contract.md` so downstream users can inspect the supported stability boundary with the packaged runtime. `.github/workflows/release.yml` runs only for matching version tags; it verifies tag/version identity, requires the tag commit to be contained in `main`, runs structural/documentation/visual/interaction/accessibility-semantic/framework-recipe checks, builds the deterministic archive, and only then publishes a GitHub prerelease.
 
 No npm/package-registry publishing is part of the current pre-1.0 baseline. The npm-based framework verification toolchain is development-only and does not change distribution. ADR-0003 records the release rationale; `RELEASING.md` defines the maintainer procedure and `docs/project/compatibility.md` records compatibility evidence separately from compatibility targets.

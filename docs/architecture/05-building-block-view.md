@@ -6,9 +6,13 @@
 
 Defines the exact CSS custom properties for palette, typography, spacing, borders, shadows, window/dialog sizing, list sizing, progress sizing, and touch-sensitive minimum control sizing. It also owns the default `forced-colors` system-color overrides so high-contrast adaptation remains centralized with the palette contract.
 
+Every canonical `--tui-*` custom-property name is part of the declared public theming surface. Compatibility protects each name and semantic purpose; exact default values remain implementation/versioned design data. The dedicated `.tui-help` presentation consumes `--tui-help`, including its forced-colors `LinkText` mapping.
+
 ### `src/tui.css`
 
 Defines reusable CSS components and layouts for desktop/window surfaces, classic package-style dialogs, form controls, buttons, ordinary check/radio rows, dialog-style checklists and radiolists, action-menu rows, progress/gauges, tables, actions, and status bars. It consumes the token contract rather than hard-coding a second theme definition. Disabled choice states are derived from the underlying native disabled controls.
+
+Canonical reusable `tui-*` class names are part of the declared public component surface. `.is-active` and `.is-selected` are supported only as scoped state hooks where combined with the documented TUI selectors. Selector grouping/order, pseudo-element technique, declaration order, and other implementation structure are not public APIs.
 
 ### `src/tui.js`
 
@@ -17,11 +21,21 @@ Provides small progressive enhancements while leaving application behavior to th
 - dispatches `tui:escape` from an opted-in window or dialog when Escape is pressed,
 - provides optional ArrowUp/ArrowDown/Home/End focus navigation inside containers marked with `data-tui-list`.
 
+The public behavior names are `data-tui-escape-close`, `data-tui-list`, `data-tui-list-item`, and the bubbling `tui:escape` event with its originating keyboard event in `detail.sourceEvent`. Internal functions, constants, listener placement, and selector-construction technique are not public JavaScript APIs.
+
 The list enhancement is deliberately narrow: it targets enabled checkboxes, buttons, links, and explicitly opted-in custom focusable list items. Native radio groups and text-entry controls are excluded so their browser keyboard semantics remain intact. Disabled, inert, hidden, and `aria-hidden` items are skipped. The enhancement changes focus only; native controls retain activation and selection semantics.
+
+### `docs/project/public-contract.md`
+
+Provides the practical downstream inventory for the public runtime: runtime files, all canonical token names/purposes, reusable classes, scoped states, semantic markup expectations, progressive data attributes/event, explicit non-public repository details, migration rules, and 1.0 exit criteria. Accepted behavior remains canonical in `openspec/specs/public-contract/spec.md`; ADR-0008 records the durable stability-boundary rationale.
+
+The file is included in focused release archives so a downstream consumer does not need repository development files merely to identify supported interfaces.
 
 ### `demo/index.html`
 
 Consumes the runtime blocks and presents the canonical Debian/Ubuntu package-configuration visual reference. It is an executable visual and semantic reference and regression aid, not a second implementation of the design system. Presentation-only helper hints inside native labels are excluded from accessible names.
+
+The documented patterns demonstrated by the page are normative examples. Incidental IDs, sample text, option ordering, and page-specific wiring are non-public details.
 
 ### `demo/components.html` and `demo/dialogs.html`
 
@@ -43,17 +57,20 @@ A browser-openable/template-oriented recipe. It loads the canonical assets direc
 
 `examples/README.md` and `docs/project/framework-integration.md` explain the shared integration rules. ADR-0004 records why recipes are preferred over maintained framework adapter runtimes at the current maturity level.
 
+The recipe files are public consumption guidance, but their local component/variable names and the private compile/browser verification harness are not independent public adapter APIs.
+
 ## Development-support blocks
 
 ### Structural/documentation verification
 
 - `openspec/` owns accepted behavior and active behavioral changes.
-- `docs/` owns project information, current architecture, and durable rationale.
+- `docs/` owns project information, current architecture, public-contract guidance, and durable rationale.
 - `tests/test_repository.py` owns inexpensive structural/runtime-contract regression evidence.
+- `tests/test_public_contract.py` owns the explicit token/class/state/data-attribute/event inventory guard and release-inclusion evidence for the public stability boundary.
 - `tests/test_framework_recipes.py` owns framework/template recipe reuse and dependency-boundary evidence.
 - `tests/test_interaction_regression.py` owns structural safeguards for the browser interaction fixture, runner, and CI workflow.
 - `tests/test_accessibility_regression.py` owns structural safeguards for the accessibility semantic runner, canonical helper semantics, CI workflow, and release gate.
-- `tests/test_release.py` owns release/version/archive/workflow regression evidence, including the requirement that future release publication runs visual, interaction, and accessibility-semantic verification before artifact publication.
+- `tests/test_release.py` owns release/version/archive/workflow regression evidence, including focused-archive inclusion of the public-contract guide and the requirement that future release publication runs visual, interaction, accessibility-semantic, and framework-recipe verification before artifact publication.
 - `scripts/validate_ai_doc_1.py` and `scripts/sync_openspec_docs.py` own repository/documentation validation support.
 - `.github/workflows/ai-doc-1.yml` runs the structural, AI-DOC-1, and documentation checks in CI.
 
@@ -76,7 +93,7 @@ A browser-openable/template-oriented recipe. It loads the canonical assets direc
 ### Accessibility semantics verification
 
 - `scripts/accessibility_regression.py` serves the canonical `demo/index.html` and `demo/dialogs.html` pages directly instead of maintaining a parallel accessibility-only fixture.
-- The runner verifies browser-computed named regions/headings/groups, checkbox/radio/button/textbox/progressbar names, checked/disabled native state, hostname label association, and native progress value/max in Chromium and Firefox desktop contexts.
+- The runner verifies browser-computed named regions/headings/groups, checkbox/radio/button/textbox/progressbar names, checked/disabled native state, label associations, and native progress value/max in Chromium and Firefox desktop contexts.
 - A narrow touch-capable Chromium package case confirms that the same core semantic identities remain available in the representative mobile/touch context.
 - `test-results/accessibility/` contains generated diagnostic screenshots on failures and is not committed.
 - `.github/workflows/accessibility-regression.yml` runs a Chromium/Firefox read-only matrix on pull requests and `main`, uploading engine-specific failure screenshots when necessary.
@@ -85,17 +102,18 @@ A browser-openable/template-oriented recipe. It loads the canonical assets direc
 ### Release and distribution
 
 - `VERSION` is the canonical plain Semantic Version for the repository state intended for tagging.
-- `RELEASING.md` defines the maintainer release procedure and fix-forward policy.
-- `scripts/build_release.py` creates and validates a deterministic focused distribution ZIP plus SHA-256 checksum from an explicit file allowlist.
+- `RELEASING.md` defines the maintainer release procedure, public-contract compatibility/deprecation policy, and fix-forward policy.
+- `scripts/build_release.py` creates and validates a deterministic focused distribution ZIP plus SHA-256 checksum from an explicit file allowlist, including `docs/project/public-contract.md`.
 - `dist/` is generated release output and is not committed.
-- `.github/workflows/release.yml` validates a `vMAJOR.MINOR.PATCH` tag on `main`, runs the full repository release gates including visual, interaction, and accessibility-semantic browser verification, builds the focused artifacts, and publishes a GitHub prerelease only after successful verification.
-- `docs/project/compatibility.md` records exercised compatibility evidence separately from target claims.
+- `.github/workflows/release.yml` validates a `vMAJOR.MINOR.PATCH` tag on `main`, runs the full repository release gates including visual, interaction, accessibility-semantic, and framework-recipe browser verification, builds the focused artifacts, and publishes a GitHub prerelease only after successful verification.
+- `docs/project/compatibility.md` records exercised compatibility evidence separately from target claims and public API stability.
 
 ## Dependency direction
 
 ```text
 consuming application / demo / integration recipe
         |
+        +--> public contract guide/spec
         +--> src/tokens.css
         +--> src/tui.css ----> token variables
         +--> src/tui.js  ----> browser DOM events/focus
@@ -105,6 +123,8 @@ React/Vue/template application
         +--> generates semantic markup + tui-* classes
         +--> owns application state/lifecycle
         +--> does not become a dependency of src/
+
+public-contract structural tests ----> src tokens/classes/js + contract docs
 
 visual test runner ----> demo + src runtime assets
         |
@@ -124,8 +144,8 @@ accessibility semantic runner ----> canonical demos ----> src runtime assets
 
 VERSION + tagged main commit
         |
-        +--> release builder ----> focused ZIP + SHA-256
-        +--> release workflow ---> structural/docs/visual/interaction/accessibility gates ---> GitHub prerelease
+        +--> release builder ----> focused ZIP + SHA-256 + public contract guide
+        +--> release workflow ---> structural/docs/visual/interaction/accessibility/framework gates ---> GitHub prerelease
 
 requirements ---> implementation ---> tests/demo/examples/browser/release evidence
 architecture ----------------------------------------> describes current structure
