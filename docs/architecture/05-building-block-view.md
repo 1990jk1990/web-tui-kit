@@ -21,11 +21,11 @@ The list enhancement is deliberately narrow: it targets enabled checkboxes, butt
 
 ### `demo/index.html`
 
-Consumes the runtime blocks and presents the canonical Debian/Ubuntu package-configuration visual reference. It is an executable visual reference and regression aid, not a second implementation of the design system.
+Consumes the runtime blocks and presents the canonical Debian/Ubuntu package-configuration visual reference. It is an executable visual and semantic reference and regression aid, not a second implementation of the design system. Presentation-only helper hints inside native labels are excluded from accessible names.
 
 ### `demo/components.html` and `demo/dialogs.html`
 
-Provide broader executable examples. `components.html` covers general-purpose controls and `dialogs.html` covers message, confirmation, input, action-menu, radiolist, checklist, and gauge compositions, including representative disabled choice states.
+Provide broader executable examples. `components.html` covers general-purpose controls and `dialogs.html` covers message, confirmation, input, action-menu, radiolist, checklist, and gauge compositions, including representative disabled choice states. The dialog gallery also provides canonical semantic evidence for label/control associations, named groups/regions, disabled state, and native progress semantics.
 
 ## Consumer integration examples
 
@@ -52,7 +52,8 @@ A browser-openable/template-oriented recipe. It loads the canonical assets direc
 - `tests/test_repository.py` owns inexpensive structural/runtime-contract regression evidence.
 - `tests/test_framework_recipes.py` owns framework/template recipe reuse and dependency-boundary evidence.
 - `tests/test_interaction_regression.py` owns structural safeguards for the browser interaction fixture, runner, and CI workflow.
-- `tests/test_release.py` owns release/version/archive/workflow regression evidence, including the requirement that future release publication runs interaction verification before artifact publication.
+- `tests/test_accessibility_regression.py` owns structural safeguards for the accessibility semantic runner, canonical helper semantics, CI workflow, and release gate.
+- `tests/test_release.py` owns release/version/archive/workflow regression evidence, including the requirement that future release publication runs visual, interaction, and accessibility-semantic verification before artifact publication.
 - `scripts/validate_ai_doc_1.py` and `scripts/sync_openspec_docs.py` own repository/documentation validation support.
 - `.github/workflows/ai-doc-1.yml` runs the structural, AI-DOC-1, and documentation checks in CI.
 
@@ -72,13 +73,22 @@ A browser-openable/template-oriented recipe. It loads the canonical assets direc
 - `test-results/interaction/` contains generated failure screenshots and is not committed.
 - `.github/workflows/interaction-regression.yml` runs a Chromium/Firefox matrix on pull requests and `main`, uploading failure screenshots when necessary.
 
+### Accessibility semantics verification
+
+- `scripts/accessibility_regression.py` serves the canonical `demo/index.html` and `demo/dialogs.html` pages directly instead of maintaining a parallel accessibility-only fixture.
+- The runner verifies browser-computed named regions/headings/groups, checkbox/radio/button/textbox/progressbar names, checked/disabled native state, hostname label association, and native progress value/max in Chromium and Firefox desktop contexts.
+- A narrow touch-capable Chromium package case confirms that the same core semantic identities remain available in the representative mobile/touch context.
+- `test-results/accessibility/` contains generated diagnostic screenshots on failures and is not committed.
+- `.github/workflows/accessibility-regression.yml` runs a Chromium/Firefox read-only matrix on pull requests and `main`, uploading engine-specific failure screenshots when necessary.
+- This evidence is browser accessibility-mapping evidence, not screen-reader, assistive-technology, WCAG-conformance, or physical-device certification. ADR-0006 records that boundary.
+
 ### Release and distribution
 
 - `VERSION` is the canonical plain Semantic Version for the repository state intended for tagging.
 - `RELEASING.md` defines the maintainer release procedure and fix-forward policy.
 - `scripts/build_release.py` creates and validates a deterministic focused distribution ZIP plus SHA-256 checksum from an explicit file allowlist.
 - `dist/` is generated release output and is not committed.
-- `.github/workflows/release.yml` validates a `vMAJOR.MINOR.PATCH` tag on `main`, runs the full repository release gates including visual and interaction browser verification, builds the focused artifacts, and publishes a GitHub prerelease only after successful verification.
+- `.github/workflows/release.yml` validates a `vMAJOR.MINOR.PATCH` tag on `main`, runs the full repository release gates including visual, interaction, and accessibility-semantic browser verification, builds the focused artifacts, and publishes a GitHub prerelease only after successful verification.
 - `docs/project/compatibility.md` records exercised compatibility evidence separately from target claims.
 
 ## Dependency direction
@@ -106,10 +116,16 @@ interaction runner ----> tests/browser fixture ----> src runtime assets
         +--> pinned Playwright/Chromium desktop + touch context
         +--> pinned Playwright/Firefox desktop
 
+accessibility semantic runner ----> canonical demos ----> src runtime assets
+        |
+        +--> browser role/name/native-state queries
+        +--> pinned Playwright/Chromium desktop + touch context
+        +--> pinned Playwright/Firefox desktop
+
 VERSION + tagged main commit
         |
         +--> release builder ----> focused ZIP + SHA-256
-        +--> release workflow ---> structural/docs/visual/interaction gates ---> GitHub prerelease
+        +--> release workflow ---> structural/docs/visual/interaction/accessibility gates ---> GitHub prerelease
 
 requirements ---> implementation ---> tests/demo/examples/browser/release evidence
 architecture ----------------------------------------> describes current structure
