@@ -4,6 +4,13 @@ All notable user-visible changes are recorded here.
 
 ## Unreleased
 
+- Added an explicit public consumer-contract inventory covering runtime files, all canonical `--tui-*` tokens, reusable `tui-*` classes, scoped state hooks, semantic markup expectations, `data-tui-*` attributes, and the `tui:escape` event contract.
+- Added pre-1.0 and post-1.0 compatibility/deprecation/migration rules plus evidence-based 1.0 exit criteria.
+- Added structural regression coverage that fails when declared public runtime names are silently removed/renamed or when a new `tui-*` class/token appears without classification.
+- Added the public-contract guide to the deterministic focused release archive.
+- Corrected `.tui-help` to consume the existing public `--tui-help` token; normal default pixels are unchanged while forced-colors help accents now follow the documented `LinkText` mapping.
+- Added ADR-0008 documenting the browser-native public stability boundary without introducing framework adapters, registry distribution, or unsupported certification claims.
+
 ## 0.8.0 - 2026-09-11
 
 Executable framework recipe verification release.
