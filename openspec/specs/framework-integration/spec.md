@@ -108,7 +108,7 @@ Integration guidance MUST recommend immutable release tags for reproducible down
 
 - **GIVEN** a project wants a stable `web-tui-kit` reference
 - **WHEN** its implementation instructions are written
-- **THEN** they SHOULD point to a specific immutable tag such as `v0.7.0` until the project intentionally upgrades
+- **THEN** they SHOULD point to a specific immutable tag such as `v0.8.0` until the project intentionally upgrades
 
 ### Requirement: Adapter runtime requires a demonstrated gap
 

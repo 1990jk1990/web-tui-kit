@@ -4,6 +4,10 @@ All notable user-visible changes are recorded here.
 
 ## Unreleased
 
+## 0.8.0 - 2026-09-11
+
+Executable framework recipe verification release.
+
 - Added development/CI-only executable verification for the canonical React, Vue, and server-rendered integration recipes.
 - Added exact representative React/Vue/compiler/bundler verification versions and compile the canonical JSX/SFC sources directly instead of maintaining test-only recipe copies.
 - Added Chromium smoke checks for native checkbox state, canonical `data-tui-list` focus navigation, `tui:escape` application handling, accept payloads, and server-rendered form semantics.
