@@ -9,7 +9,7 @@ A modern browser is sufficient to use the library. Python 3 is convenient for se
 For a consuming application, pin an immutable release tag rather than depending on the moving `main` branch. For the current pre-1.0 release:
 
 ```bash
-git clone --branch v0.8.0 --depth 1 https://github.com/1990jk1990/web-tui-kit.git
+git clone --branch v0.9.0 --depth 1 https://github.com/1990jk1990/web-tui-kit.git
 cd web-tui-kit
 ```
 
@@ -37,15 +37,15 @@ Vendor or copy the files under `src/`, then load them in this order:
 
 `src/tui.js` is optional if the consuming application does not need the progressive Escape/list-navigation helpers. Record the source release tag next to a vendored copy so future updates are deliberate and traceable.
 
-Tagged GitHub prereleases also include a focused `web-tui-kit-MAJOR.MINOR.PATCH.zip` plus SHA-256 checksum. That archive contains the runtime, executable demos, framework/template integration recipes, version/changelog/security information, and practical design-system/AI-agent guidance without requiring the full development repository.
+Tagged GitHub prereleases also include a focused `web-tui-kit-MAJOR.MINOR.PATCH.zip` plus SHA-256 checksum. That archive contains the runtime, executable demos, framework/template integration recipes, `docs/project/public-contract.md`, version/changelog/security information, and practical design-system/AI-agent guidance without requiring the full development repository.
 
-The CSS classes and usage patterns are described in `DESIGN_SYSTEM.md`. Accepted behavior is canonical in `openspec/specs/`.
+The supported downstream token/class/state/data-attribute/event and semantic-markup surface is inventoried in `docs/project/public-contract.md`. The CSS usage patterns are described in `DESIGN_SYSTEM.md`; accepted behavior is canonical in `openspec/specs/`.
 
 ## React, Vue, and templates
 
 Applications that already use React, Vue, or server-side templates still consume the same browser-native runtime. Start with `docs/project/framework-integration.md` and the matching source under `examples/`.
 
-The framework owns application state/lifecycle; `web-tui-kit` owns the visual classes, native-control patterns, CSS custom properties, and small progressive JavaScript contract. Do not create a parallel framework-specific theme or copy component CSS into scoped/CSS-in-JS styles.
+The framework owns application state/lifecycle; `web-tui-kit` owns the declared visual classes, native-control patterns, CSS custom properties, and small progressive JavaScript contract. Do not create a parallel framework-specific theme or copy component CSS into scoped/CSS-in-JS styles.
 
 ## No build or package-manager requirement
 
