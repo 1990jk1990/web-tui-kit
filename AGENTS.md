@@ -29,21 +29,25 @@ Before non-trivial changes:
 3. Read the relevant current specification under `openspec/specs/`.
 4. Read relevant architecture and ADRs under `docs/`.
 5. For UI work, read `DESIGN_SYSTEM.md`, `src/tokens.css`, `src/tui.css`, and `demo/index.html`.
-6. For framework/template integration work, read `docs/project/framework-integration.md`, `examples/README.md`, the relevant recipe under `examples/`, ADR-0001, ADR-0004, and ADR-0007; when executable recipe evidence is affected, also inspect `tests/framework/`, `scripts/framework_recipe_regression.py`, `tests/test_framework_execution.py`, and `.github/workflows/framework-recipe-regression.yml`.
-7. For browser verification/compatibility work, read `docs/project/testing.md`, `docs/project/compatibility.md`, `openspec/specs/browser-verification/spec.md`, ADR-0002, and ADR-0005.
-8. For accessibility-semantic verification work, read `docs/project/testing.md`, `docs/project/compatibility.md`, `openspec/specs/accessibility-verification/spec.md`, ADR-0006, and the canonical demo markup being asserted.
-9. For release/version/distribution work, read `VERSION`, `RELEASING.md`, the release/distribution specification, and relevant release ADRs.
-10. Inspect relevant tests, visual baselines when UI output may change, and GitHub work state.
+6. For public token/class/state/semantic-markup/data-attribute/event, compatibility/deprecation, or 1.0-readiness work, read `openspec/specs/public-contract/spec.md`, `docs/project/public-contract.md`, ADR-0008, and `tests/test_public_contract.py`.
+7. For framework/template integration work, read `docs/project/framework-integration.md`, `examples/README.md`, the relevant recipe under `examples/`, ADR-0001, ADR-0004, and ADR-0007; when executable recipe evidence is affected, also inspect `tests/framework/`, `scripts/framework_recipe_regression.py`, `tests/test_framework_execution.py`, and `.github/workflows/framework-recipe-regression.yml`.
+8. For browser verification/compatibility work, read `docs/project/testing.md`, `docs/project/compatibility.md`, `openspec/specs/browser-verification/spec.md`, ADR-0002, and ADR-0005.
+9. For accessibility-semantic verification work, read `docs/project/testing.md`, `docs/project/compatibility.md`, `openspec/specs/accessibility-verification/spec.md`, ADR-0006, and the canonical demo markup being asserted.
+10. For release/version/distribution work, read `VERSION`, `RELEASING.md`, the release/distribution specification, the public-contract specification, and relevant release ADRs.
+11. Inspect relevant tests, visual baselines when UI output may change, and GitHub work state.
 
 ## Canonical sources
 
 - Expected behavior → `openspec/specs/`.
+- Public consumer stability behavior → `openspec/specs/public-contract/spec.md`.
+- Practical public surface inventory → `docs/project/public-contract.md`.
 - Active non-trivial behavioral changes → `openspec/changes/`.
 - Current architecture → `docs/architecture/`.
 - Important rationale → `docs/decisions/`.
 - Exact design-token values → `src/tokens.css`.
 - Implementation → `src/`.
 - Executable structural behavior evidence → `tests/test_repository.py`.
+- Public-contract structural inventory evidence → `tests/test_public_contract.py`.
 - Framework/template structural integration evidence → `tests/test_framework_recipes.py`.
 - Framework recipe execution safeguards → `tests/test_framework_execution.py`.
 - Framework recipe build harness → `tests/framework/`.
@@ -70,6 +74,16 @@ Before non-trivial changes:
 - Secrets → external secret store; never this repository.
 
 `DESIGN_SYSTEM.md` is a practical consumption guide. It may summarize canonical behavior but must point to OpenSpec and implementation rather than becoming a conflicting source of truth.
+
+## Public contract rules
+
+- Treat every canonical `--tui-*` custom property declared in `src/tokens.css` as a public theming hook by name and semantic purpose.
+- Treat canonical reusable `tui-*` classes implemented in `src/tui.css` as public consumer hooks; `.is-active` and `.is-selected` are public only as scoped states on documented TUI component selectors.
+- Preserve documented native semantic element/child relationships; CSS class names do not replace button/input/label/link/table/progress semantics.
+- Treat `data-tui-escape-close`, `data-tui-list`, `data-tui-list-item`, bubbling `tui:escape`, and `detail.sourceEvent` as public progressive JavaScript contracts.
+- Do not promote demo IDs/copy/order, tests, scripts, CI details, generated files, pinned evidence-tool versions, CSS selector/declaration ordering, pseudo-element technique, or JavaScript helper names into public APIs without an accepted requirement.
+- When adding/removing/renaming a public-looking `--tui-*` or `tui-*` name, update the public-contract spec/inventory and `tests/test_public_contract.py` in the same change.
+- Before 1.0, intentional incompatible public changes require a MINOR release plus explicit changelog/migration guidance. Starting at 1.0, normal Semantic Versioning applies to the declared public contract; incompatible public changes require a MAJOR release.
 
 ## Project-specific UI rules
 
@@ -126,13 +140,14 @@ For non-trivial component behavior changes:
 
 1. update or create the relevant OpenSpec change/specification,
 2. implement from existing tokens before adding one-off values,
-3. update `demo/index.html` when the canonical composition changes and the broader demo pages when reusable component coverage changes,
-4. add or update structural tests,
-5. run the visual-regression suite when canonical UI output can change and explicitly review any baseline update,
-6. run the browser-interaction suite when keyboard/custom-event/list-navigation behavior can change,
-7. run the accessibility semantic suite when roles, names, labels, state, progress semantics, or canonical control markup can change,
-8. update architecture or an ADR only when the change affects current structure or durable rationale,
-9. reconcile `DESIGN_SYSTEM.md` if its practical usage guidance is affected.
+3. update the public-contract inventory/test when public surface changes,
+4. update `demo/index.html` when the canonical composition changes and the broader demo pages when reusable component coverage changes,
+5. add or update structural tests,
+6. run the visual-regression suite when canonical UI output can change and explicitly review any baseline update,
+7. run the browser-interaction suite when keyboard/custom-event/list-navigation behavior can change,
+8. run the accessibility semantic suite when roles, names, labels, state, progress semantics, or canonical control markup can change,
+9. update architecture or an ADR only when the change affects current structure or durable rationale,
+10. reconcile `DESIGN_SYSTEM.md` if its practical usage guidance is affected.
 
 Normal CI visual verification is read-only. Do not make CI automatically accept new screenshots. For an intentional visual change, use the documented `python scripts/visual_regression.py --update` workflow and review the PNG changes together with the implementation. The Linux GitHub Actions Chromium environment is the canonical baseline-rendering environment.
 
@@ -142,9 +157,11 @@ Normal CI visual verification is read-only. Do not make CI automatically accept 
 - Treat published tags as immutable. Fix forward with a new version rather than moving an existing release tag.
 - Keep direct vendoring from an immutable tag as the primary pre-1.0 distribution path unless an accepted follow-up decision changes that model.
 - Do not introduce npm/package-registry publication without a concrete consumer need and deliberate architecture/specification update.
+- Keep `docs/project/public-contract.md` in the focused release archive.
 - Run `python scripts/build_release.py --version "v$(cat VERSION)" --check` for release preparation.
 - Tag-triggered publication must verify tag/version identity, main-branch ancestry, structural/documentation checks, visual regression, cross-browser interaction regression, accessibility semantic regression, representative executable framework/template recipe regression, and deterministic release artifacts before creating a GitHub Release.
 - Compatibility statements must reflect actual evidence. Mobile Chromium emulation is not physical Android device certification, browser semantic automation is not screen-reader/WCAG certification, and passing pinned framework recipe cases is not an exhaustive framework-version compatibility claim.
+- Do not treat `1.0.0` as automatic. The public-contract/1.0 exit criteria must be satisfied and pre-1.0 release automation must be reconciled so a normal 1.0 release is not accidentally published with prerelease semantics.
 
 ## Change classes
 
@@ -161,7 +178,9 @@ Never commit secrets or real production data. Explain destructive/high-impact ac
 
 ## Completion check
 
-A UI change is complete only when affected canonical documentation is reconciled, structural tests pass, applicable visual baselines pass or are deliberately reviewed/updated, applicable browser-interaction checks pass, applicable accessibility semantic checks pass, the result is visually consistent, keyboard and touch use remain viable, narrow-screen behavior remains intentional, and reusable patterns are represented in the appropriate demo pages.
+A UI change is complete only when affected canonical documentation is reconciled, structural tests pass, applicable visual baselines pass or are deliberately reviewed/updated, applicable browser-interaction checks pass, applicable accessibility semantic checks pass, the result is visually consistent, keyboard and touch use remain viable, narrow-screen behavior remains intentional, reusable patterns are represented in the appropriate demo pages, and any changed public surface is reflected in the public-contract spec/inventory/tests.
+
+A public-contract/readiness change is complete only when accepted OpenSpec, `docs/project/public-contract.md`, ADR/architecture guidance, structural inventory tests, release contents/versioning policy, migration guidance, and 1.0 exit criteria agree; public and non-public surface must be explicitly distinguishable.
 
 A framework/template integration change is complete only when recipes reuse canonical runtime contracts, no parallel styling/runtime dependency is introduced, relevant OpenSpec/architecture/ADR/docs are reconciled, structural safeguards pass, and affected canonical React/Vue/server-rendered recipes pass the representative executable recipe verification when their compile/runtime integration behavior can change.
 
@@ -169,4 +188,4 @@ A browser-verification/compatibility change is complete only when the fixture/ru
 
 An accessibility-semantic verification change is complete only when canonical demo semantics, runner/workflow/release gate, structural safeguards, OpenSpec/architecture/ADR/docs, and evidence boundaries agree; browser semantic evidence must not be overstated as assistive-technology or WCAG certification.
 
-A release-preparation change is complete only when version identity, changelog, release specification/architecture, compatibility evidence, deterministic artifact checks, all accepted release verification gates including framework recipe regression, and tag workflow safeguards are reconciled and PR CI is green. Publication is complete only after the immutable tag and matching GitHub Release artifacts have been verified.
+A release-preparation change is complete only when version identity, changelog, public-contract impact, release specification/architecture, compatibility evidence, deterministic artifact checks, all accepted release verification gates including framework recipe regression, and tag workflow safeguards are reconciled and PR CI is green. Publication is complete only after the immutable tag and matching GitHub Release artifacts have been verified.
