@@ -47,6 +47,12 @@ def load_recipe(page: Page, url: str) -> None:
     page.goto(url, wait_until="load")
 
 
+def activate_labeled_checkbox(checkbox) -> None:
+    # Canonical TUI checkboxes visually hide the native input beneath the label.
+    # Click the associated label so the browser performs normal label/input activation.
+    checkbox.locator("xpath=ancestor::label[1]").click()
+
+
 def assert_framework_recipe(page: Page, url: str, case_name: str) -> None:
     load_recipe(page, url)
 
@@ -67,7 +73,7 @@ def assert_framework_recipe(page: Page, url: str, case_name: str) -> None:
     page.keyboard.press("ArrowDown")
     expect(apache).to_be_focused()
 
-    apache.check()
+    activate_labeled_checkbox(apache)
     expect(apache).to_be_checked()
 
     page.keyboard.press("Escape")
@@ -99,7 +105,8 @@ def assert_server_rendered_recipe(page: Page, url: str) -> None:
     accounts.focus()
     page.keyboard.press("ArrowDown")
     expect(apache).to_be_focused()
-    apache.check()
+    activate_labeled_checkbox(apache)
+    expect(apache).to_be_checked()
 
     page.keyboard.press("Escape")
     expect(page.locator("#recipe-status")).to_contain_text("Application received tui:escape")
