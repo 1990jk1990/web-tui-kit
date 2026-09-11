@@ -176,14 +176,14 @@ textarea {
   cursor: not-allowed;
 }
 
-.tui-hotkey,
-.tui-help {
-  color: var(--tui-title);
-}
-
 .tui-hotkey {
+  color: var(--tui-title);
   text-decoration: underline;
   text-underline-offset: 0.12em;
+}
+
+.tui-help {
+  color: var(--tui-help);
 }
 
 .tui-actions {
