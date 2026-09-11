@@ -54,6 +54,9 @@ jobs:
       - name: Verify browser interactions
         run: python scripts/interaction_regression.py
 
+      - name: Verify accessibility semantics
+        run: python scripts/accessibility_regression.py
+
       - name: Build deterministic release artifacts
         run: python scripts/build_release.py --version "${GITHUB_REF_NAME}" --check
 
