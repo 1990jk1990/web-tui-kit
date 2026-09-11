@@ -1,6 +1,6 @@
 # Accessibility semantics verification
 
-Status: Active
+Status: Completed
 Related issue: #20
 Change class: Class 2 — verification architecture / accessibility evidence
 
@@ -10,7 +10,7 @@ Change class: Class 2 — verification architecture / accessibility evidence
 
 The next milestone should verify roles, accessible names, native state, label associations, and progress semantics in real browser engines without replacing native HTML with ARIA-heavy replicas and without presenting browser automation as screen-reader certification or proof of WCAG conformance.
 
-## Proposed behavior
+## Accepted behavior
 
 - Add browser-driven accessibility-semantic verification for the canonical package-configuration and dialog demo pages.
 - Verify named regions/surfaces, group and radiogroup names, native control names, checked/disabled state, text-input label association, action-button names, and native progressbar semantics.
@@ -19,7 +19,7 @@ The next milestone should verify roles, accessible names, native state, label as
 - Run the desktop semantic contract in the Playwright-pinned Chromium and Firefox engines and add a narrow touch-capable Chromium semantic case.
 - Reuse the existing pinned Python Playwright dependency and canonical demo/runtime assets; add no runtime or framework dependency.
 - Add a read-only accessibility-semantics CI matrix and retain a screenshot artifact only on failure for diagnosis.
-- If the suite proves stable, make future tag-triggered releases run it before deterministic artifact creation/publication.
+- Future tag-triggered releases run the semantic suite before deterministic artifact creation/publication.
 - Reconcile OpenSpec, architecture/ADR material, compatibility/testing guidance, contributor/agent rules, structural safeguards, and changelog.
 
 ## Evidence boundary
