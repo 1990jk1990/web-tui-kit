@@ -29,7 +29,7 @@ Before non-trivial changes:
 3. Read the relevant current specification under `openspec/specs/`.
 4. Read relevant architecture and ADRs under `docs/`.
 5. For UI work, read `DESIGN_SYSTEM.md`, `src/tokens.css`, `src/tui.css`, and `demo/index.html`.
-6. For framework/template integration work, read `docs/project/framework-integration.md`, `examples/README.md`, the relevant recipe under `examples/`, ADR-0001, and ADR-0004.
+6. For framework/template integration work, read `docs/project/framework-integration.md`, `examples/README.md`, the relevant recipe under `examples/`, ADR-0001, ADR-0004, and ADR-0007; when executable recipe evidence is affected, also inspect `tests/framework/`, `scripts/framework_recipe_regression.py`, `tests/test_framework_execution.py`, and `.github/workflows/framework-recipe-regression.yml`.
 7. For browser verification/compatibility work, read `docs/project/testing.md`, `docs/project/compatibility.md`, `openspec/specs/browser-verification/spec.md`, ADR-0002, and ADR-0005.
 8. For accessibility-semantic verification work, read `docs/project/testing.md`, `docs/project/compatibility.md`, `openspec/specs/accessibility-verification/spec.md`, ADR-0006, and the canonical demo markup being asserted.
 9. For release/version/distribution work, read `VERSION`, `RELEASING.md`, the release/distribution specification, and relevant release ADRs.
@@ -44,7 +44,11 @@ Before non-trivial changes:
 - Exact design-token values → `src/tokens.css`.
 - Implementation → `src/`.
 - Executable structural behavior evidence → `tests/test_repository.py`.
-- Framework/template integration evidence → `tests/test_framework_recipes.py`.
+- Framework/template structural integration evidence → `tests/test_framework_recipes.py`.
+- Framework recipe execution safeguards → `tests/test_framework_execution.py`.
+- Framework recipe build harness → `tests/framework/`.
+- Framework recipe browser runner → `scripts/framework_recipe_regression.py`.
+- Framework recipe CI → `.github/workflows/framework-recipe-regression.yml`.
 - Browser interaction verification infrastructure evidence → `tests/test_interaction_regression.py`.
 - Browser interaction fixture → `tests/browser/interaction.html`.
 - Browser interaction runner → `scripts/interaction_regression.py`.
@@ -92,6 +96,9 @@ Keep the baseline framework-independent. A consuming application may use a frame
 - `tui:escape` remains an application signal; framework code decides whether to close, cancel, navigate, or do nothing.
 - Do not add competing ArrowUp/ArrowDown/Home/End handlers to a `data-tui-list` that already uses canonical `src/tui.js` enhancement unless intentionally replacing the contract.
 - Keep framework dependencies out of `src/` and repository runtime requirements.
+- Keep Node/framework/compiler/bundler dependencies used by executable recipe verification under `tests/framework/` and development/CI only; generated fixtures belong under ignored `test-results/`.
+- Compile and exercise canonical recipe source files directly when framework integration behavior changes; do not create test-only copies that can drift from `examples/`.
+- Treat pinned React/Vue/tool versions as representative evidence, not an exhaustive framework support matrix.
 - Prefer copy-ready recipes over maintained adapter packages until a concrete capability gap justifies a new architectural decision.
 
 ## Browser verification rules
@@ -136,8 +143,8 @@ Normal CI visual verification is read-only. Do not make CI automatically accept 
 - Keep direct vendoring from an immutable tag as the primary pre-1.0 distribution path unless an accepted follow-up decision changes that model.
 - Do not introduce npm/package-registry publication without a concrete consumer need and deliberate architecture/specification update.
 - Run `python scripts/build_release.py --version "v$(cat VERSION)" --check` for release preparation.
-- Tag-triggered publication must verify tag/version identity, main-branch ancestry, structural/documentation checks, visual regression, cross-browser interaction regression, accessibility semantic regression, and deterministic release artifacts before creating a GitHub Release.
-- Compatibility statements must reflect actual evidence. Mobile Chromium emulation is not physical Android device certification, and browser semantic automation is not screen-reader/WCAG certification.
+- Tag-triggered publication must verify tag/version identity, main-branch ancestry, structural/documentation checks, visual regression, cross-browser interaction regression, accessibility semantic regression, representative executable framework/template recipe regression, and deterministic release artifacts before creating a GitHub Release.
+- Compatibility statements must reflect actual evidence. Mobile Chromium emulation is not physical Android device certification, browser semantic automation is not screen-reader/WCAG certification, and passing pinned framework recipe cases is not an exhaustive framework-version compatibility claim.
 
 ## Change classes
 
@@ -156,10 +163,10 @@ Never commit secrets or real production data. Explain destructive/high-impact ac
 
 A UI change is complete only when affected canonical documentation is reconciled, structural tests pass, applicable visual baselines pass or are deliberately reviewed/updated, applicable browser-interaction checks pass, applicable accessibility semantic checks pass, the result is visually consistent, keyboard and touch use remain viable, narrow-screen behavior remains intentional, and reusable patterns are represented in the appropriate demo pages.
 
-A framework/template integration change is complete only when recipes reuse canonical runtime contracts, no parallel styling/runtime dependency is introduced, relevant OpenSpec/architecture/ADR/docs are reconciled, and structural tests prove the integration boundary.
+A framework/template integration change is complete only when recipes reuse canonical runtime contracts, no parallel styling/runtime dependency is introduced, relevant OpenSpec/architecture/ADR/docs are reconciled, structural safeguards pass, and affected canonical React/Vue/server-rendered recipes pass the representative executable recipe verification when their compile/runtime integration behavior can change.
 
 A browser-verification/compatibility change is complete only when the fixture/runner/workflows and structural safeguards agree, browser evidence is accurately documented, physical-device claims are not inferred from emulation, and existing visual/structural/docs checks remain green.
 
 An accessibility-semantic verification change is complete only when canonical demo semantics, runner/workflow/release gate, structural safeguards, OpenSpec/architecture/ADR/docs, and evidence boundaries agree; browser semantic evidence must not be overstated as assistive-technology or WCAG certification.
 
-A release-preparation change is complete only when version identity, changelog, release specification/architecture, compatibility evidence, deterministic artifact checks, and tag workflow safeguards are reconciled and PR CI is green. Publication is complete only after the immutable tag and matching GitHub Release artifacts have been verified.
+A release-preparation change is complete only when version identity, changelog, release specification/architecture, compatibility evidence, deterministic artifact checks, all accepted release verification gates including framework recipe regression, and tag workflow safeguards are reconciled and PR CI is green. Publication is complete only after the immutable tag and matching GitHub Release artifacts have been verified.
