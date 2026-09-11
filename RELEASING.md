@@ -4,7 +4,7 @@ This document is the maintainer procedure for versioned releases and the compati
 
 ## Versioning policy
 
-`web-tui-kit` uses Semantic Versioning (`MAJOR.MINOR.PATCH`). The canonical plain version is stored in `VERSION`; Git tags use the same value with a `v` prefix, for example `VERSION=0.8.0` and tag `v0.8.0`.
+`web-tui-kit` uses Semantic Versioning (`MAJOR.MINOR.PATCH`). The canonical plain version is stored in `VERSION`; Git tags use the same value with a `v` prefix, for example `VERSION=0.9.0` and tag `v0.9.0`.
 
 The supported downstream stability boundary is defined in `openspec/specs/public-contract/spec.md` and inventoried in `docs/project/public-contract.md`. Version classification applies to that declared public surface rather than every visible repository implementation detail.
 
@@ -38,6 +38,8 @@ Do not choose `1.0.0` merely because the project has reached a particular 0.x nu
 6. evidence gaps must remain accurately bounded rather than being presented as certifications that were not performed.
 
 Physical Android-device certification, real screen-reader/assistive-technology certification, WCAG certification, registry publication, maintained framework adapters, and an exhaustive framework-version matrix are not current 1.0 prerequisites unless a later accepted requirement deliberately makes one mandatory.
+
+After `v0.9.0` is published and its release evidence is verified, evaluate these criteria directly before creating any `1.0.0` release-preparation branch.
 
 ## Release contents
 
