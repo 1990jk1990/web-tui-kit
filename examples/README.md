@@ -6,7 +6,7 @@ They are **not** a second implementation of the design system and they are not p
 
 ## Stable consumption
 
-For reproducible downstream use, vendor files from immutable release tag `v0.9.0` rather than the moving `main` branch. A consuming project normally copies:
+For reproducible downstream use, vendor files from immutable stable release tag `v1.0.0` rather than the moving `main` branch. A consuming project normally copies:
 
 ```text
 src/tokens.css
@@ -15,6 +15,8 @@ src/tui.js   # optional unless progressive JS enhancements are needed
 ```
 
 Load `tokens.css` before `tui.css`. Load `tui.js` once when using `data-tui-escape-close` or `data-tui-list` progressive enhancement.
+
+Starting with 1.0, normal Semantic Versioning applies to the browser-native contract these recipes emit. The recipes remain guidance rather than separately versioned adapter APIs.
 
 ## Recipes
 
