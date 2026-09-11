@@ -57,7 +57,9 @@ React, Vue, and server-rendered applications should generate the same semantic m
 
 The React/Vue examples demonstrate framework-owned state and lifecycle handling while keeping native form controls. The server-rendered recipe demonstrates ordinary form submission. All three reuse the canonical `src/` assets and treat `tui:escape` as an application-owned signal.
 
-Do not copy the design tokens/component CSS into CSS-in-JS, scoped component styles, or a private theme implementation. If a reusable visual change is needed, make it in the canonical design system.
+The repository has development-only executable regression coverage for those canonical recipes: React `19.0.0`/React DOM `19.0.0`, Vue `3.5.13`/`@vue/compiler-sfc` `3.5.13`, and esbuild `0.24.2` are pinned as representative verification anchors. The recipes are compiled and smoke-tested in pinned Linux Chromium against canonical `src/` assets. This is representative evidence, not a claim that every React/Vue/tooling version is supported.
+
+Do not copy the design tokens/component CSS into CSS-in-JS, scoped component styles, or a private theme implementation. If a reusable visual change is needed, make it in the canonical design system. The Node/framework/compiler dependencies used for repository verification are not runtime dependencies and are not required by consuming applications.
 
 See `RELEASING.md` for the versioning/release procedure and `docs/project/compatibility.md` for current compatibility evidence and its limits. Physical Android evidence is tracked separately through `docs/project/android-device-check.md`; touch-capable Chromium emulation is not treated as physical-device certification. Automated browser accessibility semantics are likewise evidence, not screen-reader or WCAG certification.
 
@@ -82,6 +84,7 @@ This repository follows **AI-DOC-1 v1.3**. The repository itself is durable proj
 - core dialog gallery: `demo/dialogs.html`
 - broader component gallery: `demo/components.html`
 - framework/template consumption recipes: `examples/`
+- framework recipe execution harness: `tests/framework/` + `scripts/framework_recipe_regression.py`
 - structural regression evidence: `tests/`
 - reviewed visual baselines: `tests/visual/baselines/`
 - browser interaction fixture: `tests/browser/interaction.html`
@@ -133,12 +136,21 @@ python -m playwright install --with-deps chromium firefox
 python scripts/accessibility_regression.py
 ```
 
+Run representative executable verification for the canonical React/Vue/server-rendered recipes with:
+
+```bash
+npm install --prefix tests/framework --no-package-lock --no-audit --no-fund
+pip install -r requirements-visual.txt
+python -m playwright install --with-deps chromium
+python scripts/framework_recipe_regression.py
+```
+
 Build and verify the focused release archive with:
 
 ```bash
 python scripts/build_release.py --version "v$(cat VERSION)" --check
 ```
 
-The visual suite compares the canonical package and dialog demos against reviewed desktop/touch-mobile Chromium PNG baselines. The interaction suite verifies runtime keyboard/custom-event contracts in desktop Chromium and Firefox plus native tap behavior in a narrow touch-capable Chromium context. The accessibility suite verifies browser-computed roles, accessible names, label associations, native states, and progress semantics in desktop Chromium/Firefox plus representative narrow-touch package semantics. It does not substitute for real screen-reader/assistive-technology or WCAG conformance evaluation. See `docs/project/testing.md` and `docs/project/compatibility.md` for the verification/evidence boundaries.
+The visual suite compares the canonical package and dialog demos against reviewed desktop/touch-mobile Chromium PNG baselines. The interaction suite verifies runtime keyboard/custom-event contracts in desktop Chromium and Firefox plus native tap behavior in a narrow touch-capable Chromium context. The accessibility suite verifies browser-computed roles, accessible names, label associations, native states, and progress semantics in desktop Chromium/Firefox plus representative narrow-touch package semantics. The framework recipe suite compiles and exercises the canonical example sources with representative pinned development versions; it is not an exhaustive framework compatibility matrix. None of these automated checks substitutes for real screen-reader/assistive-technology, WCAG conformance, or physical Android evidence. See `docs/project/testing.md` and `docs/project/compatibility.md` for the verification/evidence boundaries.
 
 Contribution details are in `CONTRIBUTING.md`; release-maintainer steps are in `RELEASING.md`.
