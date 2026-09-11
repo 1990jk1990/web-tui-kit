@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This specification defines the accepted pre-1.0 release identity, distribution, and compatibility-evidence contract for `web-tui-kit`.
+This specification defines the accepted release identity, distribution, publication, and compatibility-evidence contract for `web-tui-kit`, including the transition from pre-1.0 prereleases to stable 1.0+ releases.
 
 ## Requirements
 
@@ -10,17 +10,17 @@ This specification defines the accepted pre-1.0 release identity, distribution, 
 
 The project MUST use a plain `MAJOR.MINOR.PATCH` value in the repository-root `VERSION` file and MUST use an immutable `vMAJOR.MINOR.PATCH` Git tag for each corresponding release.
 
-Before `1.0.0`, compatible fixes SHOULD increment PATCH, while new public components/behavior or intentional breaking changes to the evolving pre-1.0 public contract SHOULD increment MINOR. Detailed public-surface compatibility/migration rules are defined in `openspec/specs/public-contract/spec.md`.
+Before `1.0.0`, compatible fixes SHOULD increment PATCH, while new public components/behavior or intentional breaking changes to the evolving pre-1.0 public contract SHOULD increment MINOR. Starting with `1.0.0`, normal Semantic Versioning rules MUST apply to the declared public surface as defined in `openspec/specs/public-contract/spec.md`.
 
 #### Scenario: Tag/version match
 
-- **GIVEN** a release tag is `v0.4.0`
+- **GIVEN** a release tag is `v1.0.0`
 - **WHEN** release automation reads `VERSION`
-- **THEN** the file MUST contain exactly `0.4.0` or the release MUST fail
+- **THEN** the file MUST contain exactly `1.0.0` or the release MUST fail
 
 ### Requirement: Tagged vendoring is the primary distribution path
 
-Pre-1.0 consumers MUST be able to use the project without npm, another package registry, or a build step by copying the runtime from an immutable release tag.
+Consumers MUST be able to use the project without npm, another package registry, or a build step by copying the runtime from an immutable release tag.
 
 Documentation MUST recommend pinning a tag/version rather than copying from the moving `main` branch for reproducible downstream use.
 
@@ -42,9 +42,9 @@ Each tagged release MUST be able to produce a focused `web-tui-kit-MAJOR.MINOR.P
 
 #### Scenario: Archive version identity
 
-- **GIVEN** the release builder creates `web-tui-kit-0.4.0.zip`
+- **GIVEN** the release builder creates `web-tui-kit-1.0.0.zip`
 - **WHEN** its embedded `VERSION` is inspected
-- **THEN** it MUST also contain `0.4.0`
+- **THEN** it MUST also contain `1.0.0`
 
 ### Requirement: Focused archive includes public contract guidance
 
@@ -104,9 +104,9 @@ The release workflow MAY use repository write permission only for release public
 - **WHEN** the tag workflow runs
 - **THEN** it MUST NOT publish the focused release artifacts
 
-### Requirement: GitHub prerelease publication
+### Requirement: Publication state follows stability line
 
-Pre-1.0 tag automation MUST publish the focused ZIP and checksum as assets of a GitHub prerelease associated with the immutable tag.
+Pre-1.0 tag automation MUST publish the focused ZIP and checksum as assets of a GitHub prerelease associated with the immutable tag. Starting with `v1.0.0`, tag automation MUST publish a normal non-prerelease GitHub Release after the same mandatory verification gates pass.
 
 #### Scenario: Successful pre-1.0 tag
 
@@ -114,13 +114,19 @@ Pre-1.0 tag automation MUST publish the focused ZIP and checksum as assets of a 
 - **WHEN** publication runs
 - **THEN** a GitHub prerelease MUST be created for that tag with the ZIP and checksum attached
 
+#### Scenario: Successful stable tag
+
+- **GIVEN** a valid `v1.0.0` or later stable-line tag on `main` passes all release checks
+- **WHEN** publication runs
+- **THEN** a normal GitHub Release MUST be created without prerelease status and with the ZIP and checksum attached
+
 ### Requirement: Registry publishing is optional and currently absent
 
-The pre-1.0 distribution contract MUST NOT require npm or another package registry. Adding registry publication later requires a concrete consumer need and a deliberate follow-up decision because it creates another supported distribution surface.
+The current distribution contract MUST NOT require npm or another package registry. Adding registry publication later requires a concrete consumer need and a deliberate follow-up decision because it creates another supported distribution surface.
 
-#### Scenario: Consumer uses a pre-1.0 release
+#### Scenario: Consumer uses a tagged release
 
-- **GIVEN** a consumer wants a tagged pre-1.0 release
+- **GIVEN** a consumer wants a released version
 - **WHEN** it follows the documented primary installation path
 - **THEN** no npm account, Node.js installation, package-manager lockfile, or registry credential MUST be required
 
@@ -150,10 +156,10 @@ Automated touch/mobile Chromium emulation MAY support the Android browser design
 
 ### Requirement: Bad releases fix forward
 
-Published version tags SHOULD be treated as immutable. A faulty pre-1.0 release SHOULD be corrected with a new Semantic Version rather than moving the existing tag to another commit.
+Published version tags SHOULD be treated as immutable. A faulty release SHOULD be corrected with a new Semantic Version rather than moving the existing tag to another commit.
 
 #### Scenario: Defect found after publication
 
-- **GIVEN** `v0.4.0` has already been published and a defect is discovered
+- **GIVEN** `v1.0.0` has already been published and a defect is discovered
 - **WHEN** maintainers prepare the correction
-- **THEN** they SHOULD publish a new version such as `v0.4.1` rather than retargeting `v0.4.0`
+- **THEN** they SHOULD publish a new version such as `v1.0.1` rather than retargeting `v1.0.0`
