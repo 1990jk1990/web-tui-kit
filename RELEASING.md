@@ -24,7 +24,7 @@ python scripts/build_release.py --version "v$(cat VERSION)" --check
 
 The command verifies that the expected tag version matches `VERSION`, builds a deterministic ZIP under `dist/`, validates its exact file list/timestamps, builds the ZIP twice when `--check` is supplied, and writes a matching SHA-256 checksum file.
 
-The focused archive contains the runtime under `src/`, executable demos, copy-ready framework/template recipes under `examples/`, the framework-integration guide, `VERSION`, `README.md`, `DESIGN_SYSTEM.md`, `AGENTS.md`, `CHANGELOG.md`, and `SECURITY.md`. GitHub also provides its normal source archives for the complete repository.
+The focused archive contains the runtime under `src/`, executable demos, copy-ready framework/template recipes under `examples/`, the framework-integration guide, `VERSION`, `README.md`, `DESIGN_SYSTEM.md`, `AGENTS.md`, `CHANGELOG.md`, and `SECURITY.md`. GitHub also provides its normal source archives for the complete repository. Development-only framework verification dependencies and generated fixtures are not distribution contents.
 
 ## Pre-release checklist
 
@@ -45,10 +45,12 @@ python -m playwright install --with-deps chromium firefox
 python scripts/visual_regression.py
 python scripts/interaction_regression.py
 python scripts/accessibility_regression.py
+npm install --prefix tests/framework --no-package-lock --no-audit --no-fund
+python scripts/framework_recipe_regression.py
 python scripts/build_release.py --version "v$(cat VERSION)" --check
 ```
 
-6. Review the complete diff and confirm there are no secrets, generated `site/`, `dist/`, or `test-results/` directories committed.
+6. Review the complete diff and confirm there are no secrets, generated `site/`, `dist/`, `test-results/`, or `tests/framework/node_modules/` directories committed.
 7. Merge the release-preparation PR only after required CI is green.
 8. Create the immutable tag `v$(cat VERSION)` on the resulting `main` commit.
 
@@ -62,12 +64,13 @@ Pushing a matching `vMAJOR.MINOR.PATCH` tag starts `.github/workflows/release.ym
 4. runs the pinned Chromium visual-regression suite,
 5. runs the pinned Chromium/Firefox browser-interaction suite, including the narrow touch-capable Chromium case,
 6. runs the pinned Chromium/Firefox accessibility-semantic suite, including the narrow touch-capable Chromium package case,
-7. builds and validates the deterministic distribution ZIP/checksum,
-8. creates a GitHub **prerelease** and uploads the focused ZIP and SHA-256 checksum.
+7. installs the private pinned representative framework/tool verification dependencies and runs executable React/Vue/server-rendered recipe smoke checks in Chromium,
+8. builds and validates the deterministic distribution ZIP/checksum,
+9. creates a GitHub **prerelease** and uploads the focused ZIP and SHA-256 checksum.
 
-The accessibility gate is browser semantic regression evidence only; it is not a WCAG conformance or screen-reader certification step.
+The accessibility gate is browser semantic regression evidence only; it is not a WCAG conformance or screen-reader certification step. The framework-recipe gate is representative compile/runtime evidence for the exact pinned verification versions; it is not an exhaustive React/Vue compatibility matrix.
 
-The release job uses repository `contents: write` only for GitHub Release publication. Runtime consumers do not depend on GitHub Actions, Python, Playwright, Chromium, Firefox, or any other release tooling. Framework/template examples in the archive remain optional consumption references and do not make those frameworks runtime dependencies.
+The release job uses repository `contents: write` only for GitHub Release publication. Runtime consumers do not depend on GitHub Actions, Python, Playwright, Chromium, Firefox, Node.js, npm, React, Vue, esbuild, or other release/verification tooling. Framework/template examples in the archive remain optional consumption references and do not make those frameworks runtime dependencies.
 
 ## Verification after tagging
 
@@ -75,4 +78,4 @@ Confirm that the tag workflow completed successfully, the GitHub Release points 
 
 ## Distribution policy
 
-Direct vendoring from an immutable tag is the primary distribution method for pre-1.0 releases. Do not add an npm or other registry publication path merely for convenience; a new distribution surface requires a concrete consumer need and a deliberate follow-up decision.
+Direct vendoring from an immutable tag is the primary distribution method for pre-1.0 releases. Do not add an npm or other registry publication path merely for convenience; a new distribution surface requires a concrete consumer need and a deliberate follow-up decision. The npm toolchain used to verify framework recipes is development/CI-only and does not change this policy.

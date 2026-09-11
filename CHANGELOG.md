@@ -4,6 +4,12 @@ All notable user-visible changes are recorded here.
 
 ## Unreleased
 
+- Added development/CI-only executable verification for the canonical React, Vue, and server-rendered integration recipes.
+- Added exact representative React/Vue/compiler/bundler verification versions and compile the canonical JSX/SFC sources directly instead of maintaining test-only recipe copies.
+- Added Chromium smoke checks for native checkbox state, canonical `data-tui-list` focus navigation, `tui:escape` application handling, accept payloads, and server-rendered form semantics.
+- Added a dedicated read-only framework recipe CI workflow and made future tagged releases fail before artifact creation/publication when representative recipe verification fails.
+- Added ADR-0007 and expanded framework-integration/compatibility evidence boundaries without introducing framework dependencies into `src/`, adapter packages, or npm distribution.
+
 ## 0.7.0 - 2026-09-11
 
 Accessibility semantics verification release.

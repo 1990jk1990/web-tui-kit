@@ -58,8 +58,25 @@ Application-specific layout around the design system is allowed. Changes intende
 
 The React and Vue files are source recipes, not standalone runnable applications in this repository. They assume the consuming application already has the respective framework/toolchain. The server-rendered example is directly browser-openable when the repository is served statically.
 
+## Executable recipe verification
+
+The repository also compiles and browser-executes the canonical React and Vue source recipes with a private development-only harness under `tests/framework/`. The representative pinned direct versions are React `19.0.0`, React DOM `19.0.0`, Vue `3.5.13`, `@vue/compiler-sfc` `3.5.13`, and esbuild `0.24.2`. The harness renders with the canonical `src/` assets and verifies native checkbox state, `data-tui-list` focus movement, `tui:escape` delivery to application handlers, and accept payloads. The server-rendered recipe is smoke-tested in the same Chromium run for ordinary form state and Escape handling.
+
+These versions are evidence anchors, not the supported-version range of `web-tui-kit`. Passing them shows that the checked-in recipes compile and interoperate with representative current framework tooling; it does not establish compatibility with every React/Vue release. The Node/npm/compiler/bundler dependencies are repository verification tooling only and are not required by consumers or included in `src/`.
+
+Run the verification locally with:
+
+```bash
+npm install --prefix tests/framework --no-package-lock --no-audit --no-fund
+pip install -r requirements-visual.txt
+python -m playwright install --with-deps chromium
+python scripts/framework_recipe_regression.py
+```
+
 ## Why there is no adapter package
 
 The current browser-native contract already maps cleanly to React, Vue, and server-rendered markup. A maintained adapter layer would create additional API/versioning/framework-maintenance surfaces without solving a demonstrated capability gap.
+
+Executable recipe verification strengthens evidence for this choice without changing it: the project tests the recipes as consumers of the browser-native contract rather than promoting them into a second runtime surface.
 
 If a future consumer identifies behavior that cannot be expressed cleanly through semantic markup, canonical classes, CSS custom properties, and the existing custom-event/progressive-enhancement contracts, that concrete gap can justify a new adapter proposal. Until then, recipes are the lower-risk integration mechanism.

@@ -6,7 +6,7 @@
 
 Read `AGENTS.md` first. For UI changes, also read the relevant current specification under `openspec/specs/`, `DESIGN_SYSTEM.md`, the affected files under `src/`, and `demo/index.html`.
 
-For framework/template integration changes, also read `docs/project/framework-integration.md`, `examples/README.md`, the relevant recipe under `examples/`, ADR-0001, and ADR-0004.
+For framework/template integration changes, also read `docs/project/framework-integration.md`, `examples/README.md`, the relevant recipe under `examples/`, ADR-0001, ADR-0004, and ADR-0007.
 
 For browser verification or compatibility-evidence changes, also read `openspec/specs/browser-verification/spec.md`, `docs/project/testing.md`, `docs/project/compatibility.md`, ADR-0002, and ADR-0005.
 
@@ -22,7 +22,7 @@ Behavioral changes must update the relevant OpenSpec artifacts. Architectural ch
 
 When adding a reusable component, prefer existing tokens and patterns, update the demo, and add regression evidence in `tests/`.
 
-When adding or changing a framework/template recipe, keep framework dependencies out of `src/`, retain native semantic controls, reuse canonical `tui-*` classes/events, and add structural tests that prevent parallel CSS/runtime drift.
+When adding or changing a framework/template recipe, keep framework dependencies out of `src/`, retain native semantic controls, reuse canonical `tui-*` classes/events, add structural tests that prevent parallel CSS/runtime drift, and update executable recipe verification when the integration behavior changes. Framework/build dependencies under `tests/framework/` are verification tooling only and must not become downstream requirements.
 
 When changing keyboard/custom-event/list-navigation behavior, add or update browser-driven interaction evidence. Keep interaction fixtures on canonical `src/` assets and do not turn Playwright/Chromium/Firefox into runtime dependencies.
 
@@ -65,6 +65,17 @@ pip install -r requirements-visual.txt
 python -m playwright install --with-deps chromium firefox
 python scripts/accessibility_regression.py
 ```
+
+For framework/template recipe, framework-evidence, or release-gate changes, also run the representative executable recipe verification:
+
+```bash
+npm install --prefix tests/framework --no-package-lock --no-audit --no-fund
+pip install -r requirements-visual.txt
+python -m playwright install --with-deps chromium
+python scripts/framework_recipe_regression.py
+```
+
+The pinned React/Vue/tooling versions are representative verification evidence, not a promise of compatibility with every framework version. Do not move the Node/framework tooling into `src/` or require it for ordinary release consumers.
 
 If an intended visual change makes the suite fail, do not weaken the threshold or allow CI to overwrite the baseline. Regenerate deliberately with `python scripts/visual_regression.py --update`, review the resulting PNG changes, then rerun the normal comparison. The Linux GitHub Actions Chromium environment is the canonical rendering environment; Firefox interaction/semantic evidence is not a second pixel-baseline authority. See `docs/project/testing.md` for details.
 

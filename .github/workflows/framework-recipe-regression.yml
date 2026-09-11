@@ -1,0 +1,37 @@
+name: Framework recipe regression
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  framework-recipes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Install pinned framework verification dependencies
+        run: npm install --prefix tests/framework --no-package-lock --no-audit --no-fund
+      - name: Install browser-test dependencies
+        run: pip install -r requirements-visual.txt
+      - name: Install pinned Chromium
+        run: python -m playwright install --with-deps chromium
+      - name: Verify framework and template recipes
+        run: python scripts/framework_recipe_regression.py
+      - name: Upload framework recipe failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: framework-recipe-regression-failures
+          path: test-results/framework/
+          if-no-files-found: warn
+          retention-days: 14

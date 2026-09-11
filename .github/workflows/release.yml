@@ -18,6 +18,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
 
       - name: Verify tag matches VERSION
         run: test "${GITHUB_REF_NAME}" = "v$(cat VERSION)"
@@ -56,6 +59,12 @@ jobs:
 
       - name: Verify accessibility semantics
         run: python scripts/accessibility_regression.py
+
+      - name: Install pinned framework verification dependencies
+        run: npm install --prefix tests/framework --no-package-lock --no-audit --no-fund
+
+      - name: Verify framework and template recipes
+        run: python scripts/framework_recipe_regression.py
 
       - name: Build deterministic release artifacts
         run: python scripts/build_release.py --version "${GITHUB_REF_NAME}" --check

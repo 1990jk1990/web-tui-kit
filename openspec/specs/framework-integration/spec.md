@@ -34,11 +34,13 @@ The recipes MUST demonstrate the canonical package-dialog class and semantic-con
 
 Framework integration material MUST NOT introduce React, Vue, a template engine, package manager, bundler, or framework-specific adapter as a dependency of `src/`.
 
+Development-only recipe verification tooling MAY use framework/compiler/bundler dependencies under `tests/`, but those dependencies MUST NOT become runtime or downstream-consumer requirements and MUST NOT be included as canonical `src/` dependencies.
+
 #### Scenario: Consumer does not use a framework
 
 - **GIVEN** a plain browser application consumes `src/`
-- **WHEN** framework integration recipes are present in the repository
-- **THEN** the application MUST NOT need any framework dependency that was introduced solely for those recipes
+- **WHEN** framework integration recipes and their executable verification tooling are present in the repository
+- **THEN** the application MUST NOT need any framework/tooling dependency introduced solely for those recipes or tests
 
 ### Requirement: Recipes reuse the canonical visual contract
 
@@ -69,6 +71,34 @@ When a recipe uses `data-tui-list`, it MUST rely on the canonical progressive en
 - **GIVEN** a React/Vue/template checklist uses `data-tui-list`
 - **WHEN** the canonical JavaScript is loaded
 - **THEN** the recipe MUST NOT add a competing ArrowUp/ArrowDown/Home/End navigation implementation for the same list
+
+### Requirement: Representative executable recipe verification
+
+The repository MUST compile and browser-execute the canonical React and Vue recipe source files against explicitly pinned representative framework/tooling versions. It MUST also smoke-test the browser-openable server-rendered recipe against canonical runtime assets.
+
+The executable verification MUST exercise representative native state updates, `data-tui-list` focus enhancement, `tui:escape` application handling, and application-owned accept/form behavior. The harness MUST consume canonical `src/` assets rather than copying reusable design-system styling or runtime logic into the test implementation.
+
+#### Scenario: Canonical React or Vue recipe becomes stale
+
+- **GIVEN** a canonical framework recipe no longer compiles or no longer preserves the accepted native state/event integration contract with the pinned representative toolchain
+- **WHEN** framework recipe regression runs
+- **THEN** the verification MUST fail before that change is accepted or a future tagged release is published
+
+#### Scenario: Pinned representative framework versions pass
+
+- **GIVEN** the repository's pinned representative React/Vue verification versions pass compilation and browser smoke checks
+- **WHEN** compatibility evidence is documented
+- **THEN** the result MUST be described as representative recipe evidence and MUST NOT be generalized into exhaustive compatibility with every framework release
+
+### Requirement: Framework verification remains development-only
+
+Framework recipe verification dependencies and generated fixtures MUST remain development/CI-only. Generated bundles MUST live under ignored test output and MUST NOT become release runtime artifacts or a new downstream integration surface.
+
+#### Scenario: Plain browser consumer vendors a release
+
+- **GIVEN** framework recipe verification exists in the repository
+- **WHEN** a plain browser consumer vendors the released `src/` runtime
+- **THEN** Node.js, npm, React, Vue, compilers, and bundlers MUST NOT be required for runtime consumption
 
 ### Requirement: Stable downstream reference
 
