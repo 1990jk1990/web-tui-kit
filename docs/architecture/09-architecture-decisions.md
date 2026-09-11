@@ -9,6 +9,7 @@ Durable architectural rationale is recorded as ADRs under `docs/decisions/`. Thi
 - [ADR-0003: Tagged vendoring and GitHub release archives as the baseline distribution model](../decisions/0003-tagged-vendoring-distribution.md) — Accepted.
 - [ADR-0004: Framework recipes over maintained adapters](../decisions/0004-framework-recipes-over-maintained-adapters.md) — Accepted.
 - [ADR-0005: Cross-browser interaction verification with Playwright](../decisions/0005-cross-browser-interaction-verification.md) — Accepted.
+- [ADR-0006: Browser accessibility semantics verification with Playwright](../decisions/0006-browser-accessibility-semantics-verification.md) — Accepted.
 
 ## Template
 
