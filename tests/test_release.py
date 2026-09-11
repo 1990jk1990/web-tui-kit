@@ -104,6 +104,8 @@ class ReleaseContractTests(unittest.TestCase):
         for fragment in (
             '"v*.*.*"',
             "permissions:\n  contents: write",
+            "actions/setup-node@v4",
+            'node-version: "24"',
             'test "${GITHUB_REF_NAME}" = "v$(cat VERSION)"',
             'git merge-base --is-ancestor "${GITHUB_SHA}" origin/main',
             "python -m unittest discover -s tests -v",
@@ -113,6 +115,8 @@ class ReleaseContractTests(unittest.TestCase):
             "python scripts/visual_regression.py",
             "python scripts/interaction_regression.py",
             "python scripts/accessibility_regression.py",
+            "npm install --prefix tests/framework --no-package-lock --no-audit --no-fund",
+            "python scripts/framework_recipe_regression.py",
             'python scripts/build_release.py --version "${GITHUB_REF_NAME}" --check',
             'gh release create "${GITHUB_REF_NAME}"',
             "--verify-tag",
@@ -129,6 +133,7 @@ class ReleaseContractTests(unittest.TestCase):
             "python scripts/visual_regression.py",
             "python scripts/interaction_regression.py",
             "python scripts/accessibility_regression.py",
+            "python scripts/framework_recipe_regression.py",
         ):
             self.assertLess(self.workflow.index(verification), build)
             self.assertLess(self.workflow.index(verification), publication)
@@ -145,6 +150,7 @@ class ReleaseContractTests(unittest.TestCase):
         self.assertIn('"examples/server-rendered/package-configuration.html"', self.builder)
         self.assertNotIn("site/", self.builder)
         self.assertNotIn("test-results/", self.builder)
+        self.assertNotIn("tests/framework/node_modules/", self.builder)
 
 
 if __name__ == "__main__":
