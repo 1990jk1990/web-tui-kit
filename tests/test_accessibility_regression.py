@@ -14,6 +14,7 @@ class AccessibilityRegressionContractTests(unittest.TestCase):
         self.requirements = (ROOT / "requirements-visual.txt").read_text(encoding="utf-8")
         self.package_demo = (ROOT / "demo/index.html").read_text(encoding="utf-8")
         self.dialog_demo = (ROOT / "demo/dialogs.html").read_text(encoding="utf-8")
+        self.css = (ROOT / "src/tui.css").read_text(encoding="utf-8")
 
     def test_runner_uses_canonical_demos_and_cross_browser_cases(self):
         for fragment in (
@@ -53,6 +54,10 @@ class AccessibilityRegressionContractTests(unittest.TestCase):
             self.assertGreater(len(helpers), 0)
             for helper in helpers:
                 self.assertIn('aria-hidden="true"', helper)
+
+    def test_generated_button_brackets_have_empty_accessible_alternative(self):
+        self.assertIn('.tui-button::before {\n  content: "<" / "";', self.css)
+        self.assertIn('.tui-button::after {\n  content: ">" / "";', self.css)
 
     def test_workflow_runs_read_only_engine_matrix(self):
         self.assertIn("permissions:\n  contents: read", self.workflow)
