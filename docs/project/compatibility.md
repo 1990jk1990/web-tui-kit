@@ -2,6 +2,8 @@
 
 This page records what the project has actually exercised. It is intentionally more conservative than the compatibility targets in OpenSpec.
 
+Compatibility evidence and public API stability are separate concerns. `docs/project/public-contract.md` defines which runtime names/semantic relationships consumers may rely on; this page records environments in which those contracts have actually been exercised.
+
 ## Release target
 
 The runtime prioritizes current Chromium-based browsers on Linux desktop and Android and should remain usable in current Firefox where the required standards are supported. The UI is browser-native HTML/CSS/JavaScript and does not require an operating-system-specific client.
@@ -55,11 +57,17 @@ If a Firefox-specific visual or semantic defect is reported, add focused evidenc
 
 `docs/project/android-device-check.md` defines the current manual physical-device checklist and an evidence record template. A real result must include the tested repository commit/tag, device model, Android version, Chrome version, date, and observed outcomes. Until such a record exists, physical Android Chrome and WebView remain unverified regardless of the mobile/touch Chromium CI result.
 
+## Public contract and 1.0 interpretation
+
+The v0.9 public-contract audit turns the already exercised browser-native surface into an explicit compatibility inventory. Structural public-contract tests protect declared `--tui-*` token names, `tui-*` classes, scoped state hooks, progressive data attributes/events, and release inclusion from silent drift. Browser visual/interaction/accessibility suites continue to validate behavior rather than replacing that inventory.
+
+A future `1.0.0` decision requires the declared public contract/stability rules and all existing release gates to be green. It does **not** require converting current evidence gaps into unsupported certification claims. In particular, no physical Android, real assistive-technology, WCAG certification, registry publication, maintained framework adapter, or exhaustive framework-version matrix is currently a 1.0 prerequisite. Those domains remain documented gaps or future product decisions unless accepted requirements change.
+
 ## Release interpretation
 
 For future pre-1.0 releases, automated canonical Chromium screenshots plus Chromium/Firefox interaction and accessibility-semantic verification provide the normal browser release gates. Representative touch-capable Chromium evidence supports the Android browser design target but must continue to be described as emulation/browser evidence rather than physical-device certification.
 
-Tag-triggered publication runs the interaction, accessibility-semantic, and representative framework/template recipe suites before release artifact creation/publication, so a regression in the exercised contracts blocks a future release.
+Tag-triggered publication runs the interaction, accessibility-semantic, and representative framework/template recipe suites before release artifact creation/publication, so a regression in the exercised contracts blocks a future release. The deterministic focused archive also carries `docs/project/public-contract.md`, allowing downstream users to see the supported stability boundary together with the runtime.
 
 ## Known verification gaps
 
