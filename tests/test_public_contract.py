@@ -105,8 +105,16 @@ class PublicContractTests(unittest.TestCase):
     def test_all_tui_tokens_are_declared_and_classified(self):
         implemented = set(re.findall(r"(--tui-[a-z0-9-]+)\s*:", self.tokens_css))
         self.assertEqual(implemented, PUBLIC_TOKENS)
-        for token in PUBLIC_TOKENS:
+
+        individually_documented = PUBLIC_TOKENS - {
+            "--tui-space-2",
+            "--tui-space-3",
+            "--tui-space-4",
+            "--tui-space-5",
+        }
+        for token in individually_documented:
             self.assertIn(f"`{token}`", self.contract_doc)
+        self.assertIn("`--tui-space-1` through `--tui-space-6`", self.contract_doc)
 
     def test_all_tui_component_classes_are_implemented_and_classified(self):
         implemented = set(re.findall(r"\.((?:tui)[a-z0-9_-]*)", self.tui_css))
