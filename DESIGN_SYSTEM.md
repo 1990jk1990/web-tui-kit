@@ -2,7 +2,7 @@
 
 This document is the practical guide for consuming the design system.
 
-For AI-DOC-1 source-of-truth purposes, **accepted behavior is canonical under `openspec/specs/`**, exact token values are canonical in `src/tokens.css`, and implementation is canonical in `src/`. If this guide disagrees with those sources, correct the stale guide rather than creating a parallel rule.
+For AI-DOC-1 source-of-truth purposes, **accepted behavior is canonical under `openspec/specs/`**, the supported downstream stability boundary is canonical in `openspec/specs/public-contract/spec.md`, exact token values are canonical in `src/tokens.css`, and implementation is canonical in `src/`. `docs/project/public-contract.md` is the practical inventory of the public names and markup expectations. If this guide disagrees with those sources, correct the stale guide rather than creating a parallel rule.
 
 ## 1. Visual reference
 
@@ -11,6 +11,8 @@ The design language is inspired by classic Debian/Ubuntu package configuration s
 This is a browser UI, not a terminal emulator. Applications may use normal HTML forms, tables, APIs, routing, and JavaScript while presenting them with a classic text-interface visual language.
 
 The canonical package-configuration reference is `demo/index.html`. Broader component and dialog examples live in `demo/components.html` and `demo/dialogs.html`.
+
+The demos are normative examples for the documented reusable patterns, but incidental IDs, copy, option order, and page-specific wiring are not public APIs. Use `docs/project/public-contract.md` when deciding whether a token/class/state/data attribute/event is intentionally stable consumer surface.
 
 ## 2. Core principles
 
@@ -28,7 +30,7 @@ The canonical package-configuration reference is `demo/index.html`. Broader comp
 
 ## 3. Canonical tokens
 
-The exact machine-readable values live in `src/tokens.css`.
+The exact machine-readable values live in `src/tokens.css`. All canonical `--tui-*` names declared there are public theming hooks; the compatibility contract is their name and documented purpose, not an eternal promise that a literal default color/size can never be refined.
 
 | Token | Purpose |
 | --- | --- |
@@ -42,16 +44,20 @@ The exact machine-readable values live in `src/tokens.css`.
 | `--tui-selection-text` | text on selected areas |
 | `--tui-help` | contextual help accent |
 | `--tui-border-light` | raised top/left edge |
+| `--tui-border-mid` | intermediate/divider/scrollbar edge |
 | `--tui-border-dark` | raised bottom/right edge |
+| `--tui-shadow` | hard window/dialog shadow |
 | `--tui-focus` | keyboard focus indicator |
+| `--tui-danger` | danger/status accent |
+| `--tui-success` | success/status accent |
 | `--tui-dialog-max` | package-style dialog maximum width |
 | `--tui-list-row-min-height` | dialog-list row sizing |
 | `--tui-scrollbar-size` | classic list scrollbar sizing |
 | `--tui-progress-height` | canonical gauge/progress height |
 
-Spacing and sizing values are also centralized in `src/tokens.css`.
+Typography, spacing, border, window sizing, and control sizing values are also public canonical tokens; the complete inventory is in `docs/project/public-contract.md`.
 
-When `forced-colors: active` is reported by the browser, the default tokens map to CSS system colors such as `Canvas`, `CanvasText`, `Highlight`, `HighlightText`, `GrayText`, and `LinkText`. Do not defeat those overrides with per-component hard-coded colors.
+When `forced-colors: active` is reported by the browser, the default tokens map to CSS system colors such as `Canvas`, `CanvasText`, `Highlight`, `HighlightText`, `GrayText`, and `LinkText`. Do not defeat those overrides with per-component hard-coded colors. `.tui-help` deliberately consumes `--tui-help`, so its forced-colors accent can remain distinct from title text.
 
 ## 4. Typography
 
@@ -99,7 +105,7 @@ The angle brackets are added by the component styling. `.tui-hotkey` may underli
 </button>
 ```
 
-Action rows use `.tui-actions`.
+Action rows use `.tui-actions`. `.is-active` is a supported scoped state hook only when combined with `.tui-button`; it is not a global application-state API.
 
 ## 7. Checkbox and radio controls
 
@@ -120,7 +126,7 @@ Radio lists deliberately preserve native browser radio-group arrow behavior and 
 </div>
 ```
 
-Checkbox/radio state and row focus are deliberately separate. Checking or selecting changes the marker; keyboard focus or `.is-selected` applies the blue selection treatment to the row. Disabled inputs give their containing rows the muted disabled treatment automatically.
+Checkbox/radio state and row focus are deliberately separate. Checking or selecting changes the marker; keyboard focus or `.is-selected` applies the blue selection treatment to the row. `.is-selected` is a supported scoped state hook on the documented TUI selectors, not a global state-class contract. Disabled inputs give their containing rows the muted disabled treatment automatically.
 
 `.tui-help` is intended for short contextual visual text such as `<Help>`, not long explanations. When a help/status hint is presentation-only and nested inside a native label or button, add `aria-hidden="true"` so the repeated hint does not accidentally become part of the control accessible name. If the hint conveys information that a non-visual user needs, expose it deliberately as an accessible description (for example via `aria-describedby`) rather than relying on accidental name concatenation.
 
@@ -144,7 +150,7 @@ Use the optional `data-tui-list` attribute when a checklist or action list shoul
 
 The enhancement does not create a custom ARIA listbox or replace native semantics.
 
-The older `.tui-menu` / `.tui-menu-item` pattern remains available for navigation-link menus.
+The older `.tui-menu` / `.tui-menu-item` navigation-link pattern remains part of the declared public class inventory; it is distinct from button-based `.tui-menu-row` action choices.
 
 ## 10. Gauge and progress
 
@@ -172,7 +178,7 @@ Use `.tui-statusbar` for short application-level state or keyboard hints. It sho
 
 Native browser keyboard behavior is preferred. `src/tui.js` adds only small progressive enhancements.
 
-For `.tui-window[data-tui-escape-close]` or `.tui-dialog[data-tui-escape-close]`, pressing `Escape` dispatches a bubbling `tui:escape` event. The consuming application decides whether to hide, navigate, or otherwise close the surface.
+For `.tui-window[data-tui-escape-close]` or `.tui-dialog[data-tui-escape-close]`, pressing `Escape` dispatches a bubbling `tui:escape` event whose `detail.sourceEvent` is the originating keyboard event. The consuming application decides whether to hide, navigate, or otherwise close the surface.
 
 Do not trap focus unless a consuming application implements a true modal dialog.
 
@@ -198,4 +204,6 @@ At small widths, outer page padding is reduced, windows/dialogs can use the full
 
 ## 16. Compatibility target
 
-The current compatibility requirement is defined in `openspec/specs/web-tui-kit/spec.md`. The implementation is designed around standards-based browser features for current Chromium-based browsers on Linux and Android and should remain usable in current Firefox. Browser-computed accessibility semantics are exercised separately by the development/CI verification suite; those checks are regression evidence rather than WCAG or assistive-technology certification.
+The current compatibility requirement is defined in `openspec/specs/web-tui-kit/spec.md`; public API/stability rules are defined in `openspec/specs/public-contract/spec.md`. The implementation is designed around standards-based browser features for current Chromium-based browsers on Linux and Android and should remain usable in current Firefox. Browser-computed accessibility semantics are exercised separately by the development/CI verification suite; those checks are regression evidence rather than WCAG or assistive-technology certification.
+
+Before 1.0, an intentional incompatible public-contract change requires a MINOR version plus explicit migration guidance. Starting at 1.0, normal Semantic Versioning applies to the declared public tokens/classes/semantic markup/data attributes/events. See `docs/project/public-contract.md` for the complete inventory, non-public boundary, deprecation policy, and 1.0 exit criteria.
