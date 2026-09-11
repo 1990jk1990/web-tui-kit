@@ -4,6 +4,10 @@ All notable user-visible changes are recorded here.
 
 ## Unreleased
 
+## 0.9.0 - 2026-09-11
+
+Public contract and 1.0 readiness release.
+
 - Added an explicit public consumer-contract inventory covering runtime files, all canonical `--tui-*` tokens, reusable `tui-*` classes, scoped state hooks, semantic markup expectations, `data-tui-*` attributes, and the `tui:escape` event contract.
 - Added pre-1.0 and post-1.0 compatibility/deprecation/migration rules plus evidence-based 1.0 exit criteria.
 - Added structural regression coverage that fails when declared public runtime names are silently removed/renamed or when a new `tui-*` class/token appears without classification.

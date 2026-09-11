@@ -18,7 +18,7 @@ React, Vue, server-rendered templates, or another application architecture may g
 
 ## Pin a release first
 
-For reproducible applications and coding-agent work, copy/vendor from an immutable tag such as `v0.8.0` rather than `main`. This prevents later design-system development from silently changing an existing consumer.
+For reproducible applications and coding-agent work, copy/vendor from immutable tag `v0.9.0` rather than `main`. This prevents later design-system development from silently changing an existing consumer.
 
 When upgrading to a newer tag, review `CHANGELOG.md`, `docs/project/public-contract.md`, accepted OpenSpec, and relevant demos before updating vendored assets. Before 1.0, an intentional public-contract break uses a MINOR version and explicit migration guidance; after 1.0, normal Semantic Versioning rules apply to the declared public surface.
 
@@ -83,6 +83,6 @@ python scripts/framework_recipe_regression.py
 
 The current browser-native contract already maps cleanly to React, Vue, and server-rendered markup. A maintained adapter layer would create additional API/versioning/framework-maintenance surfaces without solving a demonstrated capability gap.
 
-Executable recipe verification strengthens evidence for this choice without changing it: the project tests the recipes as consumers of the browser-native contract rather than promoting them into a second runtime surface.
+Executable recipe verification strengthens this strategy without changing it: the project tests the recipes as consumers of the browser-native contract rather than promoting them into a second runtime surface.
 
 If a future consumer identifies behavior that cannot be expressed cleanly through semantic markup, canonical classes, CSS custom properties, and the existing custom-event/progressive-enhancement contracts, that concrete gap can justify a new adapter proposal. Until then, recipes are the lower-risk integration mechanism.
