@@ -14,7 +14,7 @@ Visible repository details are not automatically APIs. Demo IDs/text/order, test
 
 Structural tests compare the implemented token/class surface with the declared inventory so a public name cannot silently disappear and a new `tui-*` token/class cannot accidentally become unclassified public surface. ADR-0008 records this boundary and the pre/post-1.0 compatibility policy.
 
-Before 1.0, an intentional incompatible public-contract change is a MINOR release with explicit migration guidance. Starting with 1.0, normal Semantic Versioning applies to the declared public contract; compatible additions/deprecations may occur in MINOR releases, while incompatible removal/rename/semantic contract breaks require a MAJOR release.
+Starting with 1.0, normal Semantic Versioning applies to the declared public contract: compatible fixes preserve it in PATCH releases, compatible additions/deprecations may occur in MINOR releases, and incompatible removal/rename/semantic contract breaks require a MAJOR release.
 
 ## Framework integration strategy
 
@@ -62,16 +62,20 @@ Visual, interaction, accessibility-semantic, and framework-recipe verification d
 
 The automated suites complement rather than replace accessibility review, WCAG evaluation, screen-reader/assistive-technology testing, physical-device checks, and consumer-specific framework/version verification. Passing a pinned representative framework recipe case means the checked-in recipe interoperates with that exact verification toolchain; it is not a broad framework support declaration.
 
-## 1.0 readiness strategy
+## 1.0 stability strategy
 
-Version 1.0 is a deliberate compatibility commitment, not an automatic successor to 0.9. The public contract must be accepted, structurally protected, and free of selected pre-1.0 cleanup debt; all existing release gates must pass on the candidate; release/consumer documentation must consistently state the stability commitment; and the focused archive must carry the public-contract guide.
+The v0.9 audit and publication established the evidence needed to enter deliberate 1.0 preparation: the public contract is accepted and structurally protected, selected pre-1.0 cleanup is complete, the full release verification matrix is green, the focused archive carries the public-contract guide, and no other focused product/technical gap is open.
 
-The current evidence gaps remain accurately described rather than being converted into unsupported certification claims. Physical Android certification, real assistive-technology/screen-reader certification, WCAG certification, npm publication, maintained framework adapters, and a broad framework-version matrix are not current 1.0 prerequisites unless a future accepted requirement makes one mandatory.
+The 1.0 release branch therefore changes release identity/documentation/publication semantics rather than adding a new runtime surface. The candidate must still pass every established gate and must state the normal Semantic Versioning commitment consistently before merge/tag.
+
+Evidence gaps remain accurately described rather than being converted into unsupported certification claims. Physical Android certification, real assistive-technology/screen-reader certification, WCAG certification, npm publication, maintained framework adapters, and a broad framework-version matrix are not current 1.0 prerequisites unless a future accepted requirement makes one mandatory.
 
 ## Release and distribution strategy
 
-`VERSION` owns the plain Semantic Version. Immutable `vMAJOR.MINOR.PATCH` Git tags and GitHub Releases identify published versions. Before 1.0, tagged direct vendoring is the primary consumer path: downstream projects pin a tag and copy the browser assets they need from `src/`.
+`VERSION` owns the plain Semantic Version. Immutable `vMAJOR.MINOR.PATCH` Git tags and GitHub Releases identify published versions. Direct vendoring from an immutable tag remains the primary consumer path: downstream projects pin a release and copy the browser assets they need from `src/`.
 
-`scripts/build_release.py` creates a focused deterministic ZIP and SHA-256 checksum from an explicit allowlist of runtime/reference files, including `docs/project/public-contract.md` so downstream users can inspect the supported stability boundary with the packaged runtime. `.github/workflows/release.yml` runs only for matching version tags; it verifies tag/version identity, requires the tag commit to be contained in `main`, runs structural/documentation/visual/interaction/accessibility-semantic/framework-recipe checks, builds the deterministic archive, and only then publishes a GitHub prerelease.
+`scripts/build_release.py` creates a focused deterministic ZIP and SHA-256 checksum from an explicit allowlist of runtime/reference files, including `docs/project/public-contract.md` so downstream users can inspect the supported stability boundary with the packaged runtime. `.github/workflows/release.yml` runs only for matching version tags; it verifies tag/version identity, requires the tag commit to be contained in `main`, runs structural/documentation/visual/interaction/accessibility-semantic/framework-recipe checks, builds the deterministic archive, and only then publishes the GitHub Release.
 
-No npm/package-registry publishing is part of the current pre-1.0 baseline. The npm-based framework verification toolchain is development-only and does not change distribution. ADR-0003 records the release rationale; `RELEASING.md` defines the maintainer procedure and `docs/project/compatibility.md` records compatibility evidence separately from compatibility targets.
+Publication state follows the stability line: `v0.*` remains a GitHub prerelease, while `v1.0.0` and later stable-line tags publish normal GitHub Releases after the same verification gates. ADR-0009 records this 1.0 publication decision.
+
+No npm/package-registry publishing is part of the current distribution baseline. The npm-based framework verification toolchain is development-only and does not change distribution. ADR-0003 records the tagged-vendoring rationale; `RELEASING.md` defines the maintainer procedure and `docs/project/compatibility.md` records compatibility evidence separately from compatibility targets.
