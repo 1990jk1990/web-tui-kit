@@ -25,7 +25,7 @@ Repository-root `RELEASING.md` defines versioning, release preparation, tagging,
 
 OpenSpec under `openspec/` is canonical for accepted behavior and non-trivial behavioral changes. During the documentation build, current Markdown specs are mirrored into `docs/generated/requirements/` for browsing. Generated pages are not canonical and must not be edited manually.
 
-The accepted public-contract specification defines the supported downstream token/class/state/semantic-markup/data-attribute/event boundary and the pre/post-1.0 compatibility rules. `project/public-contract.md` is its practical inventory.
+The accepted public-contract specification defines the supported downstream token/class/state/semantic-markup/data-attribute/event boundary and normal post-1.0 compatibility rules. `project/public-contract.md` is its practical inventory.
 
 The accepted verification contracts include separate browser-interaction and accessibility-semantic specifications. Browser semantic automation records roles/names/native states exposed by the exercised engines; it must not be interpreted as screen-reader certification or a WCAG conformance statement.
 
@@ -41,7 +41,7 @@ Framework/template consumers should also read `project/framework-integration.md`
 
 ## Release identity
 
-`VERSION` contains the canonical plain Semantic Version. Immutable `vMAJOR.MINOR.PATCH` Git tags and matching GitHub Releases identify published versions. Direct vendoring from a release tag is the primary pre-1.0 distribution model, and focused archives include the public-contract guide alongside the runtime.
+`VERSION` contains the canonical plain Semantic Version. Immutable `vMAJOR.MINOR.PATCH` Git tags and matching GitHub Releases identify published versions. Direct vendoring from a release tag remains the primary distribution model; `v0.*` tags are prereleases and stable-line tags beginning with `v1.0.0` are normal GitHub Releases. Focused archives include the public-contract guide alongside the runtime.
 
 ## AI-DOC-1
 
