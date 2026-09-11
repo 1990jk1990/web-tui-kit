@@ -20,24 +20,35 @@ class QuietHandler(SimpleHTTPRequestHandler):
         return
 
 
+class VerificationServer(ThreadingHTTPServer):
+    daemon_threads = True
+
+
 def build_fixtures() -> None:
     subprocess.run(
         ["npm", "--prefix", str(ROOT / "tests" / "framework"), "run", "build-fixtures"],
         cwd=ROOT,
         check=True,
+        timeout=60,
     )
 
 
 def start_server():
     handler = partial(QuietHandler, directory=str(ROOT))
-    server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    server = VerificationServer(("127.0.0.1", 0), handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     return server, thread
 
 
+def load_recipe(page: Page, url: str) -> None:
+    page.set_default_timeout(5_000)
+    page.set_default_navigation_timeout(10_000)
+    page.goto(url, wait_until="load")
+
+
 def assert_framework_recipe(page: Page, url: str, case_name: str) -> None:
-    page.goto(url, wait_until="networkidle")
+    load_recipe(page, url)
 
     expect(page.get_by_role("heading", name="Package configuration")).to_be_visible()
     expect(page.get_by_role("group", name="Services to restart")).to_be_visible()
@@ -76,7 +87,7 @@ def assert_framework_recipe(page: Page, url: str, case_name: str) -> None:
 
 
 def assert_server_rendered_recipe(page: Page, url: str) -> None:
-    page.goto(url, wait_until="networkidle")
+    load_recipe(page, url)
 
     expect(page.get_by_role("heading", name="Package configuration")).to_be_visible()
     accounts = page.get_by_role("checkbox", name="accounts-daemon.service")
@@ -110,6 +121,7 @@ def run() -> None:
     args = parser.parse_args()
 
     if not args.skip_build:
+        print("BUILD framework fixtures", flush=True)
         build_fixtures()
 
     RESULTS.mkdir(parents=True, exist_ok=True)
@@ -128,13 +140,14 @@ def run() -> None:
             browser = playwright.chromium.launch()
             try:
                 for case_name, url, assertion in cases:
+                    print(f"RUN {case_name}", flush=True)
                     page = browser.new_page(viewport={"width": 1280, "height": 800})
                     try:
                         if assertion is assert_framework_recipe:
                             assertion(page, url, case_name)
                         else:
                             assertion(page, url)
-                        print(f"PASS {case_name}")
+                        print(f"PASS {case_name}", flush=True)
                     except Exception as exc:
                         failures.append(f"{case_name}: {exc}")
                         page.screenshot(path=str(RESULTS / f"{case_name}-failure.png"), full_page=True)
