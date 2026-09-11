@@ -31,8 +31,9 @@ Before non-trivial changes:
 5. For UI work, read `DESIGN_SYSTEM.md`, `src/tokens.css`, `src/tui.css`, and `demo/index.html`.
 6. For framework/template integration work, read `docs/project/framework-integration.md`, `examples/README.md`, the relevant recipe under `examples/`, ADR-0001, and ADR-0004.
 7. For browser verification/compatibility work, read `docs/project/testing.md`, `docs/project/compatibility.md`, `openspec/specs/browser-verification/spec.md`, ADR-0002, and ADR-0005.
-8. For release/version/distribution work, read `VERSION`, `RELEASING.md`, the release/distribution specification, and relevant release ADRs.
-9. Inspect relevant tests, visual baselines when UI output may change, and GitHub work state.
+8. For accessibility-semantic verification work, read `docs/project/testing.md`, `docs/project/compatibility.md`, `openspec/specs/accessibility-verification/spec.md`, ADR-0006, and the canonical demo markup being asserted.
+9. For release/version/distribution work, read `VERSION`, `RELEASING.md`, the release/distribution specification, and relevant release ADRs.
+10. Inspect relevant tests, visual baselines when UI output may change, and GitHub work state.
 
 ## Canonical sources
 
@@ -47,6 +48,9 @@ Before non-trivial changes:
 - Browser interaction verification infrastructure evidence → `tests/test_interaction_regression.py`.
 - Browser interaction fixture → `tests/browser/interaction.html`.
 - Browser interaction runner → `scripts/interaction_regression.py`.
+- Accessibility semantic verification infrastructure evidence → `tests/test_accessibility_regression.py`.
+- Accessibility semantic runner → `scripts/accessibility_regression.py`.
+- Canonical semantic demo evidence → `demo/index.html` and `demo/dialogs.html`.
 - Release/version/archive evidence → `tests/test_release.py`.
 - Reviewed visual regression baselines → `tests/visual/baselines/`.
 - Primary visual reference → `demo/index.html`.
@@ -99,6 +103,16 @@ Keep the baseline framework-independent. A consuming application may use a frame
 - Browser verification dependencies remain development/CI-only and must not enter `src/` or the downstream runtime contract.
 - Never record a physical Android result unless exact device, OS/browser version, date, and observed results come from an actual device run.
 
+## Accessibility semantic verification rules
+
+- Prefer native HTML semantics. Do not introduce ARIA roles/states solely to satisfy a test when an equivalent native element already provides the semantics.
+- Treat `.tui-dialog` as presentation-only unless the application deliberately supplies native `<dialog>` or equivalent application-level semantics; do not infer modal semantics from a CSS class name.
+- Use browser role/name/native-state queries against canonical demos for semantic evidence. Source-text assertions may protect structure but are not equivalent browser evidence.
+- Presentation-only visual annotations embedded in labels/controls must not accidentally pollute accessible names. If a helper becomes operation-critical, expose it deliberately as a description rather than relying on accidental text concatenation.
+- Exercise the semantic contract in pinned Chromium and Firefox plus the representative narrow touch-capable Chromium case while keeping Linux Chromium as the sole pixel-baseline authority.
+- Browser-computed semantics are evidence, not proof of WCAG conformance, screen-reader output, assistive-technology interoperability, or physical Android accessibility-service behavior.
+- Accessibility verification tooling remains development/CI-only and must not enter `src/` or downstream runtime requirements.
+
 ## Adding or changing reusable components
 
 For non-trivial component behavior changes:
@@ -109,8 +123,9 @@ For non-trivial component behavior changes:
 4. add or update structural tests,
 5. run the visual-regression suite when canonical UI output can change and explicitly review any baseline update,
 6. run the browser-interaction suite when keyboard/custom-event/list-navigation behavior can change,
-7. update architecture or an ADR only when the change affects current structure or durable rationale,
-8. reconcile `DESIGN_SYSTEM.md` if its practical usage guidance is affected.
+7. run the accessibility semantic suite when roles, names, labels, state, progress semantics, or canonical control markup can change,
+8. update architecture or an ADR only when the change affects current structure or durable rationale,
+9. reconcile `DESIGN_SYSTEM.md` if its practical usage guidance is affected.
 
 Normal CI visual verification is read-only. Do not make CI automatically accept new screenshots. For an intentional visual change, use the documented `python scripts/visual_regression.py --update` workflow and review the PNG changes together with the implementation. The Linux GitHub Actions Chromium environment is the canonical baseline-rendering environment.
 
@@ -121,8 +136,8 @@ Normal CI visual verification is read-only. Do not make CI automatically accept 
 - Keep direct vendoring from an immutable tag as the primary pre-1.0 distribution path unless an accepted follow-up decision changes that model.
 - Do not introduce npm/package-registry publication without a concrete consumer need and deliberate architecture/specification update.
 - Run `python scripts/build_release.py --version "v$(cat VERSION)" --check` for release preparation.
-- Tag-triggered publication must verify tag/version identity, main-branch ancestry, structural/documentation checks, visual regression, cross-browser interaction regression, and deterministic release artifacts before creating a GitHub Release.
-- Compatibility statements must reflect actual evidence. Mobile Chromium emulation is not physical Android device certification.
+- Tag-triggered publication must verify tag/version identity, main-branch ancestry, structural/documentation checks, visual regression, cross-browser interaction regression, accessibility semantic regression, and deterministic release artifacts before creating a GitHub Release.
+- Compatibility statements must reflect actual evidence. Mobile Chromium emulation is not physical Android device certification, and browser semantic automation is not screen-reader/WCAG certification.
 
 ## Change classes
 
@@ -139,10 +154,12 @@ Never commit secrets or real production data. Explain destructive/high-impact ac
 
 ## Completion check
 
-A UI change is complete only when affected canonical documentation is reconciled, structural tests pass, applicable visual baselines pass or are deliberately reviewed/updated, applicable browser-interaction checks pass, the result is visually consistent, keyboard and touch use remain viable, narrow-screen behavior remains intentional, and reusable patterns are represented in the appropriate demo pages.
+A UI change is complete only when affected canonical documentation is reconciled, structural tests pass, applicable visual baselines pass or are deliberately reviewed/updated, applicable browser-interaction checks pass, applicable accessibility semantic checks pass, the result is visually consistent, keyboard and touch use remain viable, narrow-screen behavior remains intentional, and reusable patterns are represented in the appropriate demo pages.
 
 A framework/template integration change is complete only when recipes reuse canonical runtime contracts, no parallel styling/runtime dependency is introduced, relevant OpenSpec/architecture/ADR/docs are reconciled, and structural tests prove the integration boundary.
 
 A browser-verification/compatibility change is complete only when the fixture/runner/workflows and structural safeguards agree, browser evidence is accurately documented, physical-device claims are not inferred from emulation, and existing visual/structural/docs checks remain green.
+
+An accessibility-semantic verification change is complete only when canonical demo semantics, runner/workflow/release gate, structural safeguards, OpenSpec/architecture/ADR/docs, and evidence boundaries agree; browser semantic evidence must not be overstated as assistive-technology or WCAG certification.
 
 A release-preparation change is complete only when version identity, changelog, release specification/architecture, compatibility evidence, deterministic artifact checks, and tag workflow safeguards are reconciled and PR CI is green. Publication is complete only after the immutable tag and matching GitHub Release artifacts have been verified.
