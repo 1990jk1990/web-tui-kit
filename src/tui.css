@@ -158,11 +158,11 @@ textarea {
 }
 
 .tui-button::before {
-  content: "<";
+  content: "<" / "";
 }
 
 .tui-button::after {
-  content: ">";
+  content: ">" / "";
 }
 
 .tui-button:active,

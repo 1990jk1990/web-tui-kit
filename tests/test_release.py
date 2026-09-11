@@ -112,6 +112,7 @@ class ReleaseContractTests(unittest.TestCase):
             "python -m playwright install --with-deps chromium firefox",
             "python scripts/visual_regression.py",
             "python scripts/interaction_regression.py",
+            "python scripts/accessibility_regression.py",
             'python scripts/build_release.py --version "${GITHUB_REF_NAME}" --check',
             'gh release create "${GITHUB_REF_NAME}"',
             "--verify-tag",
@@ -120,15 +121,18 @@ class ReleaseContractTests(unittest.TestCase):
             self.assertIn(fragment, self.workflow)
 
         publication = self.workflow.index('gh release create "${GITHUB_REF_NAME}"')
+        build = self.workflow.index("python scripts/build_release.py")
         for verification in (
             'test "${GITHUB_REF_NAME}" = "v$(cat VERSION)"',
             'git merge-base --is-ancestor "${GITHUB_SHA}" origin/main',
             "python -m unittest discover -s tests -v",
             "python scripts/visual_regression.py",
             "python scripts/interaction_regression.py",
-            "python scripts/build_release.py",
+            "python scripts/accessibility_regression.py",
         ):
+            self.assertLess(self.workflow.index(verification), build)
             self.assertLess(self.workflow.index(verification), publication)
+        self.assertLess(build, publication)
 
     def test_release_archive_inputs_are_explicit(self):
         self.assertIn("DISTRIBUTION_FILES = (", self.builder)

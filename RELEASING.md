@@ -44,6 +44,7 @@ pip install -r requirements-visual.txt
 python -m playwright install --with-deps chromium firefox
 python scripts/visual_regression.py
 python scripts/interaction_regression.py
+python scripts/accessibility_regression.py
 python scripts/build_release.py --version "v$(cat VERSION)" --check
 ```
 
@@ -60,8 +61,11 @@ Pushing a matching `vMAJOR.MINOR.PATCH` tag starts `.github/workflows/release.ym
 3. runs project tests, AI-DOC-1 validation, and strict documentation build,
 4. runs the pinned Chromium visual-regression suite,
 5. runs the pinned Chromium/Firefox browser-interaction suite, including the narrow touch-capable Chromium case,
-6. builds and validates the deterministic distribution ZIP/checksum,
-7. creates a GitHub **prerelease** and uploads the focused ZIP and SHA-256 checksum.
+6. runs the pinned Chromium/Firefox accessibility-semantic suite, including the narrow touch-capable Chromium package case,
+7. builds and validates the deterministic distribution ZIP/checksum,
+8. creates a GitHub **prerelease** and uploads the focused ZIP and SHA-256 checksum.
+
+The accessibility gate is browser semantic regression evidence only; it is not a WCAG conformance or screen-reader certification step.
 
 The release job uses repository `contents: write` only for GitHub Release publication. Runtime consumers do not depend on GitHub Actions, Python, Playwright, Chromium, Firefox, or any other release tooling. Framework/template examples in the archive remain optional consumption references and do not make those frameworks runtime dependencies.
 

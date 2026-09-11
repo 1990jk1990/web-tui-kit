@@ -115,14 +115,14 @@ Radio lists deliberately preserve native browser radio-group arrow behavior and 
     <input type="radio" name="mode" checked>
     <span class="tui-mark" aria-hidden="true"></span>
     <span>Safe mode</span>
-    <span class="tui-help">&lt;Recommended&gt;</span>
+    <span class="tui-help" aria-hidden="true">&lt;Recommended&gt;</span>
   </label>
 </div>
 ```
 
 Checkbox/radio state and row focus are deliberately separate. Checking or selecting changes the marker; keyboard focus or `.is-selected` applies the blue selection treatment to the row. Disabled inputs give their containing rows the muted disabled treatment automatically.
 
-`.tui-help` is intended for short contextual text such as `<Help>`, not long explanations.
+`.tui-help` is intended for short contextual visual text such as `<Help>`, not long explanations. When a help/status hint is presentation-only and nested inside a native label or button, add `aria-hidden="true"` so the repeated hint does not accidentally become part of the control accessible name. If the hint conveys information that a non-visual user needs, expose it deliberately as an accessible description (for example via `aria-describedby`) rather than relying on accidental name concatenation.
 
 ## 8. Input controls
 
@@ -198,4 +198,4 @@ At small widths, outer page padding is reduced, windows/dialogs can use the full
 
 ## 16. Compatibility target
 
-The current compatibility requirement is defined in `openspec/specs/web-tui-kit/spec.md`. The implementation is designed around standards-based browser features for current Chromium-based browsers on Linux and Android and should remain usable in current Firefox.
+The current compatibility requirement is defined in `openspec/specs/web-tui-kit/spec.md`. The implementation is designed around standards-based browser features for current Chromium-based browsers on Linux and Android and should remain usable in current Firefox. Browser-computed accessibility semantics are exercised separately by the development/CI verification suite; those checks are regression evidence rather than WCAG or assistive-technology certification.

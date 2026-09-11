@@ -24,6 +24,8 @@ Repository-root `RELEASING.md` defines versioning, release preparation, tagging,
 
 OpenSpec under `openspec/` is canonical for accepted behavior and non-trivial behavioral changes. During the documentation build, current Markdown specs are mirrored into `docs/generated/requirements/` for browsing. Generated pages are not canonical and must not be edited manually.
 
+The accepted verification contracts include separate browser-interaction and accessibility-semantic specifications. Browser semantic automation records roles/names/native states exposed by the exercised engines; it must not be interpreted as screen-reader certification or a WCAG conformance statement.
+
 ## Design-system reference
 
 `DESIGN_SYSTEM.md` is the practical consumption guide. Exact CSS values are owned by `src/tokens.css`, while reusable implementation is owned by `src/`.
@@ -32,7 +34,7 @@ Framework/template consumers should also read `project/framework-integration.md`
 
 ## Compatibility evidence
 
-`project/compatibility.md` records what automated/manual environments have actually been exercised. `project/android-device-check.md` defines the physical Android procedure and must not be marked verified without a real device result.
+`project/compatibility.md` records what automated/manual environments have actually been exercised. `project/android-device-check.md` defines the physical Android procedure and must not be marked verified without a real device result. Automated accessibility-semantic checks are browser evidence only; real assistive-technology/device results remain separate evidence.
 
 ## Release identity
 

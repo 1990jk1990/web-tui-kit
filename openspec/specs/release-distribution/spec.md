@@ -60,7 +60,7 @@ The integration references MUST remain examples/guidance and MUST NOT turn frame
 
 ### Requirement: Verified tag-triggered publication
 
-A matching version tag MUST trigger release automation. Before publishing artifacts, the workflow MUST verify that the tag matches `VERSION`, that the tagged commit is contained in `main`, and that structural tests, AI-DOC-1 validation, documentation build, canonical visual regression, cross-browser interaction verification, and release-archive validation succeed.
+A matching version tag MUST trigger release automation. Before publishing artifacts, the workflow MUST verify that the tag matches `VERSION`, that the tagged commit is contained in `main`, and that structural tests, AI-DOC-1 validation, documentation build, canonical visual regression, cross-browser interaction verification, browser accessibility-semantic verification, and release-archive validation succeed.
 
 The release workflow MAY use repository write permission only for release publication after verification.
 
@@ -74,6 +74,12 @@ The release workflow MAY use repository write permission only for release public
 
 - **GIVEN** a matching release tag on `main`
 - **WHEN** the Chromium/Firefox browser interaction gate fails
+- **THEN** publication MUST fail before release artifacts are created or published
+
+#### Scenario: Accessibility semantic verification failure
+
+- **GIVEN** a matching release tag on `main`
+- **WHEN** the Chromium/Firefox browser accessibility-semantic gate fails
 - **THEN** publication MUST fail before release artifacts are created or published
 
 #### Scenario: Verification failure
@@ -106,13 +112,19 @@ The pre-1.0 distribution contract MUST NOT require npm or another package regist
 
 Release documentation MUST distinguish compatibility targets from environments actually exercised by automated or manual evidence.
 
-Automated touch/mobile Chromium emulation MAY support the Android browser design target, but MUST NOT be described as physical Android device certification.
+Automated touch/mobile Chromium emulation MAY support the Android browser design target, but MUST NOT be described as physical Android device certification. Automated browser accessibility-semantic checks MAY support claims about exercised browser role/name/native-state mappings, but MUST NOT be described as screen-reader/assistive-technology certification or proof of WCAG conformance.
 
 #### Scenario: Mobile compatibility statement
 
 - **GIVEN** release evidence consists of Playwright Chromium with mobile/touch emulation
 - **WHEN** Android compatibility is documented
 - **THEN** the documentation MUST identify that evidence as representative mobile-Chromium rendering and disclose that physical Android device/WebView verification is separate
+
+#### Scenario: Accessibility compatibility statement
+
+- **GIVEN** release evidence consists of browser role/name/native-state assertions in pinned Chromium/Firefox
+- **WHEN** accessibility evidence is documented
+- **THEN** the documentation MUST identify it as browser semantic evidence and disclose that real assistive-technology sessions and WCAG evaluation are separate
 
 ### Requirement: Bad releases fix forward
 

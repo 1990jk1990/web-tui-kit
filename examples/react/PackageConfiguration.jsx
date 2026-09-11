@@ -77,7 +77,7 @@ export function PackageConfiguration({
               />
               <span className="tui-mark" aria-hidden="true" />
               <span>{service.id}</span>
-              <span className="tui-help">&lt;Help&gt;</span>
+              <span className="tui-help" aria-hidden="true">&lt;Help&gt;</span>
             </label>
           ))}
         </div>

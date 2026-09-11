@@ -1,5 +1,6 @@
 from html.parser import HTMLParser
 from pathlib import Path
+import re
 import unittest
 
 
@@ -51,6 +52,17 @@ class FrameworkRecipeTests(unittest.TestCase):
                 "checkbox",
             ):
                 self.assertIn(fragment, recipe)
+
+    def test_presentation_help_does_not_pollute_checkbox_names(self):
+        helpers = (
+            re.findall(r'className="tui-help"[^>]*>', self.react),
+            re.findall(r'class="tui-help"[^>]*>', self.vue),
+            re.findall(r'class="tui-help"[^>]*>', self.server),
+        )
+        for recipe_helpers in helpers:
+            self.assertGreater(len(recipe_helpers), 0)
+            for helper in recipe_helpers:
+                self.assertIn('aria-hidden="true"', helper)
 
     def test_recipes_do_not_embed_parallel_visual_styles(self):
         for recipe in (self.react, self.vue, self.server):
