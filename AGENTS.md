@@ -29,11 +29,11 @@ Before non-trivial changes:
 3. Read the relevant current specification under `openspec/specs/`.
 4. Read relevant architecture and ADRs under `docs/`.
 5. For UI work, read `DESIGN_SYSTEM.md`, `src/tokens.css`, `src/tui.css`, and `demo/index.html`.
-6. For public token/class/state/semantic-markup/data-attribute/event, compatibility/deprecation, or 1.0-readiness work, read `openspec/specs/public-contract/spec.md`, `docs/project/public-contract.md`, ADR-0008, and `tests/test_public_contract.py`.
+6. For public token/class/state/semantic-markup/data-attribute/event, compatibility/deprecation, or public-contract stability work, read `openspec/specs/public-contract/spec.md`, `docs/project/public-contract.md`, ADR-0008, and `tests/test_public_contract.py`.
 7. For framework/template integration work, read `docs/project/framework-integration.md`, `examples/README.md`, the relevant recipe under `examples/`, ADR-0001, ADR-0004, and ADR-0007; when executable recipe evidence is affected, also inspect `tests/framework/`, `scripts/framework_recipe_regression.py`, `tests/test_framework_execution.py`, and `.github/workflows/framework-recipe-regression.yml`.
 8. For browser verification/compatibility work, read `docs/project/testing.md`, `docs/project/compatibility.md`, `openspec/specs/browser-verification/spec.md`, ADR-0002, and ADR-0005.
 9. For accessibility-semantic verification work, read `docs/project/testing.md`, `docs/project/compatibility.md`, `openspec/specs/accessibility-verification/spec.md`, ADR-0006, and the canonical demo markup being asserted.
-10. For release/version/distribution work, read `VERSION`, `RELEASING.md`, the release/distribution specification, the public-contract specification, and relevant release ADRs.
+10. For release/version/distribution work, read `VERSION`, `RELEASING.md`, the release/distribution specification, the public-contract specification, and relevant release ADRs, including ADR-0009 for stable-line publication semantics.
 11. Inspect relevant tests, visual baselines when UI output may change, and GitHub work state.
 
 ## Canonical sources
@@ -83,7 +83,7 @@ Before non-trivial changes:
 - Treat `data-tui-escape-close`, `data-tui-list`, `data-tui-list-item`, bubbling `tui:escape`, and `detail.sourceEvent` as public progressive JavaScript contracts.
 - Do not promote demo IDs/copy/order, tests, scripts, CI details, generated files, pinned evidence-tool versions, CSS selector/declaration ordering, pseudo-element technique, or JavaScript helper names into public APIs without an accepted requirement.
 - When adding/removing/renaming a public-looking `--tui-*` or `tui-*` name, update the public-contract spec/inventory and `tests/test_public_contract.py` in the same change.
-- Before 1.0, intentional incompatible public changes require a MINOR release plus explicit changelog/migration guidance. Starting at 1.0, normal Semantic Versioning applies to the declared public contract; incompatible public changes require a MAJOR release.
+- Starting with 1.0, normal Semantic Versioning applies to the declared public contract: compatible fixes preserve it in PATCH releases, compatible additions/deprecations belong in MINOR releases, and incompatible public changes require a MAJOR release. Historical `v0.x` compatibility rules do not weaken the stable 1.x contract.
 
 ## Project-specific UI rules
 
@@ -155,13 +155,14 @@ Normal CI visual verification is read-only. Do not make CI automatically accept 
 
 - Use the Semantic Version in `VERSION`; release tags are the same value with a `v` prefix.
 - Treat published tags as immutable. Fix forward with a new version rather than moving an existing release tag.
-- Keep direct vendoring from an immutable tag as the primary pre-1.0 distribution path unless an accepted follow-up decision changes that model.
+- Keep direct vendoring from an immutable tag as the current primary distribution path unless an accepted follow-up decision changes that model.
 - Do not introduce npm/package-registry publication without a concrete consumer need and deliberate architecture/specification update.
 - Keep `docs/project/public-contract.md` in the focused release archive.
 - Run `python scripts/build_release.py --version "v$(cat VERSION)" --check` for release preparation.
 - Tag-triggered publication must verify tag/version identity, main-branch ancestry, structural/documentation checks, visual regression, cross-browser interaction regression, accessibility semantic regression, representative executable framework/template recipe regression, and deterministic release artifacts before creating a GitHub Release.
+- `v0.*` tags are GitHub prereleases; starting with `v1.0.0`, stable-line tags publish normal GitHub Releases after those same mandatory gates.
 - Compatibility statements must reflect actual evidence. Mobile Chromium emulation is not physical Android device certification, browser semantic automation is not screen-reader/WCAG certification, and passing pinned framework recipe cases is not an exhaustive framework-version compatibility claim.
-- Do not treat `1.0.0` as automatic. The public-contract/1.0 exit criteria must be satisfied and pre-1.0 release automation must be reconciled so a normal 1.0 release is not accidentally published with prerelease semantics.
+- The 1.0 transition was evidence-based rather than automatic: accepted public-contract criteria and release evidence were satisfied before the stable release branch was opened. Preserve that evidence-first discipline for future compatibility/release decisions.
 
 ## Change classes
 
@@ -180,7 +181,7 @@ Never commit secrets or real production data. Explain destructive/high-impact ac
 
 A UI change is complete only when affected canonical documentation is reconciled, structural tests pass, applicable visual baselines pass or are deliberately reviewed/updated, applicable browser-interaction checks pass, applicable accessibility semantic checks pass, the result is visually consistent, keyboard and touch use remain viable, narrow-screen behavior remains intentional, reusable patterns are represented in the appropriate demo pages, and any changed public surface is reflected in the public-contract spec/inventory/tests.
 
-A public-contract/readiness change is complete only when accepted OpenSpec, `docs/project/public-contract.md`, ADR/architecture guidance, structural inventory tests, release contents/versioning policy, migration guidance, and 1.0 exit criteria agree; public and non-public surface must be explicitly distinguishable.
+A public-contract/stability change is complete only when accepted OpenSpec, `docs/project/public-contract.md`, ADR/architecture guidance, structural inventory tests, release contents/versioning policy, migration guidance, and current stability rules agree; public and non-public surface must be explicitly distinguishable.
 
 A framework/template integration change is complete only when recipes reuse canonical runtime contracts, no parallel styling/runtime dependency is introduced, relevant OpenSpec/architecture/ADR/docs are reconciled, structural safeguards pass, and affected canonical React/Vue/server-rendered recipes pass the representative executable recipe verification when their compile/runtime integration behavior can change.
 
