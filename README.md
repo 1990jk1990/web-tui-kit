@@ -49,6 +49,8 @@ For the closest match to the original Debian/Ubuntu package-configuration look, 
 
 For common dialog compositions, use `demo/dialogs.html` and `DESIGN_SYSTEM.md` rather than inventing per-application variants. Containers marked with `data-tui-list` gain optional ArrowUp/ArrowDown/Home/End focus navigation while normal Tab reachability and native control activation remain intact.
 
+Canonical examples retain native semantic HTML. `.tui-dialog` is a presentation class rather than an automatic modal role, and purely visual helper hints are excluded from control accessible names where they do not convey operation-critical meaning.
+
 ## Framework and template consumers
 
 React, Vue, and server-rendered applications should generate the same semantic markup/classes instead of using a separate adapter runtime. Copy-ready recipes live under `examples/`, with detailed guidance in `docs/project/framework-integration.md`.
@@ -57,7 +59,7 @@ The React/Vue examples demonstrate framework-owned state and lifecycle handling 
 
 Do not copy the design tokens/component CSS into CSS-in-JS, scoped component styles, or a private theme implementation. If a reusable visual change is needed, make it in the canonical design system.
 
-See `RELEASING.md` for the versioning/release procedure and `docs/project/compatibility.md` for current compatibility evidence and its limits. Physical Android evidence is tracked separately through `docs/project/android-device-check.md`; touch-capable Chromium emulation is not treated as physical-device certification.
+See `RELEASING.md` for the versioning/release procedure and `docs/project/compatibility.md` for current compatibility evidence and its limits. Physical Android evidence is tracked separately through `docs/project/android-device-check.md`; touch-capable Chromium emulation is not treated as physical-device certification. Automated browser accessibility semantics are likewise evidence, not screen-reader or WCAG certification.
 
 ## Project memory and canonical sources
 
@@ -70,19 +72,20 @@ This repository follows **AI-DOC-1 v1.3**. The repository itself is durable proj
 - compatibility evidence: `docs/project/compatibility.md`
 - physical Android evidence procedure: `docs/project/android-device-check.md`
 - framework integration guidance: `docs/project/framework-integration.md`
-- accepted UI/release/integration/browser-verification behavior: `openspec/specs/`
+- accepted UI/release/integration/browser/accessibility-verification behavior: `openspec/specs/`
 - current architecture: `docs/architecture/`
 - durable decision rationale: `docs/decisions/`
 - practical design-system usage guide: `DESIGN_SYSTEM.md`
 - exact design-token values: `src/tokens.css`
 - implementation: `src/`
-- primary executable visual reference: `demo/index.html`
+- primary executable visual/semantic reference: `demo/index.html`
 - core dialog gallery: `demo/dialogs.html`
 - broader component gallery: `demo/components.html`
 - framework/template consumption recipes: `examples/`
 - structural regression evidence: `tests/`
 - reviewed visual baselines: `tests/visual/baselines/`
 - browser interaction fixture: `tests/browser/interaction.html`
+- accessibility semantic runner: `scripts/accessibility_regression.py`
 
 See `docs/index.md` for the documentation entry point.
 
@@ -90,7 +93,7 @@ See `docs/index.md` for the documentation entry point.
 
 For a stable released reference, a consuming project can use:
 
-> Use `https://github.com/1990jk1990/web-tui-kit/tree/v0.6.0` as the canonical UI design system. Read `AGENTS.md`, `VERSION`, the current OpenSpec specifications, `DESIGN_SYSTEM.md`, and `demo/index.html` before implementing UI. If the target app uses React, Vue, or server-rendered templates, also read `docs/project/framework-integration.md` and the matching example under `examples/`. Treat `demo/index.html` as the primary visual target, `demo/dialogs.html` as the core dialog catalog, and `demo/components.html` as the broader component catalog. Reuse the existing tokens, CSS classes, semantic controls, and interaction patterns instead of inventing a new visual language or framework-specific styling layer. The application must remain usable in Linux desktop browsers and Android browsers.
+> Use `https://github.com/1990jk1990/web-tui-kit/tree/v0.6.0` as the canonical UI design system. Read `AGENTS.md`, `VERSION`, the current OpenSpec specifications, `DESIGN_SYSTEM.md`, and `demo/index.html` before implementing UI. If the target app uses React, Vue, or server-rendered templates, also read `docs/project/framework-integration.md` and the matching example under `examples/`. Treat `demo/index.html` as the primary visual/semantic target, `demo/dialogs.html` as the core dialog catalog, and `demo/components.html` as the broader component catalog. Reuse the existing tokens, CSS classes, semantic controls, and interaction patterns instead of inventing a new visual language or framework-specific styling layer. The application must remain usable in Linux desktop browsers and Android browsers.
 
 Using an immutable release tag is preferable to pointing an automated consumer at `main`, because the visual and behavioral reference cannot change underneath that consumer.
 
@@ -122,12 +125,20 @@ python -m playwright install --with-deps chromium firefox
 python scripts/interaction_regression.py
 ```
 
+Run the accessibility semantics suite in the same pinned browser engines with:
+
+```bash
+pip install -r requirements-visual.txt
+python -m playwright install --with-deps chromium firefox
+python scripts/accessibility_regression.py
+```
+
 Build and verify the focused release archive with:
 
 ```bash
 python scripts/build_release.py --version "v$(cat VERSION)" --check
 ```
 
-The visual suite compares the canonical package and dialog demos against reviewed desktop/touch-mobile Chromium PNG baselines. The interaction suite verifies the runtime keyboard/custom-event contracts in desktop Chromium and Firefox plus native tap behavior in a narrow touch-capable Chromium context. See `docs/project/testing.md` and `docs/project/compatibility.md` for the verification/evidence boundaries.
+The visual suite compares the canonical package and dialog demos against reviewed desktop/touch-mobile Chromium PNG baselines. The interaction suite verifies runtime keyboard/custom-event contracts in desktop Chromium and Firefox plus native tap behavior in a narrow touch-capable Chromium context. The accessibility suite verifies browser-computed roles, accessible names, label associations, native states, and progress semantics in desktop Chromium/Firefox plus representative narrow-touch package semantics. It does not substitute for real screen-reader/assistive-technology or WCAG conformance evaluation. See `docs/project/testing.md` and `docs/project/compatibility.md` for the verification/evidence boundaries.
 
 Contribution details are in `CONTRIBUTING.md`; release-maintainer steps are in `RELEASING.md`.
