@@ -59,7 +59,8 @@ await build({
 });
 await writeFile(path.join(output, "react.html"), pageTemplate("react.js"), "utf8");
 
-const vueRecipePath = path.join(root, "examples", "vue", "PackageConfiguration.vue");
+const vueRecipeRelativePath = "examples/vue/PackageConfiguration.vue";
+const vueRecipePath = path.join(root, ...vueRecipeRelativePath.split("/"));
 const vueSource = await readFile(vueRecipePath, "utf8");
 const parsed = parse(vueSource, { filename: vueRecipePath });
 if (parsed.errors.length) {
