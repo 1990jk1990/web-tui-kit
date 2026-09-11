@@ -10,7 +10,7 @@ This specification defines the accepted pre-1.0 release identity, distribution, 
 
 The project MUST use a plain `MAJOR.MINOR.PATCH` value in the repository-root `VERSION` file and MUST use an immutable `vMAJOR.MINOR.PATCH` Git tag for each corresponding release.
 
-Before `1.0.0`, compatible fixes SHOULD increment PATCH, while new public components/behavior or intentional breaking changes to the evolving pre-1.0 public contract SHOULD increment MINOR.
+Before `1.0.0`, compatible fixes SHOULD increment PATCH, while new public components/behavior or intentional breaking changes to the evolving pre-1.0 public contract SHOULD increment MINOR. Detailed public-surface compatibility/migration rules are defined in `openspec/specs/public-contract/spec.md`.
 
 #### Scenario: Tag/version match
 
@@ -46,6 +46,16 @@ Each tagged release MUST be able to produce a focused `web-tui-kit-MAJOR.MINOR.P
 - **WHEN** its embedded `VERSION` is inspected
 - **THEN** it MUST also contain `0.4.0`
 
+### Requirement: Focused archive includes public contract guidance
+
+The focused release archive MUST include `docs/project/public-contract.md` alongside the canonical runtime so downstream consumers and coding agents can identify intentionally supported token/class/state/data-attribute/event names, semantic markup expectations, and stability rules without cloning development-only repository content.
+
+#### Scenario: Consumer evaluates supported surface
+
+- **GIVEN** a consumer downloads a focused tagged release ZIP
+- **WHEN** it needs to decide whether an implementation detail is a supported API
+- **THEN** the archive MUST provide the public-contract guide with that stability boundary
+
 ### Requirement: Focused archive includes consumer integration references
 
 When the repository provides accepted consumer integration recipes/guidance, the focused release archive MUST include those copy-ready references alongside the canonical runtime so downstream consumers and coding agents do not need the full development repository merely to understand framework/template consumption.
@@ -60,7 +70,7 @@ The integration references MUST remain examples/guidance and MUST NOT turn frame
 
 ### Requirement: Verified tag-triggered publication
 
-A matching version tag MUST trigger release automation. Before publishing artifacts, the workflow MUST verify that the tag matches `VERSION`, that the tagged commit is contained in `main`, and that structural tests, AI-DOC-1 validation, documentation build, canonical visual regression, cross-browser interaction verification, browser accessibility-semantic verification, and release-archive validation succeed.
+A matching version tag MUST trigger release automation. Before publishing artifacts, the workflow MUST verify that the tag matches `VERSION`, that the tagged commit is contained in `main`, and that structural tests, AI-DOC-1 validation, documentation build, canonical visual regression, cross-browser interaction verification, browser accessibility-semantic verification, representative framework-recipe verification, and release-archive validation succeed.
 
 The release workflow MAY use repository write permission only for release publication after verification.
 
@@ -80,6 +90,12 @@ The release workflow MAY use repository write permission only for release public
 
 - **GIVEN** a matching release tag on `main`
 - **WHEN** the Chromium/Firefox browser accessibility-semantic gate fails
+- **THEN** publication MUST fail before release artifacts are created or published
+
+#### Scenario: Framework recipe verification failure
+
+- **GIVEN** a matching release tag on `main`
+- **WHEN** the representative React/Vue/server-rendered executable recipe gate fails
 - **THEN** publication MUST fail before release artifacts are created or published
 
 #### Scenario: Verification failure
@@ -112,7 +128,7 @@ The pre-1.0 distribution contract MUST NOT require npm or another package regist
 
 Release documentation MUST distinguish compatibility targets from environments actually exercised by automated or manual evidence.
 
-Automated touch/mobile Chromium emulation MAY support the Android browser design target, but MUST NOT be described as physical Android device certification. Automated browser accessibility-semantic checks MAY support claims about exercised browser role/name/native-state mappings, but MUST NOT be described as screen-reader/assistive-technology certification or proof of WCAG conformance.
+Automated touch/mobile Chromium emulation MAY support the Android browser design target, but MUST NOT be described as physical Android device certification. Automated browser accessibility-semantic checks MAY support claims about exercised browser role/name/native-state mappings, but MUST NOT be described as screen-reader/assistive-technology certification or proof of WCAG conformance. Representative framework recipe verification MAY support claims about the exact pinned recipe/toolchain cases exercised, but MUST NOT be described as an exhaustive framework-version support matrix.
 
 #### Scenario: Mobile compatibility statement
 
@@ -125,6 +141,12 @@ Automated touch/mobile Chromium emulation MAY support the Android browser design
 - **GIVEN** release evidence consists of browser role/name/native-state assertions in pinned Chromium/Firefox
 - **WHEN** accessibility evidence is documented
 - **THEN** the documentation MUST identify it as browser semantic evidence and disclose that real assistive-technology sessions and WCAG evaluation are separate
+
+#### Scenario: Framework compatibility statement
+
+- **GIVEN** release evidence consists of the exact pinned representative React/Vue/tool cases
+- **WHEN** framework integration compatibility is documented
+- **THEN** the documentation MUST describe those cases as representative evidence rather than a promise covering every framework/tooling version
 
 ### Requirement: Bad releases fix forward
 
