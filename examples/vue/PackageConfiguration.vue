@@ -71,7 +71,7 @@ onBeforeUnmount(() => dialog.value?.removeEventListener("tui:escape", handleEsca
           >
           <span class="tui-mark" aria-hidden="true"></span>
           <span>{{ service.id }}</span>
-          <span class="tui-help">&lt;Help&gt;</span>
+          <span class="tui-help" aria-hidden="true">&lt;Help&gt;</span>
         </label>
       </div>
 
