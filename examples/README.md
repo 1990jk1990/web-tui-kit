@@ -22,6 +22,12 @@ Load `tokens.css` before `tui.css`. Load `tui.js` once when using `data-tui-esca
 - `vue/PackageConfiguration.vue` demonstrates the same contract in a Vue Single File Component.
 - `server-rendered/package-configuration.html` is browser-openable and shows the shape a server-side template loop can emit while preserving ordinary form submission semantics.
 
+## Executable verification
+
+Repository CI compiles the canonical React and Vue files above with exact representative direct development versions and renders them in pinned Linux Chromium with canonical `src/` assets. The same smoke run exercises the server-rendered example. This protects the checked-in recipes from silently becoming stale while keeping all framework/compiler/bundler dependencies under test tooling rather than in `src/`.
+
+The pinned verification versions are evidence anchors, not a support matrix for every React/Vue/tooling release. See `docs/project/framework-integration.md`, `docs/project/testing.md`, and `docs/project/compatibility.md` for exact versions, local commands, and evidence limits.
+
 ## Integration rules
 
 Do not copy CSS declarations out of `src/tui.css` into framework components. Reuse the canonical classes. Do not recreate tokens in JavaScript or framework theme objects when CSS custom properties can be consumed directly.
