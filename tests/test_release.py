@@ -121,7 +121,6 @@ class ReleaseContractTests(unittest.TestCase):
             'python scripts/build_release.py --version "${GITHUB_REF_NAME}" --check',
             'gh release create "${GITHUB_REF_NAME}"',
             "--verify-tag",
-            "--prerelease",
         ):
             self.assertIn(fragment, self.workflow)
 
@@ -139,6 +138,12 @@ class ReleaseContractTests(unittest.TestCase):
             self.assertLess(self.workflow.index(verification), build)
             self.assertLess(self.workflow.index(verification), publication)
         self.assertLess(build, publication)
+
+    def test_release_workflow_distinguishes_prerelease_and_stable_tags(self):
+        self.assertIn('if [[ "${GITHUB_REF_NAME}" == v0.* ]]; then', self.workflow)
+        self.assertIn("release_args+=(--prerelease)", self.workflow)
+        self.assertIn('"${release_args[@]}"', self.workflow)
+        self.assertEqual(self.workflow.count("--prerelease"), 1)
 
     def test_release_archive_inputs_are_explicit(self):
         self.assertIn("DISTRIBUTION_FILES = (", self.builder)
