@@ -521,23 +521,26 @@ textarea {
   outline-offset: 2px;
 }
 
-@media (max-width: 42rem) {
+@media (max-width: 36rem) {
   body.tui-desktop {
-    padding: 0.5rem;
+    padding: var(--tui-space-3);
   }
 
   .tui-screen {
-    min-height: calc(100vh - 1rem);
+    min-height: calc(100vh - 1.5rem);
   }
 
   .tui-window,
   .tui-dialog {
-    width: 100%;
-    box-shadow: none;
+    box-shadow: var(--tui-space-1) var(--tui-space-1) 0 var(--tui-shadow);
+  }
+
+  .tui-window {
+    padding: var(--tui-space-4);
   }
 
   .tui-dialog {
-    padding-inline: var(--tui-space-3);
+    padding-inline: var(--tui-space-4);
   }
 
   .tui-check-row,
@@ -553,67 +556,31 @@ textarea {
 
   .tui-menu-row {
     align-items: flex-start;
+    flex-direction: column;
+    gap: 0;
   }
 
   .tui-menu-row .tui-help {
-    white-space: normal;
-    text-align: right;
+    margin-left: 0;
   }
 
   .tui-actions {
-    margin-top: var(--tui-space-4);
+    gap: var(--tui-space-2);
+  }
+
+  .tui-actions .tui-button {
+    flex: 1 1 8rem;
   }
 }
 
 @media (pointer: coarse) {
   .tui-button,
-  .tui-input,
-  .tui-select,
-  .tui-textarea,
-  .tui-menu-item {
-    min-height: var(--tui-control-min-height);
-  }
-
-  .tui-button,
-  .tui-menu-item {
-    padding-top: var(--tui-space-2);
-    padding-bottom: var(--tui-space-2);
-  }
-
+  .tui-menu-item,
+  .tui-menu-row,
   .tui-check,
   .tui-radio,
   .tui-check-row,
-  .tui-radio-row,
-  .tui-menu-row {
-    min-height: var(--tui-list-row-min-height);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-  }
-}
-
-@media (forced-colors: active) {
-  :root {
-    --tui-desktop-bg: Canvas;
-    --tui-surface: Canvas;
-    --tui-surface-light: Canvas;
-    --tui-text: CanvasText;
-    --tui-muted: GrayText;
-    --tui-title: LinkText;
-    --tui-selection-bg: Highlight;
-    --tui-selection-text: HighlightText;
-    --tui-help: LinkText;
-    --tui-border-light: CanvasText;
-    --tui-border-mid: CanvasText;
-    --tui-border-dark: CanvasText;
-    --tui-shadow: CanvasText;
-    --tui-focus: Highlight;
-    --tui-danger: CanvasText;
-    --tui-success: CanvasText;
+  .tui-radio-row {
+    padding-block: var(--tui-space-2);
   }
 }
