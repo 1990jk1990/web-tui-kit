@@ -2,7 +2,7 @@
 
 This page is the practical inventory of the consumer-facing `web-tui-kit` surface. Accepted compatibility behavior is canonical in `openspec/specs/public-contract/spec.md`; exact token values and implementation remain canonical in `src/`.
 
-The purpose of this inventory is to make the stability boundary explicit before 1.0. A name listed here is intentionally supported for downstream use. Repository details called out as non-public may change without a consumer migration as long as the documented behavior remains intact.
+Starting with `1.0.0`, a name or semantic relationship listed here is intentionally supported for downstream use under normal Semantic Versioning. Repository details called out as non-public may change without a consumer migration as long as the documented public behavior remains intact.
 
 ## Runtime files
 
@@ -200,37 +200,33 @@ The canonical demos remain the normative visual/semantic reference for **documen
 
 ## Compatibility and migration policy
 
-### Before 1.0
+Starting with `1.0.0`:
 
-- PATCH: compatible fixes/refinements that preserve documented public contracts.
-- MINOR: new public capability and any intentional incompatible change to the evolving pre-1.0 public contract.
-- Any pre-1.0 breaking public change must be explicit in `CHANGELOG.md` and include migration guidance where an existing consumer pattern must change.
-- Published tags stay immutable; fixes move forward to a new version.
-
-### Starting at 1.0
-
-- PATCH preserves the declared public contract.
-- MINOR may add compatible surface and deprecate existing surface.
-- MAJOR is required for incompatible removal/rename, required semantic-markup changes, token repurposing, or breaking changes to documented events/data attributes.
+- PATCH releases preserve the declared public contract while delivering compatible fixes/refinements.
+- MINOR releases may add compatible public surface and may deprecate existing surface.
+- MAJOR releases are required for incompatible removal/rename, required semantic-markup changes, token repurposing, or breaking changes to documented events/data attributes.
 - Planned public removals should be deprecated with replacement/migration guidance in at least one prior MINOR release before removal in a later MAJOR release. Urgent security/legal/standards cases may require faster action, but the break and migration must still be explicit.
+- Published tags stay immutable; fixes move forward to a new version.
 
 Changing a token's default value is not automatically a breaking API change if the token retains the same documented purpose. Changing its purpose is.
 
-## Pre-1.0 cleanup found by the audit
+The historical pre-1.0 policy allowed intentional public breaks only in a new MINOR release with explicit migration guidance. Those rules governed `v0.x`; they no longer weaken the stable 1.x contract.
 
-The audit found one implementation inconsistency worth correcting without renaming public surface: the public `--tui-help` token existed, including a forced-colors `LinkText` override, while `.tui-help` incorrectly consumed `--tui-title`. `v0.9` corrects `.tui-help` to consume `--tui-help`. Normal default pixels remain unchanged because both normal tokens currently share the same red value; forced-colors behavior now matches the documented token purpose.
+## Pre-1.0 cleanup completed by the audit
 
-No other current class, token, event, or `data-tui-*` name requires a pre-1.0 rename/removal from the audited surface.
+The v0.9 audit found one implementation inconsistency worth correcting without renaming public surface: the public `--tui-help` token existed, including a forced-colors `LinkText` override, while `.tui-help` incorrectly consumed `--tui-title`. `v0.9.0` corrected `.tui-help` to consume `--tui-help`. Normal default pixels remained unchanged because both normal tokens shared the same red value; forced-colors behavior now matches the documented token purpose.
 
-## 1.0 exit criteria
+No other current class, token, event, or `data-tui-*` name required a pre-1.0 rename/removal from the audited surface. The inventory above is therefore the public surface carried into `1.0.0`.
 
-The project may prepare `1.0.0` after all of the following are true:
+## 1.0 stability evidence
 
-1. this public inventory and the OpenSpec stability rules are accepted and protected by structural tests;
-2. selected pre-1.0 cleanup is complete, with no known intentional public rename/removal still waiting for the audit;
-3. structural tests, AI-DOC-1 validation, strict docs build, canonical Chromium visual regression, Chromium/Firefox interaction regression, Chromium/Firefox accessibility-semantic regression, representative framework-recipe regression, and deterministic release-archive validation pass for the candidate;
-4. 1.0 release docs/changelog consistently state the normal Semantic Versioning stability commitment;
+The project entered `1.0.0` preparation only after the accepted exit criteria were met by the published v0.9 baseline:
+
+1. this public inventory and the OpenSpec stability rules were accepted and protected by structural tests;
+2. selected pre-1.0 cleanup was complete, with no known intentional public rename/removal still waiting for the audit;
+3. the published `v0.9.0` tag passed structural tests, AI-DOC-1 validation, strict docs build, canonical Chromium visual regression, Chromium/Firefox interaction regression, Chromium/Firefox accessibility-semantic regression, representative framework-recipe regression, and deterministic release-archive validation;
+4. the 1.0 release candidate must still keep release docs/changelog consistent with the normal Semantic Versioning stability commitment;
 5. the focused release archive includes this guide and the canonical consumer references;
 6. evidence boundaries remain explicit rather than turning unperformed physical-device, assistive-technology, WCAG, registry, or broad framework-matrix work into unsupported claims.
 
-Physical Android certification, real screen-reader/assistive-technology certification, WCAG certification, npm publication, maintained React/Vue adapters, and a broad framework-version matrix are not current 1.0 prerequisites. They remain separate evidence/product decisions unless a future accepted requirement makes one mandatory.
+The actual `1.0.0` candidate must rerun every established release gate before merge and again through tag-triggered publication. Physical Android certification, real screen-reader/assistive-technology certification, WCAG certification, npm publication, maintained React/Vue adapters, and a broad framework-version matrix are not part of the 1.0 stability promise unless a future accepted requirement makes one mandatory.

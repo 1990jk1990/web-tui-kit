@@ -12,6 +12,7 @@ Durable architectural rationale is recorded as ADRs under `docs/decisions/`. Thi
 - [ADR-0006: Browser accessibility semantics verification with Playwright](../decisions/0006-browser-accessibility-semantics-verification.md) — Accepted.
 - [ADR-0007: Executable framework recipe verification](../decisions/0007-executable-framework-recipe-verification.md) — Accepted.
 - [ADR-0008: Declare a browser-native public contract stability boundary](../decisions/0008-public-contract-stability-boundary.md) — Accepted.
+- [ADR-0009: Publish 1.0+ as stable GitHub Releases while retaining tagged vendoring](../decisions/0009-stable-release-publication.md) — Accepted.
 
 ## Template
 

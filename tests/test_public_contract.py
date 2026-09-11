@@ -154,14 +154,15 @@ class PublicContractTests(unittest.TestCase):
         ):
             self.assertIn(fragment, self.contract_spec)
 
-    def test_stability_policy_distinguishes_pre_and_post_1_0(self):
+    def test_stability_policy_preserves_history_and_active_1_0_contract(self):
         for fragment in (
             "Pre-1.0 compatibility policy",
             "Post-1.0 compatibility and deprecation policy",
             "1.0 readiness is evidence-based",
         ):
             self.assertIn(fragment, self.contract_spec)
-        self.assertIn("## 1.0 exit criteria", self.contract_doc)
+        self.assertIn("Starting with `1.0.0`", self.contract_doc)
+        self.assertIn("## 1.0 stability evidence", self.contract_doc)
         self.assertIn("Physical Android certification", self.contract_doc)
 
     def test_public_contract_is_a_release_input(self):

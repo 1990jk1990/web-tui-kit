@@ -4,9 +4,9 @@ A reusable, framework-independent browser UI design system inspired by Debian de
 
 The project is the canonical UI reference for browser-based applications that should share the same text-oriented visual language on Linux desktops and Android devices.
 
-**Version:** `0.9.0` (pre-1.0). The canonical version is stored in `VERSION`; released versions use immutable `vMAJOR.MINOR.PATCH` Git tags.
+**Version:** `1.0.0` (stable public contract). The canonical version is stored in `VERSION`; released versions use immutable `vMAJOR.MINOR.PATCH` Git tags.
 
-The intentionally supported downstream surface is explicit in `docs/project/public-contract.md` and canonical requirements under `openspec/specs/public-contract/`. That boundary distinguishes public tokens/classes/DOM behavior from demo/test/internal repository details before a later 1.0 stability commitment.
+The intentionally supported downstream surface is explicit in `docs/project/public-contract.md` and canonical requirements under `openspec/specs/public-contract/`. Starting with 1.0, normal Semantic Versioning applies to that declared boundary of public tokens/classes/DOM behavior rather than to incidental demo/test/internal repository details.
 
 ## Quick start
 
@@ -29,10 +29,10 @@ No application build step and no JavaScript framework are required.
 
 ## Distribution and use in another project
 
-For reproducible downstream use, pin an immutable release tag instead of copying from the moving `main` branch. For the current release line:
+For reproducible downstream use, pin an immutable release tag instead of copying from the moving `main` branch. For the current stable release line:
 
 ```bash
-git clone --branch v0.9.0 --depth 1 https://github.com/1990jk1990/web-tui-kit.git
+git clone --branch v1.0.0 --depth 1 https://github.com/1990jk1990/web-tui-kit.git
 ```
 
 Copy or vendor the files from `src/` and include them in the consuming application:
@@ -45,7 +45,7 @@ Copy or vendor the files from `src/` and include them in the consuming applicati
 
 `src/tui.js` is optional when the consuming application does not need the small progressive keyboard enhancements. The exact CSS token values are defined in `src/tokens.css`; reusable component implementation lives in `src/tui.css` and `src/tui.js`.
 
-Tagged GitHub prereleases provide a focused `web-tui-kit-MAJOR.MINOR.PATCH.zip` and matching SHA-256 checksum containing the runtime, executable demos, framework/template integration recipes, public-contract guide, version marker, changelog, security guidance, and practical design-system/AI-agent references. Pre-1.0 releases do not require or publish an npm package; direct tagged vendoring is the primary distribution model.
+Tagged GitHub Releases provide a focused `web-tui-kit-MAJOR.MINOR.PATCH.zip` and matching SHA-256 checksum containing the runtime, executable demos, framework/template integration recipes, public-contract guide, version marker, changelog, security guidance, and practical design-system/AI-agent references. `v0.*` publications remain prereleases; `v1.0.0` and later stable-line tags publish normal GitHub Releases. The current distribution model does not require or publish an npm package; direct tagged vendoring remains the primary path.
 
 For the closest match to the original Debian/Ubuntu package-configuration look, start from `.tui-screen`, `.tui-dialog`, `.tui-dialog-title`, `.tui-checklist`, `.tui-check-row`, `.tui-actions`, and `.tui-button` as demonstrated in `demo/index.html`.
 
@@ -54,6 +54,8 @@ For common dialog compositions, use `demo/dialogs.html` and `DESIGN_SYSTEM.md` r
 Canonical examples retain native semantic HTML. `.tui-dialog` is a presentation class rather than an automatic modal role, and purely visual helper hints are excluded from control accessible names where they do not convey operation-critical meaning.
 
 Before depending on a token, class, state hook, data attribute, or event as a long-lived application interface, check `docs/project/public-contract.md`. Exact demo IDs/text/order, test harnesses, CI details, generated artifacts, and implementation-local helper names are not downstream APIs merely because they are visible in the repository.
+
+Starting with 1.0, PATCH releases preserve the declared public contract, MINOR releases may add compatible surface or deprecate existing surface, and incompatible public-contract changes require a new MAJOR release. Planned removals should carry deprecation and migration guidance before later major removal except for documented urgent exceptions.
 
 ## Framework and template consumers
 
@@ -101,7 +103,7 @@ See `docs/index.md` for the documentation entry point.
 
 For a stable released reference, a consuming project can use:
 
-> Use `https://github.com/1990jk1990/web-tui-kit/tree/v0.9.0` as the canonical UI design system. Read `AGENTS.md`, `VERSION`, `openspec/specs/public-contract/spec.md`, `docs/project/public-contract.md`, the other relevant OpenSpec specifications, `DESIGN_SYSTEM.md`, and `demo/index.html` before implementing UI. If the target app uses React, Vue, or server-rendered templates, also read `docs/project/framework-integration.md` and the matching example under `examples/`. Treat `demo/index.html` as the primary visual/semantic target, `demo/dialogs.html` as the core dialog catalog, and `demo/components.html` as the broader component catalog. Reuse the declared public tokens, CSS classes, semantic controls, data attributes, events, and interaction patterns instead of inventing a new visual language or framework-specific styling layer. Do not treat incidental demo/test/CI details as stable APIs. The application must remain usable in Linux desktop browsers and Android browsers.
+> Use `https://github.com/1990jk1990/web-tui-kit/tree/v1.0.0` as the canonical UI design system. Read `AGENTS.md`, `VERSION`, `openspec/specs/public-contract/spec.md`, `docs/project/public-contract.md`, the other relevant OpenSpec specifications, `DESIGN_SYSTEM.md`, and `demo/index.html` before implementing UI. If the target app uses React, Vue, or server-rendered templates, also read `docs/project/framework-integration.md` and the matching example under `examples/`. Treat `demo/index.html` as the primary visual/semantic target, `demo/dialogs.html` as the core dialog catalog, and `demo/components.html` as the broader component catalog. Reuse the declared public tokens, CSS classes, semantic controls, data attributes, events, and interaction patterns instead of inventing a new visual language or framework-specific styling layer. Do not treat incidental demo/test/CI details as stable APIs. The application must remain usable in Linux desktop browsers and Android browsers.
 
 Using an immutable release tag is preferable to pointing an automated consumer at `main`, because the visual and behavioral reference cannot change underneath that consumer.
 

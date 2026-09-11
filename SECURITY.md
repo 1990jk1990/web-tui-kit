@@ -18,12 +18,12 @@ Report sensitive security findings privately through the repository's GitHub sec
 
 ## Release integrity
 
-Tagged pre-1.0 releases publish a focused ZIP plus a SHA-256 checksum. Consumers that download the focused archive should verify the checksum before vendoring it. Git tags are treated as immutable; a security fix is published as a new version rather than by moving an existing tag.
+Tagged releases publish a focused ZIP plus a SHA-256 checksum. Consumers that download the focused archive should verify the checksum before vendoring it. Git tags are treated as immutable; a security fix is published as a new version rather than by moving an existing tag.
 
-The focused archive includes `docs/project/public-contract.md`, which identifies the intentionally supported browser-native surface. Security fixes that require an incompatible public-contract change must still be documented and versioned according to the public compatibility policy; urgent security cases may use the documented exception to the normal deprecation lead time, but the migration impact must remain explicit.
+The focused archive includes `docs/project/public-contract.md`, which identifies the intentionally supported browser-native surface. Starting with 1.0, security fixes that require an incompatible public-contract change must be documented and versioned as a new MAJOR release under the public compatibility policy. Urgent security/legal/standards cases may use the documented exception to normal deprecation lead time, but the break and migration impact must remain explicit.
 
 ## Supported versions
 
-Tagged pre-1.0 releases are active. Security fixes are expected to target the latest published pre-1.0 release and the active development line. After `v0.9.0` is published, it becomes the maintained pre-1.0 release line; `v0.8.0` and older tags remain available for auditability but are not long-term support branches.
+After `v1.0.0` is published, the maintained release line is the latest 1.x release plus active development on `main`. Security fixes are expected to target that maintained stable line and current development rather than older pre-1.0 tags.
 
-Older pre-1.0 tags are retained for auditability rather than maintained in parallel. This policy will be revisited when the project reaches `1.0.0` or if a downstream consumer creates a concrete need for longer support windows.
+`v0.9.0` and older pre-1.0 tags remain available for auditability but are not long-term support branches. Additional parallel/LTS support lines are not promised; introduce them only if a concrete downstream support need justifies that maintenance cost.

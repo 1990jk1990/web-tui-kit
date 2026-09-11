@@ -4,6 +4,17 @@ All notable user-visible changes are recorded here.
 
 ## Unreleased
 
+## 1.0.0 - 2026-09-11
+
+Stable public-contract release.
+
+- Declared the audited browser-native public contract stable under normal Semantic Versioning: PATCH preserves the contract, MINOR may add compatible surface/deprecations, and incompatible public-contract changes require a new MAJOR release.
+- Kept the v0.9 public token/class/state/semantic-markup/data-attribute/event inventory unchanged for the 1.0 transition; no visual redesign or new runtime component behavior is introduced solely by the version change.
+- Reconciled release automation so `v0.*` tags remain GitHub prereleases while `v1.0.0` and later stable-line tags publish normal GitHub Releases after the same verification gates.
+- Retained immutable tagged vendoring and the deterministic focused ZIP/SHA-256 archive as the primary distribution model; 1.0 does not add an npm/package-registry runtime requirement.
+- Preserved explicit evidence boundaries: automated Chromium/Firefox/touch/framework checks remain regression evidence rather than physical Android, assistive-technology/WCAG, or exhaustive framework-version certification.
+- Added ADR-0009 documenting stable 1.0+ GitHub Release publication while retaining the tagged-vendoring distribution model.
+
 ## 0.9.0 - 2026-09-11
 
 Public contract and 1.0 readiness release.

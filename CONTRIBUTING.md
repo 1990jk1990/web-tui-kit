@@ -6,7 +6,7 @@
 
 Read `AGENTS.md` first. For UI changes, also read the relevant current specification under `openspec/specs/`, `DESIGN_SYSTEM.md`, the affected files under `src/`, and `demo/index.html`.
 
-For changes to public tokens, reusable classes, semantic component markup, `data-tui-*` behavior, `tui:escape`, versioning/deprecation policy, or 1.0 readiness, also read `openspec/specs/public-contract/spec.md`, `docs/project/public-contract.md`, ADR-0008, and `tests/test_public_contract.py`.
+For changes to public tokens, reusable classes, semantic component markup, `data-tui-*` behavior, `tui:escape`, versioning/deprecation policy, or public-contract stability, also read `openspec/specs/public-contract/spec.md`, `docs/project/public-contract.md`, ADR-0008, and `tests/test_public_contract.py`.
 
 For framework/template integration changes, also read `docs/project/framework-integration.md`, `examples/README.md`, the relevant recipe under `examples/`, ADR-0001, ADR-0004, and ADR-0007.
 
@@ -14,7 +14,7 @@ For browser verification or compatibility-evidence changes, also read `openspec/
 
 For accessibility-semantic verification changes, also read `openspec/specs/accessibility-verification/spec.md`, `docs/project/testing.md`, `docs/project/compatibility.md`, ADR-0006, and the canonical demo markup being asserted.
 
-For release/version/distribution changes, also read `VERSION`, `RELEASING.md`, the release/distribution OpenSpec, the public-contract specification, and the relevant ADRs.
+For release/version/distribution changes, also read `VERSION`, `RELEASING.md`, the release/distribution OpenSpec, the public-contract specification, and the relevant ADRs, including ADR-0009 for stable release publication semantics.
 
 ## Workflow
 
@@ -22,7 +22,7 @@ Use a focused branch and pull request for non-trivial changes. Keep unrelated fu
 
 Behavioral changes must update the relevant OpenSpec artifacts. Architectural changes must update the relevant files under `docs/architecture/`; create an ADR under `docs/decisions/` only when the rationale is durable and useful later.
 
-When adding/changing a public `--tui-*` token, `tui-*` class, scoped state hook, semantic component relationship, progressive data attribute, or custom event, update the public-contract spec/inventory and structural guard in the same change. Do not allow a new public-looking name to appear accidentally without classifying it. Before 1.0, an intentional incompatible public change requires a MINOR release and migration guidance; after 1.0, normal Semantic Versioning applies to the declared public contract.
+When adding/changing a public `--tui-*` token, `tui-*` class, scoped state hook, semantic component relationship, progressive data attribute, or custom event, update the public-contract spec/inventory and structural guard in the same change. Do not allow a new public-looking name to appear accidentally without classifying it. Starting with 1.0, normal Semantic Versioning applies to the declared public contract: incompatible public changes require a MAJOR release, while compatible additions/deprecations belong in MINOR releases with appropriate migration/deprecation guidance.
 
 When adding a reusable component, prefer existing tokens and patterns, update the demo, and add regression evidence in `tests/`.
 
@@ -93,7 +93,7 @@ Document pre-existing failures separately from failures introduced by a change. 
 
 ## Distribution
 
-Direct vendoring from an immutable release tag is the primary pre-1.0 distribution model. The focused archive includes `docs/project/public-contract.md` so consumers can see the supported surface alongside the runtime. Do not add npm or another package-registry publication path without a concrete consumer need and a deliberate follow-up architectural decision.
+Direct vendoring from an immutable release tag is the current primary distribution model. The focused archive includes `docs/project/public-contract.md` so consumers can see the supported surface alongside the runtime. `v0.*` tags are prereleases; stable-line tags beginning with `v1.0.0` are normal GitHub Releases. Do not add npm or another package-registry publication path without a concrete consumer need and a deliberate follow-up architectural decision.
 
 Framework-specific examples under `examples/` are consumption recipes, not separately versioned adapter packages. A maintained adapter runtime requires a concrete integration gap and an accepted follow-up decision.
 
