@@ -159,7 +159,9 @@ Passing framework recipe regression proves those exact canonical source recipes 
 
 ## Manual physical Android evidence
 
-A small physical-device procedure lives in `docs/project/android-device-check.md`. Record the exact device, Android version, Chrome version, date, and observed results there only after an actual run. Do not infer device certification from the touch-capable Chromium CI case.
+A small physical-device procedure lives in `docs/project/android-device-check.md`. Record a baseline only after an actual Android device run, including the exact repository commit/tag, date, browser family, and observed checklist outcomes. Device manufacturer/model and exact Android/Chrome version numbers are optional metadata; record them only when material to a defect or compatibility investigation, and never infer them when they were not retained. A real Chrome for Android result does not establish Android WebView, a multi-device/version matrix, assistive-technology behavior, or WCAG conformance.
+
+The first physical Chrome for Android baseline was recorded on 2026-09-13 against immutable `v1.0.0`; portrait layout, checklist touch/scroll, buttons/touch targets, software keyboard/input, radiolist behavior, and orientation changes all passed.
 
 ## Release artifact verification
 
@@ -189,8 +191,8 @@ mkdocs build --strict
 
 ## Compatibility evidence and current limits
 
-Canonical visual rendering is automated for the package-configuration and core-dialog demos at representative Linux desktop and touch-capable narrow/mobile Chromium sizes. Runtime interaction behavior is additionally exercised in desktop Chromium, desktop Firefox, and narrow touch-capable Chromium. Browser-computed accessibility semantics are exercised in desktop Chromium/Firefox plus the narrow touch-capable Chromium package case. The canonical React/Vue/server-rendered recipes have representative executable consumer evidence in Linux Chromium with exact pinned development-only framework/tool versions. See `compatibility.md` for the evidence matrix and its boundaries.
+Canonical visual rendering is automated for the package-configuration and core-dialog demos at representative Linux desktop and touch-capable narrow/mobile Chromium sizes. Runtime interaction behavior is additionally exercised in desktop Chromium, desktop Firefox, and narrow touch-capable Chromium. Browser-computed accessibility semantics are exercised in desktop Chromium/Firefox plus the narrow touch-capable Chromium package case. The canonical React/Vue/server-rendered recipes have representative executable consumer evidence in Linux Chromium with exact pinned development-only framework/tool versions. One manual physical Chrome for Android baseline against `v1.0.0` additionally covers the canonical portrait/touch/checklist/button/software-keyboard/radiolist/orientation checklist. See `compatibility.md` for the evidence matrix and its boundaries.
 
-The repository still does not provide automated real-screen-reader/assistive-technology sessions, physical-device CI, Android WebView/browser-version matrices, software-keyboard verification, real-device accessibility-service evidence, or a broad React/Vue/framework-tooling version matrix beyond the pinned representative recipe cases.
+The repository still does not provide automated real-screen-reader/assistive-technology sessions, physical-device CI, Android WebView/browser-version matrices, real-device accessibility-service evidence, or a broad React/Vue/framework-tooling version matrix beyond the pinned representative recipe cases. The single manual Android Chrome baseline does not turn those gaps into broad certification.
 
 `demo/index.html` remains the primary executable visual/semantic reference, `demo/components.html` provides broader component coverage, and `demo/dialogs.html` provides executable core-dialog coverage. `examples/` demonstrates framework/template consumption. Manual browser/device/framework/assistive-technology review remains useful evidence outside the automated matrix.
