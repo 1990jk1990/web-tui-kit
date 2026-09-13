@@ -44,13 +44,23 @@ The interaction suite MUST include a narrow Chromium context with mobile/touch e
 
 Automated mobile/touch Chromium emulation MUST NOT be described as physical Android Chrome, Android WebView, software-keyboard, or device certification.
 
-The repository MUST provide a manual physical-Android evidence procedure and MUST record exact device/browser/version/date details before upgrading compatibility documentation to claim a physical-device result.
+The repository MUST provide a manual physical-Android evidence procedure and MUST record a dated run from an actual Android device against an exact repository commit/tag, identify the exercised browser family, and record the observed checklist outcomes before upgrading compatibility documentation to claim a physical-device result.
+
+Device manufacturer/model and exact Android/Chrome version numbers MAY be recorded when material to a defect or compatibility investigation, but they are not required for the baseline physical-device claim and MUST NOT be inferred or fabricated when the tester chooses not to retain them.
+
+A physical Chrome for Android result MUST NOT be generalized to Android WebView, multiple vendors, a browser-version matrix, accessibility-service/screen-reader behavior, WCAG conformance, latency, or performance.
 
 #### Scenario: No physical device run exists
 
 - **GIVEN** only Playwright touch/mobile emulation has been executed
 - **WHEN** compatibility evidence is documented
 - **THEN** physical Android verification MUST remain explicitly unverified
+
+#### Scenario: Physical Android Chrome baseline is recorded
+
+- **GIVEN** an actual Android device runs the canonical checklist against an exact repository commit/tag in Chrome for Android
+- **WHEN** the date, browser family, and observed PASS/FAIL outcomes are recorded
+- **THEN** compatibility documentation MAY state that a physical Android Chrome baseline exists while keeping Android WebView and broader device/version claims explicitly unverified
 
 ### Requirement: Browser verification is development-only
 
