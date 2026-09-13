@@ -4,7 +4,7 @@ This page defines the small manual evidence procedure for the Android design tar
 
 ## Current evidence status
 
-No physical Android device result is recorded yet for the v0.6 verification milestone. Do not describe physical Android Chrome or Android WebView as independently verified until a completed record is added below from an actual device run.
+A physical Android Chrome baseline is recorded for immutable `v1.0.0` from an actual device run on 2026-09-13. The recorded result covers the checklist below in Chrome for Android and does not imply Android WebView, multi-vendor/version-matrix, accessibility-service, screen-reader, WCAG, latency, or performance certification.
 
 ## Before testing
 
@@ -31,14 +31,12 @@ This check is intentionally small. Accessibility-service behavior, multiple Andr
 
 ## Evidence record template
 
-Copy this block for each actual run; do not fill fields from assumptions or emulation.
+Copy this block for each actual run; do not fill fields from assumptions or emulation. Device model and exact Android/Chrome version numbers are optional metadata rather than baseline requirements; record them only when they are material to a defect or compatibility investigation.
 
 ```text
 Date:
 Repository commit/tag:
-Device manufacturer/model:
-Android version:
-Chrome version:
+Platform/browser: Physical Android / Chrome for Android
 Portrait layout: PASS/FAIL + notes
 Checklist touch/scroll: PASS/FAIL + notes
 Buttons/touch targets: PASS/FAIL + notes
@@ -47,8 +45,26 @@ Radiolist: PASS/FAIL + notes
 Orientation change: PASS/FAIL + notes
 Overall result: PASS/FAIL
 Tester notes:
+Optional device/version details:
 ```
 
 ## Recorded runs
 
-None yet.
+### 2026-09-13 — v1.0.0
+
+```text
+Date: 2026-09-13
+Repository commit/tag: v1.0.0
+Platform/browser: Physical Android / Chrome for Android
+Portrait layout: PASS
+Checklist touch/scroll: PASS
+Buttons/touch targets: PASS
+Software keyboard/input: PASS
+Radiolist: PASS
+Orientation change: PASS
+Overall result: PASS
+Tester notes: No functional or layout defect observed during the checklist run.
+Optional device/version details: Not retained by tester.
+```
+
+This record establishes one physical Chrome for Android baseline for the exact immutable `v1.0.0` release. It does not establish compatibility for Android WebView, every Android vendor/device, every Chrome/Android version, accessibility services, screen readers, WCAG conformance, latency, or performance.
