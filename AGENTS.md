@@ -122,7 +122,7 @@ Keep the baseline framework-independent. A consuming application may use a frame
 - Exercise the desktop interaction contract in pinned Chromium and Firefox and keep the narrow touch-capable Chromium case representative rather than calling it physical Android certification.
 - Keep `tests/browser/interaction.html` a test fixture over canonical `src/` assets; do not duplicate reusable CSS or runtime logic there.
 - Browser verification dependencies remain development/CI-only and must not enter `src/` or the downstream runtime contract.
-- Never record a physical Android result unless exact device, OS/browser version, date, and observed results come from an actual device run.
+- Record a physical Android baseline only from an actual device run with the exact repository commit/tag, date, browser family, and observed checklist outcomes. Device model and exact OS/browser versions are optional evidence metadata; never infer or fabricate them when they were not retained. A Chrome for Android result must not be generalized to Android WebView, a multi-device/version matrix, accessibility-service behavior, screen-reader output, WCAG conformance, latency, or performance.
 
 ## Accessibility semantic verification rules
 
