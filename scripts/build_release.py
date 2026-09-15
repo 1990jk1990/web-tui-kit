@@ -12,6 +12,7 @@ VERSION_FILE = ROOT / "VERSION"
 VERSION_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 
 DISTRIBUTION_FILES = (
+    "LICENSE",
     "VERSION",
     "README.md",
     "DESIGN_SYSTEM.md",

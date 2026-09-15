@@ -4,6 +4,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = [
+    "LICENSE",
     "README.md",
     "AGENTS.md",
     "CONTRIBUTING.md",

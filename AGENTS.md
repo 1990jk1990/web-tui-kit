@@ -1,8 +1,6 @@
 # AGENTS.md
 
-This project follows **AI-DOC-1 v1.3**.
-
-Standard source: `https://github.com/1990jk1990/AI-DOC-1`
+This project follows **AI-DOC-1 v1.3** as a repository-local project-governance convention. The rules required to maintain this project are contained in this repository; no external or private standard repository is required.
 
 This repository is also the canonical UI reference for applications that use **web-tui-kit**.
 
@@ -157,7 +155,7 @@ Normal CI visual verification is read-only. Do not make CI automatically accept 
 - Treat published tags as immutable. Fix forward with a new version rather than moving an existing release tag.
 - Keep direct vendoring from an immutable tag as the current primary distribution path unless an accepted follow-up decision changes that model.
 - Do not introduce npm/package-registry publication without a concrete consumer need and deliberate architecture/specification update.
-- Keep `docs/project/public-contract.md` in the focused release archive.
+- Keep `LICENSE` and `docs/project/public-contract.md` in the focused release archive.
 - Run `python scripts/build_release.py --version "v$(cat VERSION)" --check` for release preparation.
 - Tag-triggered publication must verify tag/version identity, main-branch ancestry, structural/documentation checks, visual regression, cross-browser interaction regression, accessibility semantic regression, representative executable framework/template recipe regression, and deterministic release artifacts before creating a GitHub Release.
 - `v0.*` tags are GitHub prereleases; starting with `v1.0.0`, stable-line tags publish normal GitHub Releases after those same mandatory gates.

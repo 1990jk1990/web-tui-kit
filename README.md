@@ -2,9 +2,17 @@
 
 A reusable, framework-independent browser UI design system inspired by Debian debconf, `dialog`, and `whiptail`.
 
-The project is the canonical UI reference for browser-based applications that should share the same text-oriented visual language on Linux desktops and Android devices.
+It provides a stable browser-native contract for applications that want the same text-oriented visual language on Linux desktops and Android devices without adding a JavaScript framework or runtime dependency.
 
 **Version:** `1.0.0` (stable public contract). The canonical version is stored in `VERSION`; released versions use immutable `vMAJOR.MINOR.PATCH` Git tags.
+
+## Why web-tui-kit
+
+- **Framework-independent runtime:** plain CSS and small optional JavaScript; no application build step is required.
+- **Stable public contract:** tokens, classes, semantic markup relationships, data attributes, and events are explicitly inventoried and follow Semantic Versioning from 1.0 onward.
+- **Maintained release process:** tagged releases are gated by structural/docs tests, deterministic artifacts, Chromium visual regression, Chromium/Firefox interaction and accessibility-semantic checks, and representative React/Vue/server-rendered recipe verification.
+- **Real-device evidence:** the stable 1.0 line has a recorded physical Chrome-for-Android baseline in addition to automated narrow-touch browser coverage.
+- **Open source:** distributed under the MIT License; contributions and issue reports are welcome.
 
 The intentionally supported downstream surface is explicit in `docs/project/public-contract.md` and canonical requirements under `openspec/specs/public-contract/`. Starting with 1.0, normal Semantic Versioning applies to that declared boundary of public tokens/classes/DOM behavior rather than to incidental demo/test/internal repository details.
 
@@ -45,7 +53,7 @@ Copy or vendor the files from `src/` and include them in the consuming applicati
 
 `src/tui.js` is optional when the consuming application does not need the small progressive keyboard enhancements. The exact CSS token values are defined in `src/tokens.css`; reusable component implementation lives in `src/tui.css` and `src/tui.js`.
 
-Tagged GitHub Releases provide a focused `web-tui-kit-MAJOR.MINOR.PATCH.zip` and matching SHA-256 checksum containing the runtime, executable demos, framework/template integration recipes, public-contract guide, version marker, changelog, security guidance, and practical design-system/AI-agent references. `v0.*` publications remain prereleases; `v1.0.0` and later stable-line tags publish normal GitHub Releases. The current distribution model does not require or publish an npm package; direct tagged vendoring remains the primary path.
+Tagged GitHub Releases provide a focused `web-tui-kit-MAJOR.MINOR.PATCH.zip` and matching SHA-256 checksum containing the MIT license, runtime, executable demos, framework/template integration recipes, public-contract guide, version marker, changelog, security guidance, and practical design-system/AI-agent references. `v0.*` publications remain prereleases; `v1.0.0` and later stable-line tags publish normal GitHub Releases. The current distribution model does not require or publish an npm package; direct tagged vendoring remains the primary path.
 
 For the closest match to the original Debian/Ubuntu package-configuration look, start from `.tui-screen`, `.tui-dialog`, `.tui-dialog-title`, `.tui-checklist`, `.tui-check-row`, `.tui-actions`, and `.tui-button` as demonstrated in `demo/index.html`.
 
@@ -69,9 +77,15 @@ Do not copy the design tokens/component CSS into CSS-in-JS, scoped component sty
 
 See `RELEASING.md` for the versioning/release procedure and `docs/project/compatibility.md` for current compatibility evidence and its limits. Physical Android evidence is tracked separately through `docs/project/android-device-check.md`; touch-capable Chromium emulation is not treated as physical-device certification. Automated browser accessibility semantics are likewise evidence, not screen-reader or WCAG certification.
 
+## Contributing and security
+
+External bug reports, feature proposals, and pull requests are welcome. Start with `CONTRIBUTING.md`; the issue and pull-request templates capture the evidence needed to keep changes reviewable and compatible with the stable public contract.
+
+For sensitive security findings, follow `SECURITY.md` and use GitHub's private security-reporting features when available rather than publishing exploit details or secrets in a normal issue.
+
 ## Project memory and canonical sources
 
-This repository follows **AI-DOC-1 v1.3**. The repository itself is durable project memory; chat history is not required to continue development.
+This repository follows **AI-DOC-1 v1.3** as a repository-local project-governance convention. Everything required to understand and continue the project is kept in this repository; public contributors do not need access to a separate private documentation source.
 
 - AI working rules: `AGENTS.md`
 - release identity: `VERSION` + immutable Git tags/GitHub Releases
@@ -161,3 +175,7 @@ python scripts/build_release.py --version "v$(cat VERSION)" --check
 The visual suite compares the canonical package and dialog demos against reviewed desktop/touch-mobile Chromium PNG baselines. The interaction suite verifies runtime keyboard/custom-event contracts in desktop Chromium and Firefox plus native tap behavior in a narrow touch-capable Chromium context. The accessibility suite verifies browser-computed roles, accessible names, label associations, native states, and progress semantics in desktop Chromium/Firefox plus representative narrow-touch package semantics. The framework recipe suite compiles and exercises the canonical example sources with representative pinned development versions; it is not an exhaustive framework compatibility matrix. None of these automated checks substitutes for real screen-reader/assistive-technology, WCAG conformance, or physical Android evidence. See `docs/project/testing.md` and `docs/project/compatibility.md` for the verification/evidence boundaries.
 
 Contribution details are in `CONTRIBUTING.md`; release-maintainer steps are in `RELEASING.md`.
+
+## License
+
+`web-tui-kit` is licensed under the MIT License. See `LICENSE`.

@@ -53,6 +53,7 @@ class ReleaseContractTests(unittest.TestCase):
             expected_members = {
                 f"{package_root}/{path}"
                 for path in (
+                    "LICENSE",
                     "VERSION",
                     "README.md",
                     "DESIGN_SYSTEM.md",
@@ -80,6 +81,7 @@ class ReleaseContractTests(unittest.TestCase):
                     archive.read(f"{package_root}/VERSION").decode("utf-8").strip(),
                     self.version,
                 )
+                self.assertIn("MIT License", archive.read(f"{package_root}/LICENSE").decode("utf-8"))
                 for info in archive.infolist():
                     self.assertEqual(info.date_time, (1980, 1, 1, 0, 0, 0))
 
@@ -151,6 +153,7 @@ class ReleaseContractTests(unittest.TestCase):
         self.assertIn("sorted(DISTRIBUTION_FILES)", self.builder)
         self.assertIn("sha256", self.builder)
         self.assertIn("display_path", self.builder)
+        self.assertIn('"LICENSE"', self.builder)
         self.assertIn('"docs/project/public-contract.md"', self.builder)
         self.assertIn('"examples/react/PackageConfiguration.jsx"', self.builder)
         self.assertIn('"examples/vue/PackageConfiguration.vue"', self.builder)
