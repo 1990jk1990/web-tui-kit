@@ -36,6 +36,8 @@ class InteractionRegressionContractTests(unittest.TestCase):
             'id="text-input"',
             'id="touch-row"',
             'id="touch-checkbox"',
+            '<dialog\n      id="native-dialog-surface"',
+            'id="native-dialog-title"',
         ):
             self.assertIn(fragment, self.fixture)
 
@@ -63,6 +65,17 @@ class InteractionRegressionContractTests(unittest.TestCase):
             '"radio-second"',
             "selection == [1, 1, \"text-input\"]",
             "focus navigation unexpectedly toggled checkbox state",
+        ):
+            self.assertIn(fragment, self.runner)
+
+    def test_runner_asserts_native_dialog_title_overflow_contract(self):
+        for fragment in (
+            "verify_native_dialog_title_overflow",
+            'document.querySelector("#native-dialog-surface")',
+            'document.querySelector("#native-dialog-title")',
+            "getComputedStyle(dialog).overflow",
+            'geometry["overflow"] == "visible"',
+            'geometry["titleTop"] < geometry["dialogTop"]',
         ):
             self.assertIn(fragment, self.runner)
 
