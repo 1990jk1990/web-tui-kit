@@ -89,6 +89,23 @@ Typical message box:
 
 `.tui-dialog` is a visual component, not a modal implementation. If an application needs a true modal, it must provide appropriate native `<dialog>` or equivalent dialog semantics, focus/lifecycle handling, and dismissal behavior. The UI kit does not add focus traps automatically.
 
+The outer `.tui-dialog` surface intentionally keeps `overflow: visible` because `.tui-dialog-title` crosses the top bevel. This also neutralizes native `<dialog>` user-agent overflow that would otherwise clip the title. Do not put `overflow: auto`, `overflow: hidden`, or another clipping/scrolling overflow mode on the outer `.tui-dialog`. If a dialog contains more content than should fit, keep the outer surface visible and put scrolling on an inner content region such as `.tui-choice-list`, `.tui-checklist`, `.tui-radiolist`, `.tui-table-wrap`, or an application-owned inner wrapper.
+
+A native modal can therefore use the same presentation classes directly:
+
+```html
+<dialog class="tui-dialog tui-dialog--compact" aria-labelledby="confirm-title">
+  <h2 class="tui-dialog-title" id="confirm-title">Confirmation</h2>
+  <p class="tui-dialog-copy">Apply this change?</p>
+  <div class="tui-actions">
+    <button class="tui-button" type="button">Cancel</button>
+    <button class="tui-button" type="button">Apply</button>
+  </div>
+</dialog>
+```
+
+The consuming application still owns `showModal()`, closing, focus, and any backdrop behavior.
+
 A yes/no dialog uses the same composition with two `.tui-button` actions. An input dialog adds a native input styled with `.tui-input` inside `.tui-field`.
 
 Nested content groups may use `.tui-panel`. General page sections may use `.tui-section` for canonical vertical spacing.

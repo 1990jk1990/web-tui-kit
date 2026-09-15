@@ -83,6 +83,33 @@ def verify_escape_dispatch(page: Page) -> None:
     require(event["hasSourceEvent"] is True, f"tui:escape lost sourceEvent: {event!r}")
 
 
+def verify_native_dialog_title_overflow(page: Page) -> None:
+    geometry = page.evaluate(
+        """
+        () => {
+          const dialog = document.querySelector("#native-dialog-surface");
+          const title = document.querySelector("#native-dialog-title");
+          dialog.show();
+          const dialogRect = dialog.getBoundingClientRect();
+          const titleRect = title.getBoundingClientRect();
+          return {
+            overflow: getComputedStyle(dialog).overflow,
+            dialogTop: dialogRect.top,
+            titleTop: titleRect.top,
+          };
+        }
+        """
+    )
+    require(
+        geometry["overflow"] == "visible",
+        f"native dialog outer overflow clips the border title: {geometry!r}",
+    )
+    require(
+        geometry["titleTop"] < geometry["dialogTop"],
+        f"native dialog title no longer protrudes above the top bevel: {geometry!r}",
+    )
+
+
 def verify_list_navigation(page: Page) -> None:
     first = page.locator("#nav-check-first")
     first.focus()
@@ -174,6 +201,7 @@ def verify_touch_context(page: Page) -> None:
 
 
 def verify_desktop_contracts(page: Page) -> None:
+    verify_native_dialog_title_overflow(page)
     verify_escape_dispatch(page)
     verify_list_navigation(page)
     verify_native_radio_behavior(page)
@@ -201,6 +229,7 @@ def run_case(browser: Browser, base_url: str, case: InteractionCase) -> None:
         page = context.new_page()
         page.goto(f"{base_url}{FIXTURE_PATH}", wait_until="networkidle")
         if case.mobile:
+            verify_native_dialog_title_overflow(page)
             verify_touch_context(page)
             verify_escape_dispatch(page)
         else:

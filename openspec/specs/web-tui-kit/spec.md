@@ -34,11 +34,19 @@ The design system MUST provide a `.tui-dialog` pattern that can reproduce the ch
 
 The `.tui-dialog` class defines presentation only. A consuming application that needs true modal behavior MUST provide appropriate native `<dialog>` or equivalent application-level semantics and lifecycle behavior rather than assuming the CSS class creates a modal.
 
+Because `.tui-dialog-title` intentionally protrudes across the top bevel, the canonical outer `.tui-dialog` surface MUST preserve visible overflow, including when the class is applied to a native `<dialog>` element. Consumers that need scrollable dialog content SHOULD put scrolling on an inner content/list region rather than applying clipping/scrolling overflow to the outer `.tui-dialog` surface.
+
 #### Scenario: Reference dialog rendering
 
 - **GIVEN** a page uses `.tui-screen`, `.tui-dialog`, `.tui-dialog-title`, and `.tui-actions`
 - **WHEN** it is rendered with the default theme
 - **THEN** the result MUST preserve the canonical hard-edged dialog composition on desktop and narrow viewports
+
+#### Scenario: Native dialog keeps the border title visible
+
+- **GIVEN** a consuming application uses the public `.tui-dialog` and `.tui-dialog-title` classes on a native `<dialog>` element
+- **WHEN** the dialog is shown with the default design-system presentation
+- **THEN** the outer dialog MUST keep visible overflow so the title can protrude above the top border without being clipped by native user-agent overflow behavior
 
 ### Requirement: Core dialog patterns
 

@@ -18,6 +18,20 @@ The interaction suite MUST execute the canonical runtime assets through semantic
 - **WHEN** the browser interaction suite runs
 - **THEN** a regression in the documented Escape/list/native-control contracts MUST cause the suite to fail
 
+### Requirement: Browser-native dialog presentation compatibility
+
+The browser verification suite MUST exercise the public `.tui-dialog` presentation on a native `<dialog>` element because native user-agent dialog styles can differ from ordinary section/container elements.
+
+The exercised case MUST verify that the canonical outer `.tui-dialog` computes to visible overflow and that `.tui-dialog-title` geometrically protrudes above the dialog's top border. This evidence MUST run in the configured Chromium and Firefox desktop cases and in the representative narrow touch-capable Chromium case.
+
+This check verifies the accepted presentation contract only; native `<dialog>` modal lifecycle, focus policy, dismissal, and backdrop behavior remain application-owned unless a separate accepted requirement changes that boundary.
+
+#### Scenario: Native dialog user-agent styling would clip the title
+
+- **GIVEN** `.tui-dialog` and `.tui-dialog-title` are applied to a native `<dialog>`
+- **WHEN** the browser interaction fixture shows that dialog
+- **THEN** computed outer overflow MUST be `visible` and the title rectangle MUST extend above the dialog rectangle so a user-agent scrolling overflow default cannot silently clip the canonical border title
+
 ### Requirement: Chromium and Firefox desktop evidence
 
 The desktop interaction contract MUST be exercised in the Chromium and Firefox browser engines supplied by the pinned Playwright release.
@@ -28,17 +42,19 @@ Firefox interaction evidence MUST NOT establish a second canonical screenshot ba
 
 - **GIVEN** the repository claims the standards-based baseline should remain usable in current Firefox
 - **WHEN** CI runs the browser interaction suite
-- **THEN** the documented keyboard/custom-event contracts MUST be exercised in the pinned Firefox engine
+- **THEN** the documented keyboard/custom-event and focused native-dialog presentation contracts MUST be exercised in the pinned Firefox engine
 
 ### Requirement: Touch-capable narrow Chromium evidence
 
 The interaction suite MUST include a narrow Chromium context with mobile/touch emulation enabled and MUST verify that the context exposes touch/coarse-pointer behavior and that a native interactive control remains operable by tap.
 
+Focused browser-native presentation checks that are part of the interaction fixture, including the native `<dialog>` title-overflow regression, MUST also run in this representative narrow context when they do not depend on desktop-only input behavior.
+
 #### Scenario: Touch interaction evidence
 
 - **GIVEN** a 390×844 Chromium context with mobile/touch flags enabled
 - **WHEN** the touch interaction case runs
-- **THEN** the coarse-pointer media query and touch capability MUST be active and a native checkbox MUST be activatable by tap
+- **THEN** the coarse-pointer media query and touch capability MUST be active, a native checkbox MUST be activatable by tap, and the native-dialog border-title presentation check MUST remain valid
 
 ### Requirement: Physical Android claims require physical evidence
 
@@ -80,4 +96,4 @@ Tag-triggered release publication MUST run the browser interaction suite before 
 
 - **GIVEN** a matching release tag on `main`
 - **WHEN** browser interaction verification fails
-- **THEN** the GitHub prerelease MUST NOT be published
+- **THEN** the GitHub release MUST NOT be published

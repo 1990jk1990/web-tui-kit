@@ -4,6 +4,9 @@ All notable user-visible changes are recorded here.
 
 ## Unreleased
 
+- Fixed `.tui-dialog` on native `<dialog>` elements so the canonical `.tui-dialog-title` can protrude across the top bevel without being clipped by user-agent overflow; scrollable dialog content should remain on inner regions rather than the outer dialog surface.
+- Added Chromium, Firefox, and representative narrow touch-capable Chromium regression coverage for the native-dialog title/overflow contract discovered through downstream `lighting-service` UI testing.
+
 ## 1.0.0 - 2026-09-11
 
 Stable public-contract release.
