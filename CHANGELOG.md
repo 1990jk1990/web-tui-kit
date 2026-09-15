@@ -4,11 +4,16 @@ All notable user-visible changes are recorded here.
 
 ## Unreleased
 
-- Added an MIT license and made the license part of the deterministic focused release archive so downstream users receive explicit redistribution terms with release artifacts.
-- Added public bug/feature issue forms and a pull-request template to make external contribution and maintenance workflows easier to use.
+## 1.0.1 - 2026-09-16
+
+First public open-source maintenance release for the stable 1.x contract.
+
+- Published the project under the MIT License and made `LICENSE` part of the deterministic focused release archive so downstream users receive explicit redistribution terms with release artifacts.
+- Added public bug/feature issue forms, a pull-request template, CODEOWNERS, and public-facing maintainer/roadmap guidance for external contribution and ongoing maintenance.
 - Hardened repository ignores for common local secret/key material and made the AI-DOC-1 governance manifest repository-local so public contributors do not depend on a private external standard repository.
+- Added release/license/CI badges and reviewed visual-regression previews to the README so the public repository exposes release health and canonical UI evidence directly.
 - Fixed `.tui-dialog` on native `<dialog>` elements so the canonical `.tui-dialog-title` can protrude across the top bevel without being clipped by user-agent overflow; scrollable dialog content should remain on inner regions rather than the outer dialog surface.
-- Added Chromium, Firefox, and representative narrow touch-capable Chromium regression coverage for the native-dialog title/overflow contract discovered through downstream `lighting-service` UI testing.
+- Added Chromium, Firefox, and representative narrow touch-capable Chromium regression coverage for the native-dialog title/overflow contract discovered through real downstream integration testing.
 
 ## 1.0.0 - 2026-09-11
 

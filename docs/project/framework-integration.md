@@ -18,7 +18,7 @@ React, Vue, server-rendered templates, or another application architecture may g
 
 ## Pin a release first
 
-For reproducible applications and coding-agent work, copy/vendor from immutable stable tag `v1.0.0` rather than `main`. This prevents later design-system development from silently changing an existing consumer.
+For reproducible applications and coding-agent work, copy/vendor from immutable stable tag `v1.0.1` rather than `main`. This prevents later design-system development from silently changing an existing consumer.
 
 When upgrading to a newer tag, review `CHANGELOG.md`, `docs/project/public-contract.md`, accepted OpenSpec, and relevant demos before updating vendored assets. Starting with 1.0, normal Semantic Versioning applies to the declared public surface: compatible updates remain within PATCH/MINOR rules, while incompatible public-contract changes require a new MAJOR release.
 
