@@ -1,10 +1,27 @@
 # web-tui-kit
 
+[![Release](https://img.shields.io/github/v/release/1990jk1990/web-tui-kit)](https://github.com/1990jk1990/web-tui-kit/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![AI-DOC-1 validation](https://github.com/1990jk1990/web-tui-kit/actions/workflows/ai-doc-1.yml/badge.svg)](https://github.com/1990jk1990/web-tui-kit/actions/workflows/ai-doc-1.yml)
+[![Visual regression](https://github.com/1990jk1990/web-tui-kit/actions/workflows/visual-regression.yml/badge.svg)](https://github.com/1990jk1990/web-tui-kit/actions/workflows/visual-regression.yml)
+
 A reusable, framework-independent browser UI design system inspired by Debian debconf, `dialog`, and `whiptail`.
 
 It provides a stable browser-native contract for applications that want the same text-oriented visual language on Linux desktops and Android devices without adding a JavaScript framework or runtime dependency.
 
 **Version:** `1.0.0` (stable public contract). The canonical version is stored in `VERSION`; released versions use immutable `vMAJOR.MINOR.PATCH` Git tags.
+
+## Preview
+
+Canonical package-configuration composition:
+
+![Canonical web-tui-kit package configuration demo](tests/visual/baselines/package-desktop.png)
+
+Core dialog patterns:
+
+![web-tui-kit core dialog patterns](tests/visual/baselines/dialogs-desktop.png)
+
+The screenshots above are the reviewed Chromium regression baselines used by CI, not separate marketing mockups.
 
 ## Why web-tui-kit
 
@@ -76,6 +93,12 @@ The repository has development-only executable regression coverage for those can
 Do not copy the design tokens/component CSS into CSS-in-JS, scoped component styles, or a private theme implementation. If a reusable visual change is needed, make it in the canonical design system. The Node/framework/compiler dependencies used for repository verification are not runtime dependencies and are not required by consuming applications.
 
 See `RELEASING.md` for the versioning/release procedure and `docs/project/compatibility.md` for current compatibility evidence and its limits. Physical Android evidence is tracked separately through `docs/project/android-device-check.md`; touch-capable Chromium emulation is not treated as physical-device certification. Automated browser accessibility semantics are likewise evidence, not screen-reader or WCAG certification.
+
+## Maintenance
+
+`web-tui-kit` is actively maintained by [@1990jk1990](https://github.com/1990jk1990) as the primary maintainer. Ongoing maintenance includes issue triage, pull-request review, compatibility evidence, release management, and keeping the documented public contract aligned with implementation and tests.
+
+The current post-1.0 work is tracked in the [canonical v1.x roadmap](https://github.com/1990jk1990/web-tui-kit/issues/35). Published tags are immutable and release preparation is intentionally separated from feature/fix work so that release evidence remains auditable.
 
 ## Contributing and security
 
