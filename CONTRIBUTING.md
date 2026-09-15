@@ -1,6 +1,8 @@
 # Contributing
 
-`web-tui-kit` follows AI-DOC-1 v1.3 and treats the repository as durable project memory.
+`web-tui-kit` is open source under the MIT License. By submitting a contribution, you agree that your contribution may be distributed under the repository's MIT License.
+
+The project follows AI-DOC-1 v1.3 and treats the repository as durable project memory.
 
 ## Before changing the project
 
@@ -93,7 +95,7 @@ Document pre-existing failures separately from failures introduced by a change. 
 
 ## Distribution
 
-Direct vendoring from an immutable release tag is the current primary distribution model. The focused archive includes `docs/project/public-contract.md` so consumers can see the supported surface alongside the runtime. `v0.*` tags are prereleases; stable-line tags beginning with `v1.0.0` are normal GitHub Releases. Do not add npm or another package-registry publication path without a concrete consumer need and a deliberate follow-up architectural decision.
+Direct vendoring from an immutable release tag is the current primary distribution model. The focused archive includes `LICENSE` and `docs/project/public-contract.md` so consumers receive the license and supported surface alongside the runtime. `v0.*` tags are prereleases; stable-line tags beginning with `v1.0.0` are normal GitHub Releases. Do not add npm or another package-registry publication path without a concrete consumer need and a deliberate follow-up architectural decision.
 
 Framework-specific examples under `examples/` are consumption recipes, not separately versioned adapter packages. A maintained adapter runtime requires a concrete integration gap and an accepted follow-up decision.
 
