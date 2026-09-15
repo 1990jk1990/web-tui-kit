@@ -1,0 +1,33 @@
+name: Feature request
+description: Propose a reusable addition to the public design-system contract
+title: "feature: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        web-tui-kit favors small, reusable browser-native primitives. Please describe the downstream need rather than only a preferred implementation.
+  - type: textarea
+    id: need
+    attributes:
+      label: Downstream need
+      description: What real application or integration problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current workaround
+      description: How are you solving the problem today, if at all?
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed public behavior
+      description: Describe the reusable behavior or contract you think should be added. Implementation details are optional.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility considerations
+      description: Note any impact on existing tokens, classes, semantic markup, events, data attributes, browsers, accessibility, or framework recipes.
