@@ -1,0 +1,44 @@
+name: Bug report
+description: Report a reproducible defect in the public web-tui-kit contract
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve web-tui-kit. Please use an immutable release tag or an exact commit when reproducing the issue.
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Release tag (preferred) or exact commit SHA where the problem occurs.
+      placeholder: v1.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the observed behavior and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide the smallest HTML/CSS/JS example or repository link that reproduces the problem.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and platform
+      description: Browser family/version and OS/device class when relevant.
+      placeholder: Firefox 143 on Linux desktop
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Additional evidence
+      description: Screenshots, console output, accessibility observations, or other useful evidence. Remove secrets and private data before posting.
