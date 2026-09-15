@@ -50,14 +50,14 @@ python scripts/build_release.py --version "v$(cat VERSION)" --check
 
 The command verifies that the expected tag version matches `VERSION`, builds a deterministic ZIP under `dist/`, validates its exact file list/timestamps, builds the ZIP twice when `--check` is supplied, and writes a matching SHA-256 checksum file.
 
-The focused archive contains the runtime under `src/`, executable demos, copy-ready framework/template recipes under `examples/`, the framework-integration guide, the public-contract guide, `VERSION`, `README.md`, `DESIGN_SYSTEM.md`, `AGENTS.md`, `CHANGELOG.md`, and `SECURITY.md`. GitHub also provides its normal source archives for the complete repository. Development-only framework verification dependencies and generated fixtures are not distribution contents.
+The focused archive contains `LICENSE`, the runtime under `src/`, executable demos, copy-ready framework/template recipes under `examples/`, the framework-integration guide, the public-contract guide, `VERSION`, `README.md`, `DESIGN_SYSTEM.md`, `AGENTS.md`, `CHANGELOG.md`, and `SECURITY.md`. GitHub also provides its normal source archives for the complete repository. Development-only framework verification dependencies and generated fixtures are not distribution contents.
 
 ## Release-preparation checklist
 
 1. Start from current `main` and create a focused release-preparation branch.
 2. Decide the next Semantic Version by evaluating the actual declared public-contract impact, then update `VERSION`.
 3. Move completed user-visible entries in `CHANGELOG.md` from `Unreleased` into the dated release heading; include explicit migration notes for any intentional public-contract break/deprecation.
-4. Reconcile OpenSpec, `docs/project/public-contract.md`, architecture/ADRs, README, contributor/release docs, compatibility evidence, security guidance, and any consumer integration references included in the focused archive.
+4. Reconcile OpenSpec, `docs/project/public-contract.md`, architecture/ADRs, README, contributor/release docs, compatibility evidence, security guidance, licensing, and any consumer integration references included in the focused archive.
 5. Run:
 
 ```bash
@@ -77,10 +77,11 @@ python scripts/build_release.py --version "v$(cat VERSION)" --check
 ```
 
 6. Review the complete diff and confirm there are no secrets, generated `site/`, `dist/`, `test-results/`, or `tests/framework/node_modules/` directories committed.
-7. Confirm `tests/test_public_contract.py` agrees with the intended public token/class/state/data-attribute/event inventory and that no newly implemented public name is left unclassified.
-8. Confirm release automation will publish the intended GitHub release state for the version line: `v0.*` prerelease, `v1.0.0` and later stable-line tags normal release.
-9. Merge the release-preparation PR only after required CI is green.
-10. Create the immutable tag `v$(cat VERSION)` on the resulting `main` commit.
+7. Confirm `LICENSE` exists, contains the intended project license, and is present in the focused release archive.
+8. Confirm `tests/test_public_contract.py` agrees with the intended public token/class/state/data-attribute/event inventory and that no newly implemented public name is left unclassified.
+9. Confirm release automation will publish the intended GitHub release state for the version line: `v0.*` prerelease, `v1.0.0` and later stable-line tags normal release.
+10. Merge the release-preparation PR only after required CI is green.
+11. Create the immutable tag `v$(cat VERSION)` on the resulting `main` commit.
 
 ## Tag-triggered release automation
 
@@ -92,8 +93,8 @@ Pushing a matching `vMAJOR.MINOR.PATCH` tag starts `.github/workflows/release.ym
 4. runs the pinned Chromium visual-regression suite,
 5. runs the pinned Chromium/Firefox browser-interaction suite, including the narrow touch-capable Chromium case,
 6. runs the pinned Chromium/Firefox accessibility-semantic suite, including the narrow touch-capable Chromium package case,
-7. installs the private pinned representative framework/tool verification dependencies and runs executable React/Vue/server-rendered recipe smoke checks in Chromium,
-8. builds and validates the deterministic distribution ZIP/checksum, including the public-contract guide,
+7. installs the pinned representative framework/tool verification dependencies and runs executable React/Vue/server-rendered recipe smoke checks in Chromium,
+8. builds and validates the deterministic distribution ZIP/checksum, including the public-contract guide and license,
 9. publishes the GitHub Release and uploads the focused ZIP and SHA-256 checksum.
 
 Publication state follows the version line: `v0.*` tags are GitHub prereleases; `v1.0.0` and later stable-line tags publish normal GitHub Releases. ADR-0009 records this decision. The same verification gates run before either publication state.
@@ -104,7 +105,7 @@ The release job uses repository `contents: write` only for GitHub Release public
 
 ## Verification after tagging
 
-Confirm that the tag workflow completed successfully, the GitHub Release points to the intended tag/commit, the expected prerelease/stable state is correct for the version, the ZIP and `.sha256` files are attached, and the checksum matches the downloaded ZIP. Confirm the focused archive contains the documented runtime/reference allowlist, including `docs/project/public-contract.md` and integration recipes when they are part of accepted behavior. Then verify README/version references still point consumers at immutable tags rather than the moving `main` branch.
+Confirm that the tag workflow completed successfully, the GitHub Release points to the intended tag/commit, the expected prerelease/stable state is correct for the version, the ZIP and `.sha256` files are attached, and the checksum matches the downloaded ZIP. Confirm the focused archive contains the documented runtime/reference allowlist, including `LICENSE`, `docs/project/public-contract.md`, and integration recipes when they are part of accepted behavior. Then verify README/version references still point consumers at immutable tags rather than the moving `main` branch.
 
 ## Distribution policy
 
